@@ -1,6 +1,6 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert';
-import { transformHttpError, transformNetworkError } from './transform.ts';
+import { transformHttpError, transformNetworkError } from './transform.js';
 
 describe('transformHttpError', () => {
   test('401 error produces auth failure message mentioning BUKKU_API_TOKEN', () => {
