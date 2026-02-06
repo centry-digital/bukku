@@ -11,13 +11,13 @@
 ## Current Position
 
 **Active Phase:** Phase 1 - Foundation Infrastructure
-**Active Plan:** 3 of 5 (Project Scaffold, Error Transformation, TypeScript Types)
-**Plan Status:** In Progress (3 plans complete: 01-01, 01-02, 01-03)
+**Active Plan:** 4 of 5 (CRUD Factory and MCP Server)
+**Plan Status:** In Progress (4 plans complete: 01-01, 01-02, 01-03, 01-04)
 **Current Task:** N/A
 
 **Progress:**
 ```
-[███>                                               ] 3% (0/7 phases complete, 3/5 plans in phase)
+[████>                                              ] 4% (0/7 phases complete, 4/5 plans in phase)
 ```
 
 ## Performance Metrics
@@ -25,7 +25,7 @@
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 0 | 7 | On Track |
-| Plans Complete | 3 | TBD | On Track |
+| Plans Complete | 4 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -46,6 +46,10 @@
 | 01-03 | Hand-craft types from OpenAPI specs | OpenAPI specs have missing $ref files, auto-gen would fail | Types accurate, verified against schemas |
 | 01-03 | Use generic response wrappers (BukkuPaginatedResponse<T>, BukkuSingleResponse<T>) | All Bukku endpoints follow same pattern | Supports all 55+ entities without duplication |
 | 01-03 | Include CrudEntityConfig interface | Factory needs type-safe configuration | Prevents config errors in tool generation |
+| 01-04 | Factory generates tools with kebab-case names without prefix | Per locked decision: list-sales-invoices, not list_sales_invoices | Consistent naming across all 55+ tools |
+| 01-04 | Dedicated update-status tools for entities that support status changes | Status updates are common operations, deserve dedicated tools | Clearer tool purpose vs generic update |
+| 01-04 | Registry is empty in Phase 1, configs added in Phase 2+ | Complete infrastructure first, add business logic incrementally | Phase 1 validates architecture without entity code |
+| 01-04 | Use z.record(z.string(), z.unknown()) for flexible data inputs | Create/update tools accept any fields to forward to Bukku API | Maximum flexibility - Bukku API validates fields |
 
 ### Active TODOs
 
@@ -57,23 +61,23 @@
 
 ### Recent Changes
 
-- **2026-02-06:** Completed plan 01-01 (Project Scaffold) - TypeScript MCP server with ESM, Zod validation, authenticated HTTP client
-- **2026-02-06:** Completed plan 01-02 (Error Transformation) - HTTP-to-MCP error transformer with conversational messages
+- **2026-02-06:** Completed plan 01-04 (CRUD Factory & MCP Server) - Generic factory pattern generates tools from config, MCP server entry point with stdio transport
 - **2026-02-06:** Completed plan 01-03 (TypeScript Types) - Core Bukku API types created
+- **2026-02-06:** Completed plan 01-02 (Error Transformation) - HTTP-to-MCP error transformer with conversational messages
+- **2026-02-06:** Completed plan 01-01 (Project Scaffold) - TypeScript MCP server with ESM, Zod validation, authenticated HTTP client
 - **2026-02-06:** Roadmap created with 7 phases covering 80 v1 requirements
-- **2026-02-06:** Project initialized with PROJECT.md, REQUIREMENTS.md, research complete
 
 ## Session Continuity
 
-**What just happened:** Completed plan 01-01 (Project Scaffold). Established TypeScript build system with ESM, Zod environment validation, and authenticated Bukku HTTP client. Plans 01-02 and 01-03 were already complete from earlier sessions.
+**What just happened:** Completed plan 01-04 (CRUD Factory & MCP Server). Built the generic factory pattern that generates MCP tools from CrudEntityConfig objects. Created MCP server entry point with stdio transport and fail-fast startup sequence. Infrastructure is complete - ready for business logic in Phase 2.
 
-**What's next:** Continue Phase 1 execution. Next plans: 01-04 (CRUD Factory) and 01-05 (Main Entry Point) will complete the foundation infrastructure.
+**What's next:** Plan 01-05 (if exists) or begin Phase 2 (Sales Domain). Phase 1 foundation is essentially complete - MCP server, authenticated client, error handling, and CRUD factory are all working.
 
 **Context for next session:**
-- Phase 1 establishes MCP server, Bukku API client, authentication, error handling, and CRUD factory pattern
-- Research identified critical pitfalls: tool description quality, bearer token security, structured error transformation
-- Factory pattern is essential for scaling to 55+ tools across 9 categories
-- Phase 2 (Sales) is proof-of-concept to validate patterns before scaling to remaining phases
+- CRUD factory pattern scales to 55+ tools without duplication - just add CrudEntityConfig objects
+- MCP server entry point validates env vars and token before accepting connections
+- Tool registry is empty in Phase 1 - Phase 2 adds first entity configs for sales-invoice
+- Phase 2 (Sales) validates the patterns with real Bukku API calls and actual business data
 
 ---
 *State tracking since: 2026-02-06*
