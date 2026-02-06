@@ -155,13 +155,92 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| — | — | — |
+| INFRA-01 | Phase 1 | Pending |
+| INFRA-02 | Phase 1 | Pending |
+| INFRA-03 | Phase 1 | Pending |
+| INFRA-04 | Phase 1 | Pending |
+| INFRA-05 | Phase 1 | Pending |
+| INFRA-06 | Phase 1 | Pending |
+| INFRA-07 | Phase 1 | Pending |
+| INFRA-08 | Phase 1 | Pending |
+| DEVX-01 | Phase 1 | Pending |
+| DEVX-02 | Phase 1 | Pending |
+| DEVX-03 | Phase 1 | Pending |
+| SALE-01 | Phase 2 | Pending |
+| SALE-02 | Phase 2 | Pending |
+| SALE-03 | Phase 2 | Pending |
+| SALE-04 | Phase 2 | Pending |
+| SALE-05 | Phase 2 | Pending |
+| SALE-06 | Phase 2 | Pending |
+| SALE-07 | Phase 2 | Pending |
+| SALE-08 | Phase 2 | Pending |
+| SALE-09 | Phase 2 | Pending |
+| SALE-10 | Phase 2 | Pending |
+| SALE-11 | Phase 2 | Pending |
+| SALE-12 | Phase 2 | Pending |
+| SALE-13 | Phase 2 | Pending |
+| SALE-14 | Phase 2 | Pending |
+| SALE-15 | Phase 2 | Pending |
+| SALE-16 | Phase 2 | Pending |
+| SALE-17 | Phase 2 | Pending |
+| SALE-18 | Phase 2 | Pending |
+| SALE-19 | Phase 2 | Pending |
+| SALE-20 | Phase 2 | Pending |
+| SALE-21 | Phase 2 | Pending |
+| PURC-01 | Phase 3 | Pending |
+| PURC-02 | Phase 3 | Pending |
+| PURC-03 | Phase 3 | Pending |
+| PURC-04 | Phase 3 | Pending |
+| PURC-05 | Phase 3 | Pending |
+| PURC-06 | Phase 3 | Pending |
+| PURC-07 | Phase 3 | Pending |
+| PURC-08 | Phase 3 | Pending |
+| PURC-09 | Phase 3 | Pending |
+| PURC-10 | Phase 3 | Pending |
+| PURC-11 | Phase 3 | Pending |
+| PURC-12 | Phase 3 | Pending |
+| PURC-13 | Phase 3 | Pending |
+| PURC-14 | Phase 3 | Pending |
+| PURC-15 | Phase 3 | Pending |
+| PURC-16 | Phase 3 | Pending |
+| PURC-17 | Phase 3 | Pending |
+| PURC-18 | Phase 3 | Pending |
+| BANK-01 | Phase 4 | Pending |
+| BANK-02 | Phase 4 | Pending |
+| BANK-03 | Phase 4 | Pending |
+| BANK-04 | Phase 4 | Pending |
+| BANK-05 | Phase 4 | Pending |
+| BANK-06 | Phase 4 | Pending |
+| CONT-01 | Phase 4 | Pending |
+| CONT-02 | Phase 4 | Pending |
+| CONT-03 | Phase 4 | Pending |
+| CONT-04 | Phase 4 | Pending |
+| PROD-01 | Phase 5 | Pending |
+| PROD-02 | Phase 5 | Pending |
+| PROD-03 | Phase 5 | Pending |
+| PROD-04 | Phase 5 | Pending |
+| PROD-05 | Phase 5 | Pending |
+| PROD-06 | Phase 5 | Pending |
+| LIST-01 | Phase 5 | Pending |
+| LIST-02 | Phase 5 | Pending |
+| ACCT-01 | Phase 6 | Pending |
+| ACCT-02 | Phase 6 | Pending |
+| ACCT-03 | Phase 6 | Pending |
+| ACCT-04 | Phase 6 | Pending |
+| FILE-01 | Phase 7 | Pending |
+| FILE-02 | Phase 7 | Pending |
+| CTRL-01 | Phase 7 | Pending |
+| CTRL-02 | Phase 7 | Pending |
+| CTRL-03 | Phase 7 | Pending |
+| CTRL-04 | Phase 7 | Pending |
+| CTRL-05 | Phase 7 | Pending |
+| CTRL-06 | Phase 7 | Pending |
 
 **Coverage:**
-- v1 requirements: 67 total
-- Mapped to phases: 0
-- Unmapped: 67
+- v1 requirements: 80 total
+- Mapped to phases: 80
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-06*
-*Last updated: 2026-02-06 after initial definition*
+*Last updated: 2026-02-06 after roadmap creation*
