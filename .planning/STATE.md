@@ -11,13 +11,13 @@
 ## Current Position
 
 **Active Phase:** Phase 1 - Foundation Infrastructure
-**Active Plan:** 2 of 5 (Error Transformation, TypeScript Types)
-**Plan Status:** In Progress (01-01 running, 01-02 and 01-03 complete)
+**Active Plan:** 3 of 5 (Project Scaffold, Error Transformation, TypeScript Types)
+**Plan Status:** In Progress (3 plans complete: 01-01, 01-02, 01-03)
 **Current Task:** N/A
 
 **Progress:**
 ```
-[██>                                                ] 2% (0/7 phases complete, 2/5 plans in phase)
+[███>                                               ] 3% (0/7 phases complete, 3/5 plans in phase)
 ```
 
 ## Performance Metrics
@@ -25,7 +25,7 @@
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 0 | 7 | On Track |
-| Plans Complete | 2 | TBD | On Track |
+| Plans Complete | 3 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -35,6 +35,10 @@
 
 | Phase-Plan | Decision | Rationale | Impact |
 |------------|----------|-----------|--------|
+| 01-01 | Use ESM (type: module) for Node16 module resolution | Modern Node.js compatibility and better tree-shaking | Foundation for all modules |
+| 01-01 | Fail-fast on missing environment variables with setup checklist | Invalid/missing credentials cause immediate process.exit(1) | Prevents silent auth failures, clearer debugging |
+| 01-01 | Validate token on startup via /contacts endpoint | Verify token works before serving tools | Early detection of auth issues |
+| 01-01 | All logging goes to stderr to preserve MCP stdio protocol | stdout reserved for protocol messages | MCP protocol compliance |
 | 01-02 | Conversational tone for all error messages | Messages relayed by Claude should sound helpful, not technical | User experience improvement |
 | 01-02 | 401 errors mention BUKKU_API_TOKEN explicitly | Authentication is critical - make troubleshooting obvious | Faster debugging |
 | 01-02 | Show all validation errors at once | Avoid whack-a-mole iteration cycles | Better developer experience |
@@ -53,6 +57,7 @@
 
 ### Recent Changes
 
+- **2026-02-06:** Completed plan 01-01 (Project Scaffold) - TypeScript MCP server with ESM, Zod validation, authenticated HTTP client
 - **2026-02-06:** Completed plan 01-02 (Error Transformation) - HTTP-to-MCP error transformer with conversational messages
 - **2026-02-06:** Completed plan 01-03 (TypeScript Types) - Core Bukku API types created
 - **2026-02-06:** Roadmap created with 7 phases covering 80 v1 requirements
@@ -60,9 +65,9 @@
 
 ## Session Continuity
 
-**What just happened:** Completed plan 01-02 (Error Transformation). Created conversational HTTP-to-MCP error transformer with TDD. Also completed 01-03 (TypeScript Types). Both have all tests passing.
+**What just happened:** Completed plan 01-01 (Project Scaffold). Established TypeScript build system with ESM, Zod environment validation, and authenticated Bukku HTTP client. Plans 01-02 and 01-03 were already complete from earlier sessions.
 
-**What's next:** Continue Phase 1 execution. Plan 01-01 still running in parallel. Next plan: 01-04 (CRUD Factory) will consume types and error transformers.
+**What's next:** Continue Phase 1 execution. Next plans: 01-04 (CRUD Factory) and 01-05 (Main Entry Point) will complete the foundation infrastructure.
 
 **Context for next session:**
 - Phase 1 establishes MCP server, Bukku API client, authentication, error handling, and CRUD factory pattern
