@@ -1,0 +1,29 @@
+{
+  "name": "bukku-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Bukku accounting platform",
+  "type": "module",
+  "main": "build/index.js",
+  "bin": {
+    "bukku-mcp": "build/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "bukku",
+    "accounting"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.1",
+    "typescript": "^5.9.3"
+  }
+}
