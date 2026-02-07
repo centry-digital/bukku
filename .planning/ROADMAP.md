@@ -55,6 +55,12 @@ Plans:
 
 **Dependencies:** Phase 1 (requires API client, MCP server, tool framework)
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md -- Create CrudEntityConfig for all 7 sales entities
+- [ ] 02-02-PLAN.md -- Wire registry and verify 42-tool build
+
 **Requirements:**
 - SALE-01: User can list sales quotes with search, date range, status, and pagination filters
 - SALE-02: User can create, read, update, and delete a sales quote
@@ -232,7 +238,7 @@ Plans:
 | Phase | Requirements | Status | Plans | Completed Plans |
 |-------|--------------|--------|-------|-----------------|
 | 1 - Foundation Infrastructure | 11 | Pending | 5 | 0 |
-| 2 - Sales Category | 21 | Pending | 0 | 0 |
+| 2 - Sales Category | 21 | Pending | 2 | 0 |
 | 3 - Purchases Category | 18 | Pending | 0 | 0 |
 | 4 - Banking & Contacts | 10 | Pending | 0 | 0 |
 | 5 - Products & Lists | 8 | Pending | 0 | 0 |
@@ -242,4 +248,4 @@ Plans:
 **Total:** 80 requirements across 7 phases
 
 ---
-*Last updated: 2026-02-06*
+*Last updated: 2026-02-07*
