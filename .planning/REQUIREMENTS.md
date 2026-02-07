@@ -18,27 +18,27 @@
 
 ### Sales
 
-- [ ] **SALE-01**: User can list sales quotes with search, date range, status, and pagination filters
-- [ ] **SALE-02**: User can create, read, update, and delete a sales quote
-- [ ] **SALE-03**: User can update the status of a sales quote (e.g., draft, approved, void)
-- [ ] **SALE-04**: User can list sales orders with search, date range, status, and pagination filters
-- [ ] **SALE-05**: User can create, read, update, and delete a sales order
-- [ ] **SALE-06**: User can update the status of a sales order
-- [ ] **SALE-07**: User can list delivery orders with search, date range, status, and pagination filters
-- [ ] **SALE-08**: User can create, read, update, and delete a delivery order
-- [ ] **SALE-09**: User can update the status of a delivery order
-- [ ] **SALE-10**: User can list sales invoices with search, date range, status, and pagination filters
-- [ ] **SALE-11**: User can create, read, update, and delete a sales invoice
-- [ ] **SALE-12**: User can update the status of a sales invoice
-- [ ] **SALE-13**: User can list sales credit notes with search, date range, status, and pagination filters
-- [ ] **SALE-14**: User can create, read, update, and delete a sales credit note
-- [ ] **SALE-15**: User can update the status of a sales credit note
-- [ ] **SALE-16**: User can list sales payments with search, date range, status, and pagination filters
-- [ ] **SALE-17**: User can create, read, update, and delete a sales payment
-- [ ] **SALE-18**: User can update the status of a sales payment
-- [ ] **SALE-19**: User can list sales refunds with search, date range, status, and pagination filters
-- [ ] **SALE-20**: User can create, read, update, and delete a sales refund
-- [ ] **SALE-21**: User can update the status of a sales refund
+- [x] **SALE-01**: User can list sales quotes with search, date range, status, and pagination filters
+- [x] **SALE-02**: User can create, read, update, and delete a sales quote
+- [x] **SALE-03**: User can update the status of a sales quote (e.g., draft, approved, void)
+- [x] **SALE-04**: User can list sales orders with search, date range, status, and pagination filters
+- [x] **SALE-05**: User can create, read, update, and delete a sales order
+- [x] **SALE-06**: User can update the status of a sales order
+- [x] **SALE-07**: User can list delivery orders with search, date range, status, and pagination filters
+- [x] **SALE-08**: User can create, read, update, and delete a delivery order
+- [x] **SALE-09**: User can update the status of a delivery order
+- [x] **SALE-10**: User can list sales invoices with search, date range, status, and pagination filters
+- [x] **SALE-11**: User can create, read, update, and delete a sales invoice
+- [x] **SALE-12**: User can update the status of a sales invoice
+- [x] **SALE-13**: User can list sales credit notes with search, date range, status, and pagination filters
+- [x] **SALE-14**: User can create, read, update, and delete a sales credit note
+- [x] **SALE-15**: User can update the status of a sales credit note
+- [x] **SALE-16**: User can list sales payments with search, date range, status, and pagination filters
+- [x] **SALE-17**: User can create, read, update, and delete a sales payment
+- [x] **SALE-18**: User can update the status of a sales payment
+- [x] **SALE-19**: User can list sales refunds with search, date range, status, and pagination filters
+- [x] **SALE-20**: User can create, read, update, and delete a sales refund
+- [x] **SALE-21**: User can update the status of a sales refund
 
 ### Purchases
 
@@ -166,27 +166,27 @@
 | DEVX-01 | Phase 1 | Pending |
 | DEVX-02 | Phase 1 | Pending |
 | DEVX-03 | Phase 1 | Pending |
-| SALE-01 | Phase 2 | Pending |
-| SALE-02 | Phase 2 | Pending |
-| SALE-03 | Phase 2 | Pending |
-| SALE-04 | Phase 2 | Pending |
-| SALE-05 | Phase 2 | Pending |
-| SALE-06 | Phase 2 | Pending |
-| SALE-07 | Phase 2 | Pending |
-| SALE-08 | Phase 2 | Pending |
-| SALE-09 | Phase 2 | Pending |
-| SALE-10 | Phase 2 | Pending |
-| SALE-11 | Phase 2 | Pending |
-| SALE-12 | Phase 2 | Pending |
-| SALE-13 | Phase 2 | Pending |
-| SALE-14 | Phase 2 | Pending |
-| SALE-15 | Phase 2 | Pending |
-| SALE-16 | Phase 2 | Pending |
-| SALE-17 | Phase 2 | Pending |
-| SALE-18 | Phase 2 | Pending |
-| SALE-19 | Phase 2 | Pending |
-| SALE-20 | Phase 2 | Pending |
-| SALE-21 | Phase 2 | Pending |
+| SALE-01 | Phase 2 | Complete |
+| SALE-02 | Phase 2 | Complete |
+| SALE-03 | Phase 2 | Complete |
+| SALE-04 | Phase 2 | Complete |
+| SALE-05 | Phase 2 | Complete |
+| SALE-06 | Phase 2 | Complete |
+| SALE-07 | Phase 2 | Complete |
+| SALE-08 | Phase 2 | Complete |
+| SALE-09 | Phase 2 | Complete |
+| SALE-10 | Phase 2 | Complete |
+| SALE-11 | Phase 2 | Complete |
+| SALE-12 | Phase 2 | Complete |
+| SALE-13 | Phase 2 | Complete |
+| SALE-14 | Phase 2 | Complete |
+| SALE-15 | Phase 2 | Complete |
+| SALE-16 | Phase 2 | Complete |
+| SALE-17 | Phase 2 | Complete |
+| SALE-18 | Phase 2 | Complete |
+| SALE-19 | Phase 2 | Complete |
+| SALE-20 | Phase 2 | Complete |
+| SALE-21 | Phase 2 | Complete |
 | PURC-01 | Phase 3 | Pending |
 | PURC-02 | Phase 3 | Pending |
 | PURC-03 | Phase 3 | Pending |
