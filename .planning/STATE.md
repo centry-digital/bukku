@@ -1,23 +1,24 @@
 # Project State: Bukku MCP Server
 
-**Last updated:** 2026-02-06
+**Last updated:** 2026-02-07
 
 ## Project Reference
 
 **Core Value:** Claude can read and write accounting data in Bukku reliably, so the user can do bookkeeping work through natural conversation instead of manual data entry.
 
-**Current Focus:** Foundation Infrastructure - Building MCP server with authenticated Bukku API client and tool framework
+**Current Focus:** Sales Category Implementation - Adding all 7 sales transaction entities to MCP server
 
 ## Current Position
 
-**Active Phase:** Phase 1 - Foundation Infrastructure
-**Active Plan:** 4 of 5 (CRUD Factory and MCP Server)
-**Plan Status:** In Progress (4 plans complete: 01-01, 01-02, 01-03, 01-04)
+**Active Phase:** Phase 2 - Sales Category
+**Active Plan:** 1 of 3 (Sales Entity Configurations)
+**Plan Status:** Complete (1 plan complete: 02-01)
 **Current Task:** N/A
+**Last activity:** 2026-02-07 - Completed 02-01-PLAN.md
 
 **Progress:**
 ```
-[████>                                              ] 4% (0/7 phases complete, 4/5 plans in phase)
+[█████>                                             ] 5% (0/7 phases complete, 1/3 plans in phase 2)
 ```
 
 ## Performance Metrics
@@ -25,7 +26,7 @@
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 0 | 7 | On Track |
-| Plans Complete | 4 | TBD | On Track |
+| Plans Complete | 5 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -50,6 +51,8 @@
 | 01-04 | Dedicated update-status tools for entities that support status changes | Status updates are common operations, deserve dedicated tools | Clearer tool purpose vs generic update |
 | 01-04 | Registry is empty in Phase 1, configs added in Phase 2+ | Complete infrastructure first, add business logic incrementally | Phase 1 validates architecture without entity code |
 | 01-04 | Use z.record(z.string(), z.unknown()) for flexible data inputs | Create/update tools accept any fields to forward to Bukku API | Maximum flexibility - Bukku API validates fields |
+| 02-01 | Entity-specific list filters per OpenAPI spec | Each entity config declares its own listFilters array | Different sales entities support different filter parameters (invoice has payment_status, payment has payment_mode, etc.) |
+| 02-01 | All 7 sales entities support uniform operations | All configs enable all 5 CRUD operations + status updates | OpenAPI spec shows all sales transaction types support full CRUD + status changes |
 
 ### Active TODOs
 
@@ -61,23 +64,28 @@
 
 ### Recent Changes
 
+- **2026-02-07:** Completed plan 02-01 (Sales Entity Configurations) - Created 7 CrudEntityConfig objects for all sales transaction types, ready for registry wiring
 - **2026-02-06:** Completed plan 01-04 (CRUD Factory & MCP Server) - Generic factory pattern generates tools from config, MCP server entry point with stdio transport
 - **2026-02-06:** Completed plan 01-03 (TypeScript Types) - Core Bukku API types created
 - **2026-02-06:** Completed plan 01-02 (Error Transformation) - HTTP-to-MCP error transformer with conversational messages
 - **2026-02-06:** Completed plan 01-01 (Project Scaffold) - TypeScript MCP server with ESM, Zod validation, authenticated HTTP client
-- **2026-02-06:** Roadmap created with 7 phases covering 80 v1 requirements
 
 ## Session Continuity
 
-**What just happened:** Completed plan 01-04 (CRUD Factory & MCP Server). Built the generic factory pattern that generates MCP tools from CrudEntityConfig objects. Created MCP server entry point with stdio transport and fail-fast startup sequence. Infrastructure is complete - ready for business logic in Phase 2.
+**Last session:** 2026-02-07 11:21 UTC
+**Stopped at:** Completed 02-01-PLAN.md
+**Resume file:** None
 
-**What's next:** Plan 01-05 (if exists) or begin Phase 2 (Sales Domain). Phase 1 foundation is essentially complete - MCP server, authenticated client, error handling, and CRUD factory are all working.
+**What just happened:** Completed plan 02-01 (Sales Entity Configurations). Created 7 CrudEntityConfig objects for all sales transaction types: quotes, orders, delivery orders, invoices, credit notes, payments, and refunds. Each config specifies API paths, response keys, and entity-specific list filters from OpenAPI specs. All configs ready for registry wiring.
+
+**What's next:** Plan 02-02 will wire these 7 configs into the tool registry, generating 42 MCP tools. Then 02-03 will test the tools against the Bukku API.
 
 **Context for next session:**
-- CRUD factory pattern scales to 55+ tools without duplication - just add CrudEntityConfig objects
-- MCP server entry point validates env vars and token before accepting connections
-- Tool registry is empty in Phase 1 - Phase 2 adds first entity configs for sales-invoice
-- Phase 2 (Sales) validates the patterns with real Bukku API calls and actual business data
+- 7 entity configs in src/tools/configs/ ready for registerCrudTools consumption
+- Each config generates 6 tools (list, get, create, update, delete, update-status) = 42 total tools
+- Entity-specific filters vary: invoice has payment_status, payment has payment_mode, refund only has contact_id
+- All sales entities use uniform response keys (transaction/transactions) and support all operations
+- Next plan needs to import and register these configs in the MCP server
 
 ---
 *State tracking since: 2026-02-06*
