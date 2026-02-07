@@ -11,14 +11,14 @@
 ## Current Position
 
 **Active Phase:** Phase 2 - Sales Category
-**Active Plan:** 1 of 3 (Sales Entity Configurations)
-**Plan Status:** Complete (1 plan complete: 02-01)
+**Active Plan:** 2 of 3 (Tool Registry Wiring - COMPLETE)
+**Plan Status:** In progress (2 plans complete: 02-01, 02-02)
 **Current Task:** N/A
-**Last activity:** 2026-02-07 - Completed 02-01-PLAN.md
+**Last activity:** 2026-02-07 - Completed 02-02-PLAN.md
 
 **Progress:**
 ```
-[█████>                                             ] 5% (0/7 phases complete, 1/3 plans in phase 2)
+[██████>                                            ] 10% (0/7 phases complete, 2/3 plans in phase 2)
 ```
 
 ## Performance Metrics
@@ -26,7 +26,7 @@
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 0 | 7 | On Track |
-| Plans Complete | 5 | TBD | On Track |
+| Plans Complete | 6 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -53,6 +53,7 @@
 | 01-04 | Use z.record(z.string(), z.unknown()) for flexible data inputs | Create/update tools accept any fields to forward to Bukku API | Maximum flexibility - Bukku API validates fields |
 | 02-01 | Entity-specific list filters per OpenAPI spec | Each entity config declares its own listFilters array | Different sales entities support different filter parameters (invoice has payment_status, payment has payment_mode, etc.) |
 | 02-01 | All 7 sales entities support uniform operations | All configs enable all 5 CRUD operations + status updates | OpenAPI spec shows all sales transaction types support full CRUD + status changes |
+| 02-02 | Sequential registration over loop for entity configs | Explicit calls to registerCrudTools for each config | Easier to read, debug, and maintain. Clear tool count tracking per entity |
 
 ### Active TODOs
 
@@ -64,28 +65,29 @@
 
 ### Recent Changes
 
+- **2026-02-07:** Completed plan 02-02 (Tool Registry Wiring) - Wired all 7 sales entity configs into registry, producing 42 working MCP tools
 - **2026-02-07:** Completed plan 02-01 (Sales Entity Configurations) - Created 7 CrudEntityConfig objects for all sales transaction types, ready for registry wiring
 - **2026-02-06:** Completed plan 01-04 (CRUD Factory & MCP Server) - Generic factory pattern generates tools from config, MCP server entry point with stdio transport
 - **2026-02-06:** Completed plan 01-03 (TypeScript Types) - Core Bukku API types created
 - **2026-02-06:** Completed plan 01-02 (Error Transformation) - HTTP-to-MCP error transformer with conversational messages
-- **2026-02-06:** Completed plan 01-01 (Project Scaffold) - TypeScript MCP server with ESM, Zod validation, authenticated HTTP client
 
 ## Session Continuity
 
-**Last session:** 2026-02-07 11:21 UTC
-**Stopped at:** Completed 02-01-PLAN.md
+**Last session:** 2026-02-07 11:27 UTC
+**Stopped at:** Completed 02-02-PLAN.md
 **Resume file:** None
 
-**What just happened:** Completed plan 02-01 (Sales Entity Configurations). Created 7 CrudEntityConfig objects for all sales transaction types: quotes, orders, delivery orders, invoices, credit notes, payments, and refunds. Each config specifies API paths, response keys, and entity-specific list filters from OpenAPI specs. All configs ready for registry wiring.
+**What just happened:** Completed plan 02-02 (Tool Registry Wiring). Updated src/tools/registry.ts to import and register all 7 sales entity configs. Each config generates 6 tools via the factory pattern, producing 42 total MCP tools. Build passes, existing tests pass, all tools ready for use.
 
-**What's next:** Plan 02-02 will wire these 7 configs into the tool registry, generating 42 MCP tools. Then 02-03 will test the tools against the Bukku API.
+**What's next:** Plan 02-03 will test these 42 tools against the actual Bukku API to verify end-to-end functionality.
 
 **Context for next session:**
-- 7 entity configs in src/tools/configs/ ready for registerCrudTools consumption
-- Each config generates 6 tools (list, get, create, update, delete, update-status) = 42 total tools
-- Entity-specific filters vary: invoice has payment_status, payment has payment_mode, refund only has contact_id
-- All sales entities use uniform response keys (transaction/transactions) and support all operations
-- Next plan needs to import and register these configs in the MCP server
+- 42 MCP tools registered: 7 sales entities × 6 operations (list, get, create, update, delete, update-status)
+- Tool names follow kebab-case: list-sales-invoices, create-delivery-order, update-sales-payment-status, etc.
+- All tools use entity-specific filters from config (invoice has payment_status, payment has payment_mode, etc.)
+- Build output in build/ includes all transpiled configs and updated registry
+- Server startup will log "42 tools registered" when run
+- Next plan needs to validate these tools work against real Bukku API endpoints
 
 ---
 *State tracking since: 2026-02-06*
