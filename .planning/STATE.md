@@ -11,15 +11,15 @@
 ## Current Position
 
 **Active Phase:** Phase 7 - Files Control Panel
-**Active Plan:** 3 of 3
+**Active Plan:** 4 of 4
 **Plan Status:** Complete
 **Current Task:** N/A
-**Last activity:** 2026-02-09 - Completed 07-03-PLAN.md (Registry Wiring & Tool Inventory Audit)
+**Last activity:** 2026-02-09 - Completed 07-04-PLAN.md (Gap Closure: Remove Non-Functional Archive Tools)
 
 **Progress:**
 ```
 [████████████████████████████████████████████████████████] 100% (7/7 phases complete)
-Phase 7: [████████████] 100% (3/3 plans complete)
+Phase 7: [████████████████] 100% (4/4 plans complete)
 ```
 
 ## Performance Metrics
@@ -27,7 +27,7 @@ Phase 7: [████████████] 100% (3/3 plans complete)
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 7 | 7 | Complete |
-| Plans Complete | 23 | 23 | Complete |
+| Plans Complete | 24 | 24 | Complete |
 | Requirements Delivered | 80 | 80 | Complete |
 | Blockers | 0 | 0 | Green |
 
@@ -85,6 +85,7 @@ Phase 7: [████████████] 100% (3/3 plans complete)
 | 07-01 | Empty listFilters array for file entity | API spec shows no query parameters for GET /files (no pagination, no filters) | list-files tool has no filter parameters, returns ALL files |
 | 07-02 | Location config only enables list and create operations | Bukku API has path inconsistency: /locations for list/create but /location/{id} for get/update/delete | Custom tools in location-tools.ts handle singular path for single-item operations |
 | 07-02 | Archive operations via custom tools using PATCH with is_archived boolean | Control panel entities use is_archived pattern instead of status field | Custom tools needed for locations, tags, tag groups archive/unarchive |
+| 07-04 | Only location entity supports archive/unarchive operations | Bukku API only defines PATCH for /location/{id}, not for /tags/{id} or /tags/groups/{id} | Removed 4 non-functional archive tools, reduced Phase 7 from 24 to 20 tools (total: 173 to 169) |
 
 ### Active TODOs
 
@@ -96,6 +97,7 @@ Phase 7: [████████████] 100% (3/3 plans complete)
 
 ### Recent Changes
 
+- **2026-02-09:** Completed plan 07-04 (Gap Closure: Remove Non-Functional Archive Tools) - Removed 4 archive tools (archive-tag, unarchive-tag, archive-tag-group, unarchive-tag-group) that called non-existent PATCH endpoints. UAT tests revealed Bukku API only defines PATCH for /location/{id}, not for /tags/{id} or /tags/groups/{id}. Updated tool counts: Phase 7 from 24 to 20 tools, total from 173 to 169 tools. Commits: 27943a5, bb93600.
 - **2026-02-09:** Completed plan 07-03 (Registry Wiring & Tool Inventory Audit) - Wired all Phase 7 entities into registry (file, location, tag, tag-group configs + 3 custom tool modules). Added 24 new tools (14 factory + 10 custom). Total MCP server tools: 173. Completed requirements coverage audit: all 80 v1 requirements delivered. Phase 7 complete. v1 milestone achieved. Commit: a8c3c66.
 - **2026-02-09:** Completed plan 07-02 (Control Panel Entity Configs & Custom Tools) - Created locationConfig (list+create only), tagConfig (full CRUD), tagGroupConfig (full CRUD). Created 9 custom tools: 3 location tools (get/update/delete) using singular /location/{id} path, 6 archive tools (2 per entity) using PATCH is_archived. Total new tools ready: 21 (when wired). Commits: 17d6e6a, 12e54d0.
 - **2026-02-09:** Completed plan 07-01 (File Operations) - Added BukkuClient.postMultipart method for multipart/form-data file uploads with getMimeType helper. Created file entity config (list+get only). Created custom upload-file tool with file_path parameter. Commits: 3d90f1f, 663999f.
@@ -119,20 +121,20 @@ Phase 7: [████████████] 100% (3/3 plans complete)
 ## Session Continuity
 
 **Last session:** 2026-02-09
-**Stopped at:** Phase 7 complete (all 3 plans done) - v1 milestone achieved
-**Resume file:** .planning/phases/07-files-control-panel/07-03-SUMMARY.md
+**Stopped at:** Phase 7 complete (all 4 plans done, including gap closure) - v1 milestone achieved
+**Resume file:** .planning/phases/07-files-control-panel/07-04-SUMMARY.md
 
-**What just happened:** Executed plan 07-03 (Registry Wiring & Tool Inventory Audit). Wired all Phase 7 entities into registry with 7 new imports (4 configs + 3 custom tool modules). Added inline comments documenting tool counts. Updated JSDoc to document Phase 7's 24 tools. Build successful. Completed full requirements coverage audit confirming all 80 v1 requirements are covered by 173 MCP tools. One commit: a8c3c66 (registry wiring). Duration: 1min 42sec. Phase 7 complete. v1 complete.
+**What just happened:** Executed plan 07-04 (Gap Closure: Remove Non-Functional Archive Tools). Removed 4 archive tools for tags/tag-groups that called non-existent PATCH endpoints. UAT testing revealed Bukku API only supports PATCH for /location/{id}. Updated control-panel-archive.ts to return 2 (was 6). Updated registry JSDoc and comments to reflect 20 Phase 7 tools (was 24). Build successful. Two commits: 27943a5 (remove tools), bb93600 (update docs). Duration: 2min. Total MCP tools corrected from 173 to 169.
 
-**What's next:** v1 milestone achieved - all 7 phases complete, all 80 requirements delivered through 173 MCP tools
+**What's next:** v1 milestone achieved - all 7 phases complete, all 80 requirements delivered through 169 MCP tools (corrected count)
 
 **Context for next session:**
 - All 7 phases complete (100%)
-- Total plans executed: 23
-- Total MCP tools: 173 (42 sales + 36 purchases + 30 banking/contacts + 28 products/lists + 13 accounting + 24 files/control-panel)
+- Total plans executed: 24 (23 standard + 1 gap closure)
+- Total MCP tools: 169 (42 sales + 36 purchases + 30 banking/contacts + 28 products/lists + 13 accounting + 20 files/control-panel)
 - Requirements delivered: 80/80 (100%)
 - Phase 7 deliverables: 4 entity configs (file, location, tag, tag-group) + 3 custom tool modules (upload, location, archive)
-- Commits: a8c3c66 (plan 07-03); 17d6e6a, 12e54d0 (plan 07-02); 3d90f1f, 663999f (plan 07-01)
+- Commits: 27943a5, bb93600 (plan 07-04); a8c3c66 (plan 07-03); 17d6e6a, 12e54d0 (plan 07-02); 3d90f1f, 663999f (plan 07-01)
 
 ---
 *State tracking since: 2026-02-06*
