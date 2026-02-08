@@ -11,15 +11,15 @@
 ## Current Position
 
 **Active Phase:** Phase 6 - Accounting
-**Active Plan:** 3 of 3
+**Active Plan:** 4 of 4
 **Plan Status:** Phase complete
 **Current Task:** N/A
-**Last activity:** 2026-02-08 - Completed 06-03-PLAN.md (Custom Journal Entry Tools & Registry Wiring)
+**Last activity:** 2026-02-08 - Completed 06-04-PLAN.md (Double-Entry Validation Field Name Correction - Gap Closure)
 
 **Progress:**
 ```
 [██████████████████████████████████████████████████] 86% (6/7 phases complete)
-Phase 6: [████████████] 100% (3/3 plans complete)
+Phase 6: [████████████] 100% (4/4 plans complete)
 ```
 
 ## Performance Metrics
@@ -27,7 +27,7 @@ Phase 6: [████████████] 100% (3/3 plans complete)
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 6 | 7 | On Track |
-| Plans Complete | 19 | TBD | On Track |
+| Plans Complete | 20 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -78,6 +78,7 @@ Phase 6: [████████████] 100% (3/3 plans complete)
 | 06-02 | Journal entry config omits create and update operations | Create/update require double-entry validation which needs custom tools, not generic CRUD factory | Custom journal-entry-tools.ts module will be created in future plan |
 | 06-02 | Account config omits list operation | Phase 5's list-accounts reference data tool already occupies that tool name | No tool name collision. Users get both quick lookup (list-accounts) and advanced filtering (search-accounts) |
 | 06-02 | Convert boolean is_archived to string for query parameters | BukkuClient.get() signature requires string/number, but Zod schema uses boolean for type safety | Manual conversion in handler. Pattern reusable for other boolean query parameters |
+| 06-04 | Field name correction from debit/credit to debit_amount/credit_amount matches Bukku API journal_items structure | UAT revealed validation always saw 0/0 because field names didn't match API | Client-side validation now catches unbalanced entries with conversational errors |
 
 ### Active TODOs
 
@@ -89,6 +90,7 @@ Phase 6: [████████████] 100% (3/3 plans complete)
 
 ### Recent Changes
 
+- **2026-02-08:** Completed plan 06-04 (Double-Entry Validation Field Name Correction - Gap Closure) - Fixed JournalEntryLine interface and validation function to use debit_amount/credit_amount instead of debit/credit. Updated all 17 tests to match Bukku API field names. Fixes UAT test 4 issue where validation always saw 0/0. Commits: ad97a5f, 4981c61.
 - **2026-02-08:** Completed plan 06-03 (Custom Journal Entry Tools & Registry Wiring) - Created custom journal entry create/update tools with double-entry validation. Wired all Phase 6 tools into registry (4 journal entry factory + 4 account factory + 2 custom journal + 3 custom account = 13 new tools). Total MCP server tools: 149. Commits: 18edcc6, 631e1e1.
 - **2026-02-08:** Completed plan 06-02 (Entity Configs & Custom Tools) - Created journal entry config (list, get, delete with status update) and account config (get, create, update, delete - no list to avoid Phase 5 collision). Added 3 custom account tools: search-accounts with category/archived filtering, archive-account, unarchive-account. Commits: a240858, 20d5a9c.
 - **2026-02-08:** Completed plan 06-01 (Double-Entry Validation) - TDD implementation of validateDoubleEntry function with epsilon tolerance (0.01), minimum line count validation, and conversational error messages. All 17 tests passing.
@@ -108,18 +110,18 @@ Phase 6: [████████████] 100% (3/3 plans complete)
 ## Session Continuity
 
 **Last session:** 2026-02-08
-**Stopped at:** Phase 6 complete (3/3 plans done)
-**Resume file:** .planning/phases/06-accounting/06-03-SUMMARY.md
+**Stopped at:** Phase 6 complete (4/4 plans done)
+**Resume file:** .planning/phases/06-accounting/06-04-SUMMARY.md
 
-**What just happened:** Executed plan 06-03 (Custom Journal Entry Tools & Registry Wiring). Created custom journal entry create/update tools with double-entry validation that runs before API submission. Tools include tool chaining guidance (create-journal-entry mentions list-accounts). Wired all Phase 6 tools into registry: 4 journal entry factory tools, 4 account factory tools, 2 custom journal tools, 3 custom account tools = 13 new tools. Total MCP server tool count: 149 (136 prior + 13 new). No tool name collisions. All TypeScript compiles cleanly. Two commits: 18edcc6 (custom tools), 631e1e1 (registry).
+**What just happened:** Executed plan 06-04 (Double-Entry Validation Field Name Correction - Gap Closure). Fixed field name mismatch discovered in UAT test 4. Changed JournalEntryLine interface and validation function from debit/credit to debit_amount/credit_amount to match Bukku API journal_items structure. Updated all 17 tests. Validation now correctly sums actual amounts instead of seeing 0/0, enabling client-side detection of unbalanced entries with conversational errors. Two commits: ad97a5f (fix), 4981c61 (test). Duration: 1min 23sec.
 
-**What's next:** Phase 7 per roadmap
+**What's next:** Phase 7 per roadmap, or rerun UAT test 4 to confirm fix
 
 **Context for next session:**
-- Phase 6 complete: All 3 plans done
-- Phase 6 deliverables: Double-entry validation, journal entry/account configs, custom tools, registry wiring
+- Phase 6 complete: All 4 plans done (3 core + 1 gap closure)
+- Phase 6 deliverables: Double-entry validation, journal entry/account configs, custom tools, registry wiring, field name correction
 - Tool count: 149 tools total (13 new accounting tools)
-- Commits: 238867a, 8445057 (plan 01); a240858, 20d5a9c (plan 02); 18edcc6, 631e1e1 (plan 03)
+- Commits: 238867a, 8445057 (plan 01); a240858, 20d5a9c (plan 02); 18edcc6, 631e1e1 (plan 03); ad97a5f, 4981c61 (plan 04)
 
 ---
 *State tracking since: 2026-02-06*
