@@ -243,6 +243,13 @@ Plans:
 
 **Dependencies:** Phase 2 (reuses factory pattern)
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 07-01-PLAN.md -- File entity config (list + get) and custom file upload tool with multipart/form-data
+- [ ] 07-02-PLAN.md -- Control panel entity configs (location, tag, tag group) with custom location and archive tools
+- [ ] 07-03-PLAN.md -- Wire all Phase 7 entities into registry and verify 173-tool build
+
 **Requirements:**
 - FILE-01: User can list files with pagination
 - FILE-02: User can read file metadata by ID
@@ -259,7 +266,7 @@ Plans:
 3. User can create and organize tags for categorizing transactions and documents
 4. All 80 v1 requirements are deliverable through MCP tools
 
-**Status:** Pending
+**Status:** Planning
 
 ---
 
@@ -273,9 +280,9 @@ Plans:
 | 4 - Banking & Contacts | 10 | Complete | 2 | 2 |
 | 5 - Products & Lists | 8 | Complete | 4 | 4 |
 | 6 - Accounting | 4 | Complete | 4 | 4 |
-| 7 - Files & Control Panel | 8 | Pending | 0 | 0 |
+| 7 - Files & Control Panel | 8 | Planning | 3 | 0 |
 
 **Total:** 80 requirements across 7 phases
 
 ---
-*Last updated: 2026-02-08*
+*Last updated: 2026-02-09*
