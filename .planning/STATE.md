@@ -6,20 +6,20 @@
 
 **Core Value:** Claude can read and write accounting data in Bukku reliably, so the user can do bookkeeping work through natural conversation instead of manual data entry.
 
-**Current Focus:** Phase 6 (Accounting) — Complete
+**Current Focus:** Phase 7 (Files Control Panel) — In Progress
 
 ## Current Position
 
-**Active Phase:** Phase 6 - Accounting
-**Active Plan:** 4 of 4
-**Plan Status:** Phase complete
+**Active Phase:** Phase 7 - Files Control Panel
+**Active Plan:** 1 of 3
+**Plan Status:** Complete
 **Current Task:** N/A
-**Last activity:** 2026-02-08 - Completed 06-04-PLAN.md (Double-Entry Validation Field Name Correction - Gap Closure)
+**Last activity:** 2026-02-09 - Completed 07-01-PLAN.md (File Operations)
 
 **Progress:**
 ```
 [██████████████████████████████████████████████████] 86% (6/7 phases complete)
-Phase 6: [████████████] 100% (4/4 plans complete)
+Phase 7: [████░░░░░░░░] 33% (1/3 plans complete)
 ```
 
 ## Performance Metrics
@@ -79,6 +79,10 @@ Phase 6: [████████████] 100% (4/4 plans complete)
 | 06-02 | Account config omits list operation | Phase 5's list-accounts reference data tool already occupies that tool name | No tool name collision. Users get both quick lookup (list-accounts) and advanced filtering (search-accounts) |
 | 06-02 | Convert boolean is_archived to string for query parameters | BukkuClient.get() signature requires string/number, but Zod schema uses boolean for type safety | Manual conversion in handler. Pattern reusable for other boolean query parameters |
 | 06-04 | Field name correction from debit/credit to debit_amount/credit_amount matches Bukku API journal_items structure | UAT revealed validation always saw 0/0 because field names didn't match API | Client-side validation now catches unbalanced entries with conversational errors |
+| 07-01 | Use file path input (not base64) for upload-file tool | Most practical for MCP context where Claude can reference local files by path | Tool accepts file_path parameter, reads from disk via fs/promises |
+| 07-01 | Do NOT manually set Content-Type header in postMultipart | Fetch must set Content-Type automatically with multipart boundary. Manually setting it breaks the upload. | getHeaders(false) called to exclude Content-Type, allowing fetch to handle it correctly |
+| 07-01 | File config has only list+get operations - no create/update/delete | Create requires multipart/form-data (custom tool), API has no update/delete endpoints | Factory generates 2 tools (list-files, get-file). Upload handled by custom tool. |
+| 07-01 | Empty listFilters array for file entity | API spec shows no query parameters for GET /files (no pagination, no filters) | list-files tool has no filter parameters, returns ALL files |
 
 ### Active TODOs
 
@@ -90,6 +94,7 @@ Phase 6: [████████████] 100% (4/4 plans complete)
 
 ### Recent Changes
 
+- **2026-02-09:** Completed plan 07-01 (File Operations) - Added BukkuClient.postMultipart method for multipart/form-data file uploads with getMimeType helper. Created file entity config (list+get only). Created custom upload-file tool with file_path parameter. Commits: 3d90f1f, 663999f.
 - **2026-02-08:** Completed plan 06-04 (Double-Entry Validation Field Name Correction - Gap Closure) - Fixed JournalEntryLine interface and validation function to use debit_amount/credit_amount instead of debit/credit. Updated all 17 tests to match Bukku API field names. Fixes UAT test 4 issue where validation always saw 0/0. Commits: ad97a5f, 4981c61.
 - **2026-02-08:** Completed plan 06-03 (Custom Journal Entry Tools & Registry Wiring) - Created custom journal entry create/update tools with double-entry validation. Wired all Phase 6 tools into registry (4 journal entry factory + 4 account factory + 2 custom journal + 3 custom account = 13 new tools). Total MCP server tools: 149. Commits: 18edcc6, 631e1e1.
 - **2026-02-08:** Completed plan 06-02 (Entity Configs & Custom Tools) - Created journal entry config (list, get, delete with status update) and account config (get, create, update, delete - no list to avoid Phase 5 collision). Added 3 custom account tools: search-accounts with category/archived filtering, archive-account, unarchive-account. Commits: a240858, 20d5a9c.
@@ -109,19 +114,19 @@ Phase 6: [████████████] 100% (4/4 plans complete)
 
 ## Session Continuity
 
-**Last session:** 2026-02-08
-**Stopped at:** Phase 6 complete (4/4 plans done)
-**Resume file:** .planning/phases/06-accounting/06-04-SUMMARY.md
+**Last session:** 2026-02-09
+**Stopped at:** Phase 7 plan 1 complete (1/3 plans done)
+**Resume file:** .planning/phases/07-files-control-panel/07-01-SUMMARY.md
 
-**What just happened:** Executed plan 06-04 (Double-Entry Validation Field Name Correction - Gap Closure). Fixed field name mismatch discovered in UAT test 4. Changed JournalEntryLine interface and validation function from debit/credit to debit_amount/credit_amount to match Bukku API journal_items structure. Updated all 17 tests. Validation now correctly sums actual amounts instead of seeing 0/0, enabling client-side detection of unbalanced entries with conversational errors. Two commits: ad97a5f (fix), 4981c61 (test). Duration: 1min 23sec.
+**What just happened:** Executed plan 07-01 (File Operations). Added BukkuClient.postMultipart method for multipart/form-data file uploads with getMimeType helper. Created file entity config with list+get operations only (no create/update/delete). Created custom upload-file tool accepting file_path parameter. Two commits: 3d90f1f (Task 1), 663999f (Task 2). Duration: 2min 9sec.
 
-**What's next:** Phase 7 per roadmap, or rerun UAT test 4 to confirm fix
+**What's next:** Plan 07-02 (Registry wiring) per plan sequence
 
 **Context for next session:**
-- Phase 6 complete: All 4 plans done (3 core + 1 gap closure)
-- Phase 6 deliverables: Double-entry validation, journal entry/account configs, custom tools, registry wiring, field name correction
-- Tool count: 149 tools total (13 new accounting tools)
-- Commits: 238867a, 8445057 (plan 01); a240858, 20d5a9c (plan 02); 18edcc6, 631e1e1 (plan 03); ad97a5f, 4981c61 (plan 04)
+- Phase 7 progress: 1/3 plans complete
+- Plan 07-01 deliverables: BukkuClient.postMultipart, file entity config, custom upload-file tool
+- File operations ready for registry wiring
+- Commits: 3d90f1f (postMultipart + file config), 663999f (upload-file tool)
 
 ---
 *State tracking since: 2026-02-06*
