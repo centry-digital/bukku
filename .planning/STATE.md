@@ -6,20 +6,20 @@
 
 **Core Value:** Claude can read and write accounting data in Bukku reliably, so the user can do bookkeeping work through natural conversation instead of manual data entry.
 
-**Current Focus:** Phase 6 (Accounting) — In Progress (Double-entry validation complete)
+**Current Focus:** Phase 6 (Accounting) — In Progress (Entity configs complete)
 
 ## Current Position
 
 **Active Phase:** Phase 6 - Accounting
-**Active Plan:** 1 of 3
+**Active Plan:** 2 of 3
 **Plan Status:** In progress
 **Current Task:** N/A
-**Last activity:** 2026-02-08 - Completed 06-01-PLAN.md (Double-Entry Validation)
+**Last activity:** 2026-02-08 - Completed 06-02-PLAN.md (Entity Configs & Custom Tools)
 
 **Progress:**
 ```
 [████████████████████████████████████████░░░░░░░░░░] 71% (5/7 phases complete)
-Phase 6: [████░░░░░░░░] 33% (1/3 plans complete)
+Phase 6: [████████░░░░] 67% (2/3 plans complete)
 ```
 
 ## Performance Metrics
@@ -27,7 +27,7 @@ Phase 6: [████░░░░░░░░] 33% (1/3 plans complete)
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 5 | 7 | On Track |
-| Plans Complete | 17 | TBD | On Track |
+| Plans Complete | 18 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -75,10 +75,13 @@ Phase 6: [████░░░░░░░░] 33% (1/3 plans complete)
 | 05-04 | Product bundles have no list operation - users directed to list-products with type=bundle | Bukku API has no GET /products/bundles endpoint - bundles listed via GET /products?type=bundle | Eliminates phantom tool, guides users to correct approach, accurate tool count (136 not 137) |
 | 06-01 | Use 0.01 epsilon tolerance for debit/credit comparison | Currency has 2 decimal places precision; differences below 1 cent are acceptable rounding artifacts | Prevents false negatives from floating-point arithmetic in journal entry validation |
 | 06-01 | Include totals, difference, and explanation in validation error messages | Claude needs specific amounts to self-correct unbalanced journal entries | Conversational errors enable LLM to fix issues without user intervention |
+| 06-02 | Journal entry config omits create and update operations | Create/update require double-entry validation which needs custom tools, not generic CRUD factory | Custom journal-entry-tools.ts module will be created in future plan |
+| 06-02 | Account config omits list operation | Phase 5's list-accounts reference data tool already occupies that tool name | No tool name collision. Users get both quick lookup (list-accounts) and advanced filtering (search-accounts) |
+| 06-02 | Convert boolean is_archived to string for query parameters | BukkuClient.get() signature requires string/number, but Zod schema uses boolean for type safety | Manual conversion in handler. Pattern reusable for other boolean query parameters |
 
 ### Active TODOs
 
-*None - Plan 06-01 complete, ready for 06-02*
+*None - Phase 6 in progress, ready for 06-03*
 
 ### Blockers
 
@@ -86,6 +89,7 @@ Phase 6: [████░░░░░░░░] 33% (1/3 plans complete)
 
 ### Recent Changes
 
+- **2026-02-08:** Completed plan 06-02 (Entity Configs & Custom Tools) - Created journal entry config (list, get, delete with status update) and account config (get, create, update, delete - no list to avoid Phase 5 collision). Added 3 custom account tools: search-accounts with category/archived filtering, archive-account, unarchive-account. Commits: a240858, 20d5a9c.
 - **2026-02-08:** Completed plan 06-01 (Double-Entry Validation) - TDD implementation of validateDoubleEntry function with epsilon tolerance (0.01), minimum line count validation, and conversational error messages. All 17 tests passing.
 - **2026-02-08:** Completed plan 05-04 (Gap Closure) - Fixed two UAT issues: enhanced 500 errors to include response body (surfaces hidden validation errors), removed phantom list-product-bundles tool. Tool count corrected from 137 to 136.
 - **2026-02-08:** Completed plan 05-03 (Registry Wiring) - Wired all Phase 5 entities into registry, producing 137-tool MCP server (108 prior + 29 new).
@@ -103,19 +107,19 @@ Phase 6: [████░░░░░░░░] 33% (1/3 plans complete)
 ## Session Continuity
 
 **Last session:** 2026-02-08
-**Stopped at:** Phase 6 plan 1 of 3 complete
-**Resume file:** .planning/phases/06-accounting/06-01-SUMMARY.md
+**Stopped at:** Phase 6 plan 2 of 3 complete
+**Resume file:** .planning/phases/06-accounting/06-02-SUMMARY.md
 
-**What just happened:** Executed plan 06-01 (Double-Entry Validation) using TDD workflow. Created validateDoubleEntry function with epsilon-tolerant balance checking (0.01 tolerance for currency precision), minimum line count validation (default 2 lines), and conversational error messages that include totals, difference, and explanation. All 17 tests passing. Two commits: 238867a (failing tests), 8445057 (passing implementation). Ready for plan 06-02 (entity configurations).
+**What just happened:** Executed plan 06-02 (Entity Configs & Custom Tools). Created journalEntryConfig (list, get, delete operations with status update - omits create/update for custom validation) and accountConfig (get, create, update, delete - omits list to avoid collision with Phase 5's list-accounts). Created 3 custom account tools: search-accounts (filtered chart of accounts search with category/archived filtering), archive-account, unarchive-account. Boolean-to-string conversion pattern for query parameters. All TypeScript compiles cleanly. Two commits: a240858 (configs), 20d5a9c (custom tools).
 
-**What's next:** Plan 06-02 (Journal Entry & Account Entity Configurations)
+**What's next:** Plan 06-03 (Registry Wiring)
 
 **Context for next session:**
-- Phase 6 in progress: 1 of 3 plans done
-- Double-entry validation complete: src/tools/validation/double-entry.ts
-- Validation function ready for integration in journal entry create/update tools
-- Test coverage: 17 tests (balanced entries, unbalanced entries, minimum lines, edge cases)
-- Commits: 238867a (test), 8445057 (feat)
+- Phase 6 in progress: 2 of 3 plans done
+- Entity configs ready: src/tools/configs/journal-entry.ts, src/tools/configs/account.ts
+- Custom tools ready: src/tools/custom/account-tools.ts (3 tools)
+- No tool name collisions with Phase 5
+- Commits: a240858, 20d5a9c
 
 ---
 *State tracking since: 2026-02-06*
