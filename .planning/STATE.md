@@ -6,19 +6,20 @@
 
 **Core Value:** Claude can read and write accounting data in Bukku reliably, so the user can do bookkeeping work through natural conversation instead of manual data entry.
 
-**Current Focus:** Phase 5 (Products & Lists) — Complete (136 MCP tools operational)
+**Current Focus:** Phase 6 (Accounting) — In Progress (Double-entry validation complete)
 
 ## Current Position
 
-**Active Phase:** Phase 5 - Products & Lists
-**Active Plan:** 4 of 4 (Phase complete with gap closure)
-**Plan Status:** Phase complete
+**Active Phase:** Phase 6 - Accounting
+**Active Plan:** 1 of 3
+**Plan Status:** In progress
 **Current Task:** N/A
-**Last activity:** 2026-02-08 - Completed 05-04-PLAN.md (Gap Closure)
+**Last activity:** 2026-02-08 - Completed 06-01-PLAN.md (Double-Entry Validation)
 
 **Progress:**
 ```
 [████████████████████████████████████████░░░░░░░░░░] 71% (5/7 phases complete)
+Phase 6: [████░░░░░░░░] 33% (1/3 plans complete)
 ```
 
 ## Performance Metrics
@@ -26,7 +27,7 @@
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 5 | 7 | On Track |
-| Plans Complete | 16 | TBD | On Track |
+| Plans Complete | 17 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -72,10 +73,12 @@
 | 05-03 | Product entities registered before custom tools (established pattern from Phase 4) | Factory tools first, then custom tools that extend their capabilities | Consistent registration order across all phases |
 | 05-04 | 500 errors include response body to debug Bukku's incorrect status codes | Bukku API sometimes returns validation errors as 500 instead of 400 - including body surfaces hidden details | Improved debugging experience, faster issue resolution |
 | 05-04 | Product bundles have no list operation - users directed to list-products with type=bundle | Bukku API has no GET /products/bundles endpoint - bundles listed via GET /products?type=bundle | Eliminates phantom tool, guides users to correct approach, accurate tool count (136 not 137) |
+| 06-01 | Use 0.01 epsilon tolerance for debit/credit comparison | Currency has 2 decimal places precision; differences below 1 cent are acceptable rounding artifacts | Prevents false negatives from floating-point arithmetic in journal entry validation |
+| 06-01 | Include totals, difference, and explanation in validation error messages | Claude needs specific amounts to self-correct unbalanced journal entries | Conversational errors enable LLM to fix issues without user intervention |
 
 ### Active TODOs
 
-*None - Phase 5 complete, ready for Phase 6*
+*None - Plan 06-01 complete, ready for 06-02*
 
 ### Blockers
 
@@ -83,6 +86,7 @@
 
 ### Recent Changes
 
+- **2026-02-08:** Completed plan 06-01 (Double-Entry Validation) - TDD implementation of validateDoubleEntry function with epsilon tolerance (0.01), minimum line count validation, and conversational error messages. All 17 tests passing.
 - **2026-02-08:** Completed plan 05-04 (Gap Closure) - Fixed two UAT issues: enhanced 500 errors to include response body (surfaces hidden validation errors), removed phantom list-product-bundles tool. Tool count corrected from 137 to 136.
 - **2026-02-08:** Completed plan 05-03 (Registry Wiring) - Wired all Phase 5 entities into registry, producing 137-tool MCP server (108 prior + 29 new).
 - **2026-02-08:** Completed plan 05-02 (Reference Data Cache & Tools) - Created ReferenceDataCache class with 5-minute TTL and 10 reference data list tools using POST /v2/lists endpoint
@@ -99,20 +103,19 @@
 ## Session Continuity
 
 **Last session:** 2026-02-08
-**Stopped at:** Phase 5 complete with gap closure (4 of 4 plans done)
-**Resume file:** .planning/phases/05-products-lists/05-04-SUMMARY.md
+**Stopped at:** Phase 6 plan 1 of 3 complete
+**Resume file:** .planning/phases/06-accounting/06-01-SUMMARY.md
 
-**What just happened:** Executed plan 05-04 (Gap Closure). Closed two UAT issues from Phase 5 testing: (1) Enhanced 500 error handler to include response body, surfacing hidden validation errors that Bukku incorrectly returns as 500s. (2) Removed phantom list-product-bundles tool - Bukku has no GET /products/bundles endpoint, bundles are listed via list-products with type=bundle. Tool count corrected from 137 to 136. All tests pass, TypeScript compiles cleanly. Phase 5 complete.
+**What just happened:** Executed plan 06-01 (Double-Entry Validation) using TDD workflow. Created validateDoubleEntry function with epsilon-tolerant balance checking (0.01 tolerance for currency precision), minimum line count validation (default 2 lines), and conversational error messages that include totals, difference, and explanation. All 17 tests passing. Two commits: 238867a (failing tests), 8445057 (passing implementation). Ready for plan 06-02 (entity configurations).
 
-**What's next:** Phase 6 (next phase to be planned)
+**What's next:** Plan 06-02 (Journal Entry & Account Entity Configurations)
 
 **Context for next session:**
-- Phase 5 complete: 4 of 4 plans done (including gap closure)
-- Total tools: 136 (42 sales + 36 purchase + 30 banking/contact + 28 product/reference)
-- Product catalog: Full CRUD for products, bundles, groups
-- Reference data: 10 list tools with 5-minute cache
-- Error handling: Enhanced 500 errors show response body for debugging
-- Commits: 7be1b5f (500 error fix), 164aa56 (remove list-bundles)
+- Phase 6 in progress: 1 of 3 plans done
+- Double-entry validation complete: src/tools/validation/double-entry.ts
+- Validation function ready for integration in journal entry create/update tools
+- Test coverage: 17 tests (balanced entries, unbalanced entries, minimum lines, edge cases)
+- Commits: 238867a (test), 8445057 (feat)
 
 ---
 *State tracking since: 2026-02-06*
