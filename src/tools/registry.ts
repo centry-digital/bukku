@@ -28,8 +28,20 @@ import { bankTransferConfig } from "./configs/bank-transfer.js";
 import { contactConfig } from "./configs/contact.js";
 import { contactGroupConfig } from "./configs/contact-group.js";
 
+// Product entities (Phase 5)
+import { productConfig } from "./configs/product.js";
+import { productBundleConfig } from "./configs/product-bundle.js";
+import { productGroupConfig } from "./configs/product-group.js";
+
 // Custom tools (Phase 4)
 import { registerContactArchiveTools } from "./custom/contact-archive.js";
+
+// Custom tools (Phase 5)
+import { registerProductArchiveTools } from "./custom/product-archive.js";
+import { registerReferenceDataTools } from "./custom/reference-data.js";
+
+// Cache (Phase 5)
+import { ReferenceDataCache } from "./cache/reference-cache.js";
 
 /**
  * Tool Registry
@@ -39,6 +51,7 @@ import { registerContactArchiveTools } from "./custom/contact-archive.js";
  * Phase 2 added sales entity configs (7 entities, 42 tools).
  * Phase 3 added purchase entity configs (6 entities, 36 tools).
  * Phase 4 added banking + contact entity configs (5 entities, 28 factory tools + 2 custom archive tools = 30 tools).
+ * Phase 5 added product entity configs (3 entities, 15 factory tools + 4 custom archive tools + 10 reference data tools = 29 tools).
  */
 
 /**
@@ -84,6 +97,22 @@ export function registerAllTools(server: McpServer, client: BukkuClient): number
 
   // Custom contact archive tools (Phase 4) — 2 tools
   totalTools += registerContactArchiveTools(server, client);
+
+  // Product entities (Phase 5)
+  // Product: 5 tools (no status — archive handled by custom tools)
+  // Product bundle: 5 tools (no status — archive handled by custom tools)
+  // Product group: 5 tools (no status — groups have no archive)
+  totalTools += registerCrudTools(server, client, productConfig);
+  totalTools += registerCrudTools(server, client, productBundleConfig);
+  totalTools += registerCrudTools(server, client, productGroupConfig);
+
+  // Custom product archive tools (Phase 5) — 4 tools
+  totalTools += registerProductArchiveTools(server, client);
+
+  // Reference data list tools (Phase 5) — 10 tools
+  // Uses transparent cache with 5-minute TTL for reference data
+  const referenceCache = new ReferenceDataCache();
+  totalTools += registerReferenceDataTools(server, client, referenceCache);
 
   return totalTools;
 }
