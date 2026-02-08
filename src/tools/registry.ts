@@ -33,12 +33,20 @@ import { productConfig } from "./configs/product.js";
 import { productBundleConfig } from "./configs/product-bundle.js";
 import { productGroupConfig } from "./configs/product-group.js";
 
+// Accounting entities (Phase 6)
+import { journalEntryConfig } from "./configs/journal-entry.js";
+import { accountConfig } from "./configs/account.js";
+
 // Custom tools (Phase 4)
 import { registerContactArchiveTools } from "./custom/contact-archive.js";
 
 // Custom tools (Phase 5)
 import { registerProductArchiveTools } from "./custom/product-archive.js";
 import { registerReferenceDataTools } from "./custom/reference-data.js";
+
+// Custom tools (Phase 6)
+import { registerJournalEntryTools } from "./custom/journal-entry-tools.js";
+import { registerAccountCustomTools } from "./custom/account-tools.js";
 
 // Cache (Phase 5)
 import { ReferenceDataCache } from "./cache/reference-cache.js";
@@ -52,6 +60,7 @@ import { ReferenceDataCache } from "./cache/reference-cache.js";
  * Phase 3 added purchase entity configs (6 entities, 36 tools).
  * Phase 4 added banking + contact entity configs (5 entities, 28 factory tools + 2 custom archive tools = 30 tools).
  * Phase 5 added product entity configs (3 entities, 14 factory tools + 4 custom archive tools + 10 reference data tools = 28 tools).
+ * Phase 6 added accounting entity configs (2 entities, 8 factory tools + 2 custom journal tools + 3 custom account tools = 13 tools).
  */
 
 /**
@@ -113,6 +122,18 @@ export function registerAllTools(server: McpServer, client: BukkuClient): number
   // Uses transparent cache with 5-minute TTL for reference data
   const referenceCache = new ReferenceDataCache();
   totalTools += registerReferenceDataTools(server, client, referenceCache);
+
+  // Accounting entities (Phase 6)
+  // Journal entry: 4 factory tools (list, get, delete, update-status) — create/update handled by custom tools with validation
+  totalTools += registerCrudTools(server, client, journalEntryConfig);
+  // Account: 4 factory tools (get, create, update, delete) — no list (use Phase 5 list-accounts or search-accounts)
+  totalTools += registerCrudTools(server, client, accountConfig);
+
+  // Custom journal entry tools (Phase 6) — 2 tools (create, update with double-entry validation)
+  totalTools += registerJournalEntryTools(server, client);
+
+  // Custom account tools (Phase 6) — 3 tools (search-accounts, archive-account, unarchive-account)
+  totalTools += registerAccountCustomTools(server, client);
 
   return totalTools;
 }
