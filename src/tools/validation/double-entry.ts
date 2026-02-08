@@ -10,8 +10,8 @@
  */
 
 export interface JournalEntryLine {
-  debit?: number;
-  credit?: number;
+  debit_amount?: number;
+  credit_amount?: number;
   [key: string]: unknown;  // Allow other fields to pass through
 }
 
@@ -31,14 +31,14 @@ export interface ValidationResult {
  * ```typescript
  * // Balanced entry
  * validateDoubleEntry([
- *   { debit: 100, account_id: 1 },
- *   { credit: 100, account_id: 2 }
+ *   { debit_amount: 100, account_id: 1 },
+ *   { credit_amount: 100, account_id: 2 }
  * ]); // { valid: true }
  *
  * // Unbalanced entry
  * validateDoubleEntry([
- *   { debit: 1500 },
- *   { credit: 1450 }
+ *   { debit_amount: 1500 },
+ *   { credit_amount: 1450 }
  * ]);
  * // {
  * //   valid: false,
@@ -64,8 +64,8 @@ export function validateDoubleEntry(
   let totalCredits = 0;
 
   for (const line of lines) {
-    totalDebits += line.debit || 0;
-    totalCredits += line.credit || 0;
+    totalDebits += line.debit_amount || 0;
+    totalCredits += line.credit_amount || 0;
   }
 
   // Compare with epsilon tolerance (1 cent)
