@@ -6,15 +6,15 @@
 
 **Core Value:** Claude can read and write accounting data in Bukku reliably, so the user can do bookkeeping work through natural conversation instead of manual data entry.
 
-**Current Focus:** Phase 4 (Banking & Contacts) complete — 108-tool MCP server ready for next phase
+**Current Focus:** Phase 5 (Products & Lists) — Product catalog configurations complete (Plan 01 of 03)
 
 ## Current Position
 
-**Active Phase:** Phase 4 - Banking & Contacts
-**Active Plan:** 2 of 2 (Phase complete)
-**Plan Status:** Phase complete
+**Active Phase:** Phase 5 - Products & Lists
+**Active Plan:** 1 of 3 (In progress)
+**Plan Status:** In progress
 **Current Task:** N/A
-**Last activity:** 2026-02-08 - Completed 04-02-PLAN.md (Registry Wiring)
+**Last activity:** 2026-02-08 - Completed 05-01-PLAN.md (Product Catalog Configurations)
 
 **Progress:**
 ```
@@ -26,7 +26,7 @@
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 4 | 7 | On Track |
-| Plans Complete | 12 | TBD | On Track |
+| Plans Complete | 13 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -67,7 +67,7 @@
 
 ### Active TODOs
 
-*None - Phase 4 complete, ready for Phase 5*
+*None - Plan 05-01 complete, ready for Plan 05-02*
 
 ### Blockers
 
@@ -75,6 +75,7 @@
 
 ### Recent Changes
 
+- **2026-02-08:** Completed plan 05-01 (Product Catalog Configurations) - Created 3 product entity configs (product, bundle, group) and 4 custom archive tools
 - **2026-02-08:** Completed plan 04-02 (Registry Wiring) - Wired all Phase 4 entities into registry, producing 108-tool MCP server (78 prior + 30 new)
 - **2026-02-08:** Completed plan 04-01 (Entity Configs & Custom Tools) - Created 5 CrudEntityConfig objects (3 banking, 2 contacts) and 2 custom archive tools
 - **2026-02-08:** Completed plan 03-03 (Purchase Registry Wiring) - Wired all 6 purchase entity configs into registry, producing 78 total working MCP tools (42 sales + 36 purchases)
@@ -87,18 +88,18 @@
 ## Session Continuity
 
 **Last session:** 2026-02-08
-**Stopped at:** Phase 4 complete (all 2 plans done)
-**Resume file:** .planning/phases/04-banking-contacts/04-02-SUMMARY.md
+**Stopped at:** Phase 5, Plan 01 complete (1 of 3 plans done)
+**Resume file:** .planning/phases/05-products-lists/05-01-SUMMARY.md
 
-**What just happened:** Executed plan 04-02 (Registry Wiring). Wired all 5 Phase 4 entity configs + 2 custom archive tools into registry. MCP server now produces 108 tools (42 sales + 36 purchases + 18 banking + 5 contact + 5 contact-group + 2 custom archive). Build and all 10 tests pass cleanly.
+**What just happened:** Executed plan 05-01 (Product Catalog Configurations). Created 3 entity configs (product, bundle, group) with custom wrapper keys and 4 archive tools (archive/unarchive for products and bundles). All files follow established patterns from Phase 4 contacts. Ready for registry wiring in Plan 03.
 
-**What's next:** Phase 5 (Products & Lists) — product catalog tools and reference data access.
+**What's next:** Plan 05-02 — Reference data entity configurations (accounts, tax codes, etc.)
 
 **Context for next session:**
-- Phase 4 complete: 108-tool MCP server operational
-- Registry pattern: factory tools first, custom tools appended after
-- Custom tools directory: src/tools/custom/ for non-standard API patterns
-- Commits: 8013fd1 (registry wiring)
+- Phase 5 started: Product catalog configs ready
+- Product archive pattern: Same as contacts (PATCH with is_archived boolean)
+- Cross-references embedded: product config references tax-codes, accounts, groups
+- Commits: 5f265ae (configs), 889a4b0 (archive tools)
 
 ---
 *State tracking since: 2026-02-06*
