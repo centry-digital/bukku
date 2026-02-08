@@ -179,6 +179,13 @@ Plans:
 
 **Dependencies:** Phase 2 (reuses factory pattern)
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 05-01-PLAN.md -- Product, bundle, and group entity configs with custom archive tools
+- [ ] 05-02-PLAN.md -- Reference data cache and list tools (POST /v2/lists)
+- [ ] 05-03-PLAN.md -- Wire all Phase 5 entities into registry and verify build
+
 **Requirements:**
 - PROD-01: User can list products with search and pagination filters
 - PROD-02: User can create, read, update, and delete a product
@@ -255,7 +262,7 @@ Plans:
 | 2 - Sales Category | 21 | Complete | 3 | 3 |
 | 3 - Purchases Category | 18 | Complete | 3 | 3 |
 | 4 - Banking & Contacts | 10 | Complete | 2 | 2 |
-| 5 - Products & Lists | 8 | Pending | 0 | 0 |
+| 5 - Products & Lists | 8 | Pending | 3 | 0 |
 | 6 - Accounting | 4 | Pending | 0 | 0 |
 | 7 - Files & Control Panel | 8 | Pending | 0 | 0 |
 
