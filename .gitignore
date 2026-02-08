@@ -13,4 +13,5 @@ build/
 
 # Local tooling
 .claude/
+.planning/
 .playwright-mcp/
