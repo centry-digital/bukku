@@ -1,17 +1,24 @@
 ---
 phase: 06-accounting
-verified: 2026-02-08T18:45:00Z
+verified: 2026-02-08T23:55:00Z
 status: passed
-score: 19/19 must-haves verified
-re_verification: false
+score: 22/22 must-haves verified
+re_verification:
+  previous_status: passed
+  previous_score: 19/19
+  gaps_closed:
+    - "Double-entry validation now reads debit_amount/credit_amount from Bukku API journal_items"
+  gaps_remaining: []
+  regressions: []
+  new_truths_added: 3
 ---
 
 # Phase 6: Accounting Tools Verification Report
 
 **Phase Goal:** Journal entry and chart of accounts tools with double-entry validation ensuring accounting integrity
-**Verified:** 2026-02-08T18:45:00Z
+**Verified:** 2026-02-08T23:55:00Z
 **Status:** passed
-**Re-verification:** No - initial verification
+**Re-verification:** Yes — after Plan 06-04 gap closure (UAT test 4 fix)
 
 ## Goal Achievement
 
@@ -38,8 +45,11 @@ re_verification: false
 | 17  | All Phase 6 configs are imported and registered in registry                                       | ✓ VERIFIED | Imports lines 37-38, 48-49; registrations lines 128, 130, 133, 136            |
 | 18  | TypeScript compiles with zero errors                                                              | ✓ VERIFIED | npx tsc --noEmit succeeds, npm run build succeeds                              |
 | 19  | No tool name collisions with Phase 5 list-accounts                                                | ✓ VERIFIED | account config omits "list", search-accounts is distinct tool                  |
+| 20  | **[NEW]** Validation reads debit_amount/credit_amount fields from journal_items (matching Bukku API) | ✓ VERIFIED | JournalEntryLine interface uses debit_amount/credit_amount, validation sums these fields on lines 67-68 |
+| 21  | **[NEW]** All 17 tests pass with corrected field names                                             | ✓ VERIFIED | Tests use debit_amount/credit_amount throughout, all pass                      |
+| 22  | **[NEW]** UAT test 4 scenario (unbalanced journal entry) caught client-side with conversational error | ✓ VERIFIED | Validation correctly reads API field names, unbalanced entries return formatted error with totals before API call |
 
-**Score:** 19/19 truths verified
+**Score:** 22/22 truths verified
 
 ### Required Artifacts
 
@@ -69,6 +79,7 @@ re_verification: false
 | registry.ts                       | account.ts                         | import { accountConfig }                | ✓ WIRED    | Import line 38, used line 130                            |
 | registry.ts                       | journal-entry-tools.ts             | import { registerJournalEntryTools }    | ✓ WIRED    | Import line 48, called line 133                          |
 | registry.ts                       | account-tools.ts                   | import { registerAccountCustomTools }   | ✓ WIRED    | Import line 49, called line 136                          |
+| **[NEW]** double-entry.ts validation | journal_items API payload       | line.debit_amount, line.credit_amount   | ✓ WIRED    | Lines 67-68 read debit_amount/credit_amount from line items |
 
 **All links:** Fully wired with proper imports, calls, and result handling
 
@@ -97,10 +108,32 @@ npm run build
 # Result: Build succeeds, clean output
 
 npx tsx --test src/tools/validation/double-entry.test.ts
-# Result: tests 17, pass 17, fail 0, duration_ms 215.2895
+# Result: tests 17, pass 17, fail 0, duration_ms 230.458791
 ```
 
 **All verification commands:** Pass
+
+## Plan 06-04 Gap Closure Summary
+
+### Issue Fixed
+**UAT Test 4 Gap:** Client-side validateDoubleEntry() checked `debit`/`credit` fields but Bukku API journal_items use `debit_amount`/`credit_amount`. Validation always read 0/0, making every entry appear balanced. Unbalanced entries passed validation and were rejected by API with raw errors instead of conversational messages.
+
+### Solution Applied
+1. **Changed JournalEntryLine interface** from `debit?`/`credit?` to `debit_amount?`/`credit_amount?`
+2. **Updated validation function** to read `line.debit_amount` and `line.credit_amount` (lines 67-68)
+3. **Updated all 17 tests** to use `debit_amount`/`credit_amount` field names
+4. **Updated JSDoc examples** to show correct field names
+
+### Verification
+- All 17 tests pass with corrected field names
+- TypeScript compiles cleanly
+- Grep confirms no remaining `line.debit` or `line.credit` field access (only `line.debit_amount` and `line.credit_amount`)
+- journal-entry-tools.ts requires NO changes — already passes journal_items array directly to validateDoubleEntry()
+
+### Commits
+- `ad97a5f` - fix(06-04): correct double-entry validation field names to match Bukku API
+- `4981c61` - test(06-04): update all tests to use debit_amount/credit_amount field names
+- `d7703f7` - docs(06-04): complete double-entry validation field name correction plan
 
 ## Phase 6 Tool Inventory
 
@@ -134,27 +167,18 @@ npx tsx --test src/tools/validation/double-entry.test.ts
 
 ## Technical Highlights
 
-### Double-Entry Validation
+### Double-Entry Validation (Fixed)
 
-The core accounting integrity feature - validates debits = credits before API submission:
+The core accounting integrity feature now correctly validates debits = credits by reading the actual Bukku API field names:
 
 ```typescript
-// Extract journal_items if present
-const journalItems = params.data.journal_items;
+// BEFORE (Bug): Read undefined fields, always saw 0/0
+totalDebits += line.debit || 0;
+totalCredits += line.credit || 0;
 
-// Validate double-entry balance if line items present
-if (journalItems && Array.isArray(journalItems)) {
-  const validation = validateDoubleEntry(journalItems);
-  if (!validation.valid) {
-    return {
-      isError: true,
-      content: [{ type: "text" as const, text: validation.error! }],
-    };
-  }
-}
-
-// Validation passed - proceed with API call
-const result = await client.post("/journal_entries", params.data);
+// AFTER (Fixed): Read actual API fields
+totalDebits += line.debit_amount || 0;
+totalCredits += line.credit_amount || 0;
 ```
 
 **Key features:**
@@ -202,13 +226,20 @@ Account config omits "list" operation to prevent collision.
 - Duration: 3 minutes
 - Commits: 18edcc6 (journal tools), 631e1e1 (registry wiring)
 
-**Total Phase 6 Duration:** ~6 minutes across 3 plans
-**Total Commits:** 6 commits (2 per plan)
+### Plan 06-04: Gap Closure - Field Name Correction
+- Fixed JournalEntryLine interface to use debit_amount/credit_amount
+- Updated all 17 tests to use corrected field names
+- Duration: 83 seconds
+- Commits: ad97a5f (interface fix), 4981c61 (test updates), d7703f7 (summary)
+
+**Total Phase 6 Duration:** ~8 minutes across 4 plans
+**Total Commits:** 9 commits
 **Total Files Created:** 6 new files
-**Total Files Modified:** 1 file (registry.ts)
+**Total Files Modified:** 3 files (registry.ts, double-entry.ts, double-entry.test.ts)
 
 ## Success Criteria - All Met
 
+### Original Criteria (from Plans 06-01 to 06-03)
 - [x] validateDoubleEntry correctly validates balanced entries
 - [x] validateDoubleEntry rejects unbalanced entries with formatted error message showing totals and difference
 - [x] validateDoubleEntry rejects entries with fewer than 2 lines
@@ -228,13 +259,22 @@ Account config omits "list" operation to prevent collision.
 - [x] No duplicate tool names
 - [x] TypeScript compiles cleanly, build succeeds
 
+### Gap Closure Criteria (from Plan 06-04)
+- [x] validateDoubleEntry() correctly sums debit_amount and credit_amount fields from journal entry line items
+- [x] Unbalanced entries (e.g., debit_amount: 1500 vs credit_amount: 1450) return `{ valid: false, error: "...Total debits: 1500.00, Total credits: 1450.00. Difference: 50.00..." }`
+- [x] Balanced entries (e.g., debit_amount: 100 vs credit_amount: 100) return `{ valid: true }`
+- [x] All 17 tests pass with the corrected field names
+- [x] UAT test 4 scenario (unbalanced journal entry) now caught client-side with conversational error
+
 ## Conclusion
 
-Phase 6 successfully delivers journal entry and chart of accounts tools with double-entry validation ensuring accounting integrity. All must-haves verified, all artifacts substantive and properly wired, all key links functional, all requirements satisfied. Build passes, tests pass, no anti-patterns detected.
+Phase 6 successfully delivers journal entry and chart of accounts tools with double-entry validation ensuring accounting integrity. **Gap from UAT test 4 closed:** Validation now correctly reads `debit_amount`/`credit_amount` from Bukku API journal_items, catching unbalanced entries client-side with conversational error messages before API submission.
 
-**Status:** PASSED - Phase goal achieved, ready to proceed to Phase 7.
+All must-haves verified, all artifacts substantive and properly wired, all key links functional, all requirements satisfied. Build passes, tests pass, no anti-patterns detected.
+
+**Status:** PASSED - Phase goal achieved, all gaps closed, ready to proceed to Phase 7.
 
 ---
 
-_Verified: 2026-02-08T18:45:00Z_
+_Verified: 2026-02-08T23:55:00Z_
 _Verifier: Claude (gsd-verifier)_
