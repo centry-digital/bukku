@@ -6,27 +6,27 @@
 
 **Core Value:** Claude can read and write accounting data in Bukku reliably, so the user can do bookkeeping work through natural conversation instead of manual data entry.
 
-**Current Focus:** Phase 5 (Products & Lists) — Reference data cache and tools complete (Plan 02 of 03)
+**Current Focus:** Phase 5 (Products & Lists) — Complete (137 MCP tools operational)
 
 ## Current Position
 
 **Active Phase:** Phase 5 - Products & Lists
-**Active Plan:** 2 of 3 (In progress)
-**Plan Status:** In progress
+**Active Plan:** 3 of 3 (Phase complete)
+**Plan Status:** Phase complete
 **Current Task:** N/A
-**Last activity:** 2026-02-08 - Completed 05-02-PLAN.md (Reference Data Cache & Tools)
+**Last activity:** 2026-02-08 - Completed 05-03-PLAN.md (Registry Wiring)
 
 **Progress:**
 ```
-[████████████████████████████████░░░░░░░░░░░░░░░░░░] 57% (4/7 phases complete)
+[████████████████████████████████████████░░░░░░░░░░] 71% (5/7 phases complete)
 ```
 
 ## Performance Metrics
 
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
-| Phases Complete | 4 | 7 | On Track |
-| Plans Complete | 14 | TBD | On Track |
+| Phases Complete | 5 | 7 | On Track |
+| Plans Complete | 15 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -67,10 +67,13 @@
 | 05-02 | 5-minute TTL for reference data cache | Reference data changes infrequently, caching reduces redundant API calls during a session | Transparent performance improvement, configurable for testing |
 | 05-02 | Cache key = reference data type name (e.g., "tax_codes") | Matches POST /v2/lists request structure, simple and predictable | One-to-one mapping between API type and cache entry |
 | 05-02 | 10 reference data types for initial implementation | Covers all core reference data needed for products, invoices, and transactions | Comprehensive reference data access for business operations |
+| 05-03 | ReferenceDataCache instantiated inside registerAllTools with default 5-minute TTL | Cache lifecycle tied to server instance, simple instantiation pattern | Cache available to reference data tools without global state |
+| 05-03 | Registry organized by phase with clear comment blocks and tool counts | Phase-based organization with inline documentation for maintenance | Easy to scan, understand tool distribution, and validate counts |
+| 05-03 | Product entities registered before custom tools (established pattern from Phase 4) | Factory tools first, then custom tools that extend their capabilities | Consistent registration order across all phases |
 
 ### Active TODOs
 
-*None - Plan 05-02 complete, ready for Plan 05-03*
+*None - Phase 5 complete, ready for Phase 6*
 
 ### Blockers
 
@@ -78,6 +81,7 @@
 
 ### Recent Changes
 
+- **2026-02-08:** Completed plan 05-03 (Registry Wiring) - Wired all Phase 5 entities into registry, producing 137-tool MCP server (108 prior + 29 new). Phase 5 complete.
 - **2026-02-08:** Completed plan 05-02 (Reference Data Cache & Tools) - Created ReferenceDataCache class with 5-minute TTL and 10 reference data list tools using POST /v2/lists endpoint
 - **2026-02-08:** Completed plan 05-01 (Product Catalog Configurations) - Created 3 product entity configs (product, bundle, group) and 4 custom archive tools
 - **2026-02-08:** Completed plan 04-02 (Registry Wiring) - Wired all Phase 4 entities into registry, producing 108-tool MCP server (78 prior + 30 new)
@@ -92,18 +96,19 @@
 ## Session Continuity
 
 **Last session:** 2026-02-08
-**Stopped at:** Phase 5, Plan 02 complete (2 of 3 plans done)
-**Resume file:** .planning/phases/05-products-lists/05-02-SUMMARY.md
+**Stopped at:** Phase 5 complete (3 of 3 plans done)
+**Resume file:** .planning/phases/05-products-lists/05-03-SUMMARY.md
 
-**What just happened:** Executed plan 05-02 (Reference Data Cache & Tools). Created ReferenceDataCache class with 5-minute TTL and 10 reference data list tools (tax codes, currencies, payment methods, terms, accounts, price levels, countries, classification codes, numberings, states). All tools use POST /v2/lists endpoint with cache-first pattern. Ready for registry wiring in Plan 03.
+**What just happened:** Executed plan 05-03 (Registry Wiring). Wired all Phase 5 entities into registry. Tool count increased from 108 to 137 (29 new Phase 5 tools: 15 product factory + 4 archive + 10 reference data). All TypeScript compiles cleanly, build passes, all tests pass. Phase 5 complete.
 
-**What's next:** Plan 05-03 — Registry wiring (wire product configs + reference data tools into main registry)
+**What's next:** Phase 6 (next phase to be planned)
 
 **Context for next session:**
-- Phase 5 progress: 2 of 3 plans complete
-- Cache pattern: Check cache first, fetch on miss, store result
-- Reference data tools: 10 list-only tools (no CRUD operations per API spec)
-- Commits: d7593dc (cache class), 6de739b (reference data tools)
+- Phase 5 complete: 3 of 3 plans done
+- Total tools: 137 (42 sales + 36 purchase + 30 banking/contact + 29 product/reference)
+- Product catalog: Full CRUD for products, bundles, groups
+- Reference data: 10 list tools with 5-minute cache
+- Commits: 2c0ec26 (registry wiring)
 
 ---
 *State tracking since: 2026-02-06*

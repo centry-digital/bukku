@@ -182,9 +182,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md -- Product, bundle, and group entity configs with custom archive tools
-- [ ] 05-02-PLAN.md -- Reference data cache and list tools (POST /v2/lists)
-- [ ] 05-03-PLAN.md -- Wire all Phase 5 entities into registry and verify build
+- [x] 05-01-PLAN.md -- Product, bundle, and group entity configs with custom archive tools
+- [x] 05-02-PLAN.md -- Reference data cache and list tools (POST /v2/lists)
+- [x] 05-03-PLAN.md -- Wire all Phase 5 entities into registry and verify build
 
 **Requirements:**
 - PROD-01: User can list products with search and pagination filters
@@ -202,7 +202,7 @@ Plans:
 3. User can retrieve tax codes, currencies, and payment methods for invoice creation
 4. Reference data is cached to avoid redundant API calls within 5-minute windows
 
-**Status:** Pending
+**Status:** Complete (2026-02-08)
 
 ---
 
@@ -262,7 +262,7 @@ Plans:
 | 2 - Sales Category | 21 | Complete | 3 | 3 |
 | 3 - Purchases Category | 18 | Complete | 3 | 3 |
 | 4 - Banking & Contacts | 10 | Complete | 2 | 2 |
-| 5 - Products & Lists | 8 | Pending | 3 | 0 |
+| 5 - Products & Lists | 8 | Complete | 3 | 3 |
 | 6 - Accounting | 4 | Pending | 0 | 0 |
 | 7 - Files & Control Panel | 8 | Pending | 0 | 0 |
 
