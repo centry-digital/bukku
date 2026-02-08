@@ -6,15 +6,15 @@
 
 **Core Value:** Claude can read and write accounting data in Bukku reliably, so the user can do bookkeeping work through natural conversation instead of manual data entry.
 
-**Current Focus:** Phase 5 (Products & Lists) — Product catalog configurations complete (Plan 01 of 03)
+**Current Focus:** Phase 5 (Products & Lists) — Reference data cache and tools complete (Plan 02 of 03)
 
 ## Current Position
 
 **Active Phase:** Phase 5 - Products & Lists
-**Active Plan:** 1 of 3 (In progress)
+**Active Plan:** 2 of 3 (In progress)
 **Plan Status:** In progress
 **Current Task:** N/A
-**Last activity:** 2026-02-08 - Completed 05-01-PLAN.md (Product Catalog Configurations)
+**Last activity:** 2026-02-08 - Completed 05-02-PLAN.md (Reference Data Cache & Tools)
 
 **Progress:**
 ```
@@ -26,7 +26,7 @@
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 4 | 7 | On Track |
-| Plans Complete | 13 | TBD | On Track |
+| Plans Complete | 14 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -64,10 +64,13 @@
 | 04-01 | Contact archive uses PATCH with is_archived boolean, not factory status tool | API expects { is_archived: boolean } not { status: string } | Custom tools needed for non-standard API patterns |
 | 04-01 | Bank transfer has only account_id filter (no contact_id, no email_status) | Transfers are account-to-account, no contact involved | Accurate filter set matches API spec |
 | 04-01 | Contacts use custom wrapper keys (contact/contacts, group/groups) | First non-transaction entities break from transaction/transactions pattern | Validates CrudEntityConfig flexibility |
+| 05-02 | 5-minute TTL for reference data cache | Reference data changes infrequently, caching reduces redundant API calls during a session | Transparent performance improvement, configurable for testing |
+| 05-02 | Cache key = reference data type name (e.g., "tax_codes") | Matches POST /v2/lists request structure, simple and predictable | One-to-one mapping between API type and cache entry |
+| 05-02 | 10 reference data types for initial implementation | Covers all core reference data needed for products, invoices, and transactions | Comprehensive reference data access for business operations |
 
 ### Active TODOs
 
-*None - Plan 05-01 complete, ready for Plan 05-02*
+*None - Plan 05-02 complete, ready for Plan 05-03*
 
 ### Blockers
 
@@ -75,6 +78,7 @@
 
 ### Recent Changes
 
+- **2026-02-08:** Completed plan 05-02 (Reference Data Cache & Tools) - Created ReferenceDataCache class with 5-minute TTL and 10 reference data list tools using POST /v2/lists endpoint
 - **2026-02-08:** Completed plan 05-01 (Product Catalog Configurations) - Created 3 product entity configs (product, bundle, group) and 4 custom archive tools
 - **2026-02-08:** Completed plan 04-02 (Registry Wiring) - Wired all Phase 4 entities into registry, producing 108-tool MCP server (78 prior + 30 new)
 - **2026-02-08:** Completed plan 04-01 (Entity Configs & Custom Tools) - Created 5 CrudEntityConfig objects (3 banking, 2 contacts) and 2 custom archive tools
@@ -88,18 +92,18 @@
 ## Session Continuity
 
 **Last session:** 2026-02-08
-**Stopped at:** Phase 5, Plan 01 complete (1 of 3 plans done)
-**Resume file:** .planning/phases/05-products-lists/05-01-SUMMARY.md
+**Stopped at:** Phase 5, Plan 02 complete (2 of 3 plans done)
+**Resume file:** .planning/phases/05-products-lists/05-02-SUMMARY.md
 
-**What just happened:** Executed plan 05-01 (Product Catalog Configurations). Created 3 entity configs (product, bundle, group) with custom wrapper keys and 4 archive tools (archive/unarchive for products and bundles). All files follow established patterns from Phase 4 contacts. Ready for registry wiring in Plan 03.
+**What just happened:** Executed plan 05-02 (Reference Data Cache & Tools). Created ReferenceDataCache class with 5-minute TTL and 10 reference data list tools (tax codes, currencies, payment methods, terms, accounts, price levels, countries, classification codes, numberings, states). All tools use POST /v2/lists endpoint with cache-first pattern. Ready for registry wiring in Plan 03.
 
-**What's next:** Plan 05-02 — Reference data entity configurations (accounts, tax codes, etc.)
+**What's next:** Plan 05-03 — Registry wiring (wire product configs + reference data tools into main registry)
 
 **Context for next session:**
-- Phase 5 started: Product catalog configs ready
-- Product archive pattern: Same as contacts (PATCH with is_archived boolean)
-- Cross-references embedded: product config references tax-codes, accounts, groups
-- Commits: 5f265ae (configs), 889a4b0 (archive tools)
+- Phase 5 progress: 2 of 3 plans complete
+- Cache pattern: Check cache first, fetch on miss, store result
+- Reference data tools: 10 list-only tools (no CRUD operations per API spec)
+- Commits: d7593dc (cache class), 6de739b (reference data tools)
 
 ---
 *State tracking since: 2026-02-06*
