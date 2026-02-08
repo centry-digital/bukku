@@ -249,7 +249,7 @@ Plans:
 - [x] 07-01-PLAN.md -- File entity config (list + get) and custom file upload tool with multipart/form-data
 - [x] 07-02-PLAN.md -- Control panel entity configs (location, tag, tag group) with custom location and archive tools
 - [x] 07-03-PLAN.md -- Wire all Phase 7 entities into registry and verify 173-tool build
-- [ ] 07-04-PLAN.md -- UAT gap closure: remove non-functional tag/tag-group archive tools (169-tool build)
+- [x] 07-04-PLAN.md -- UAT gap closure: remove non-functional tag/tag-group archive tools (169-tool build)
 
 **Requirements:**
 - FILE-01: User can list files with pagination
@@ -281,7 +281,7 @@ Plans:
 | 4 - Banking & Contacts | 10 | Complete | 2 | 2 |
 | 5 - Products & Lists | 8 | Complete | 4 | 4 |
 | 6 - Accounting | 4 | Complete | 4 | 4 |
-| 7 - Files & Control Panel | 8 | Complete | 4 | 3 |
+| 7 - Files & Control Panel | 8 | Complete | 4 | 4 |
 
 **Total:** 80 requirements across 7 phases
 
