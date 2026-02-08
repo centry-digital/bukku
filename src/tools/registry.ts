@@ -11,13 +11,22 @@ import { salesCreditNoteConfig } from "./configs/sales-credit-note.js";
 import { salesPaymentConfig } from "./configs/sales-payment.js";
 import { salesRefundConfig } from "./configs/sales-refund.js";
 
+// Purchase entities (Phase 3)
+import { purchaseOrderConfig } from "./configs/purchase-order.js";
+import { goodsReceivedNoteConfig } from "./configs/goods-received-note.js";
+import { purchaseBillConfig } from "./configs/purchase-bill.js";
+import { purchaseCreditNoteConfig } from "./configs/purchase-credit-note.js";
+import { purchasePaymentConfig } from "./configs/purchase-payment.js";
+import { purchaseRefundConfig } from "./configs/purchase-refund.js";
+
 /**
  * Tool Registry
  *
  * Orchestrates registration of all MCP tools.
  * Phase 1 established the infrastructure.
- * Phase 2 adds sales entity configs.
- * Future phases will add purchases, banking, inventory, etc.
+ * Phase 2 added sales entity configs (7 entities, 42 tools).
+ * Phase 3 adds purchase entity configs (6 entities, 36 tools).
+ * Future phases will add banking, inventory, etc.
  */
 
 /**
@@ -39,6 +48,15 @@ export function registerAllTools(server: McpServer, client: BukkuClient): number
   totalTools += registerCrudTools(server, client, salesCreditNoteConfig);
   totalTools += registerCrudTools(server, client, salesPaymentConfig);
   totalTools += registerCrudTools(server, client, salesRefundConfig);
+
+  // Purchase entities (Phase 3)
+  // Each entity generates 6 tools: list, get, create, update, delete, update-status
+  totalTools += registerCrudTools(server, client, purchaseOrderConfig);
+  totalTools += registerCrudTools(server, client, goodsReceivedNoteConfig);
+  totalTools += registerCrudTools(server, client, purchaseBillConfig);
+  totalTools += registerCrudTools(server, client, purchaseCreditNoteConfig);
+  totalTools += registerCrudTools(server, client, purchasePaymentConfig);
+  totalTools += registerCrudTools(server, client, purchaseRefundConfig);
 
   return totalTools;
 }
