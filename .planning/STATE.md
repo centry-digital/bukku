@@ -1,6 +1,6 @@
 # Project State: Bukku MCP Server
 
-**Last updated:** 2026-02-08
+**Last updated:** 2026-02-09
 
 ## Project Reference
 
@@ -11,15 +11,15 @@
 ## Current Position
 
 **Active Phase:** Phase 7 - Files Control Panel
-**Active Plan:** 1 of 3
+**Active Plan:** 2 of 3
 **Plan Status:** Complete
 **Current Task:** N/A
-**Last activity:** 2026-02-09 - Completed 07-01-PLAN.md (File Operations)
+**Last activity:** 2026-02-09 - Completed 07-02-PLAN.md (Control Panel Entity Configs & Custom Tools)
 
 **Progress:**
 ```
 [██████████████████████████████████████████████████] 86% (6/7 phases complete)
-Phase 7: [████░░░░░░░░] 33% (1/3 plans complete)
+Phase 7: [████████░░░░] 67% (2/3 plans complete)
 ```
 
 ## Performance Metrics
@@ -27,7 +27,7 @@ Phase 7: [████░░░░░░░░] 33% (1/3 plans complete)
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 6 | 7 | On Track |
-| Plans Complete | 20 | TBD | On Track |
+| Plans Complete | 22 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -83,10 +83,12 @@ Phase 7: [████░░░░░░░░] 33% (1/3 plans complete)
 | 07-01 | Do NOT manually set Content-Type header in postMultipart | Fetch must set Content-Type automatically with multipart boundary. Manually setting it breaks the upload. | getHeaders(false) called to exclude Content-Type, allowing fetch to handle it correctly |
 | 07-01 | File config has only list+get operations - no create/update/delete | Create requires multipart/form-data (custom tool), API has no update/delete endpoints | Factory generates 2 tools (list-files, get-file). Upload handled by custom tool. |
 | 07-01 | Empty listFilters array for file entity | API spec shows no query parameters for GET /files (no pagination, no filters) | list-files tool has no filter parameters, returns ALL files |
+| 07-02 | Location config only enables list and create operations | Bukku API has path inconsistency: /locations for list/create but /location/{id} for get/update/delete | Custom tools in location-tools.ts handle singular path for single-item operations |
+| 07-02 | Archive operations via custom tools using PATCH with is_archived boolean | Control panel entities use is_archived pattern instead of status field | Custom tools needed for locations, tags, tag groups archive/unarchive |
 
 ### Active TODOs
 
-*None - Phase 6 complete, ready for Phase 7*
+*None - Phase 7 in progress (2/3 plans complete)*
 
 ### Blockers
 
@@ -94,6 +96,7 @@ Phase 7: [████░░░░░░░░] 33% (1/3 plans complete)
 
 ### Recent Changes
 
+- **2026-02-09:** Completed plan 07-02 (Control Panel Entity Configs & Custom Tools) - Created locationConfig (list+create only), tagConfig (full CRUD), tagGroupConfig (full CRUD). Created 9 custom tools: 3 location tools (get/update/delete) using singular /location/{id} path, 6 archive tools (2 per entity) using PATCH is_archived. Total new tools ready: 21 (when wired). Commits: 17d6e6a, 12e54d0.
 - **2026-02-09:** Completed plan 07-01 (File Operations) - Added BukkuClient.postMultipart method for multipart/form-data file uploads with getMimeType helper. Created file entity config (list+get only). Created custom upload-file tool with file_path parameter. Commits: 3d90f1f, 663999f.
 - **2026-02-08:** Completed plan 06-04 (Double-Entry Validation Field Name Correction - Gap Closure) - Fixed JournalEntryLine interface and validation function to use debit_amount/credit_amount instead of debit/credit. Updated all 17 tests to match Bukku API field names. Fixes UAT test 4 issue where validation always saw 0/0. Commits: ad97a5f, 4981c61.
 - **2026-02-08:** Completed plan 06-03 (Custom Journal Entry Tools & Registry Wiring) - Created custom journal entry create/update tools with double-entry validation. Wired all Phase 6 tools into registry (4 journal entry factory + 4 account factory + 2 custom journal + 3 custom account = 13 new tools). Total MCP server tools: 149. Commits: 18edcc6, 631e1e1.
@@ -115,18 +118,19 @@ Phase 7: [████░░░░░░░░] 33% (1/3 plans complete)
 ## Session Continuity
 
 **Last session:** 2026-02-09
-**Stopped at:** Phase 7 plan 1 complete (1/3 plans done)
-**Resume file:** .planning/phases/07-files-control-panel/07-01-SUMMARY.md
+**Stopped at:** Phase 7 plan 2 complete (2/3 plans done)
+**Resume file:** .planning/phases/07-files-control-panel/07-02-SUMMARY.md
 
-**What just happened:** Executed plan 07-01 (File Operations). Added BukkuClient.postMultipart method for multipart/form-data file uploads with getMimeType helper. Created file entity config with list+get operations only (no create/update/delete). Created custom upload-file tool accepting file_path parameter. Two commits: 3d90f1f (Task 1), 663999f (Task 2). Duration: 2min 9sec.
+**What just happened:** Executed plan 07-02 (Control Panel Entity Configs & Custom Tools). Created 3 entity configs: locationConfig (list+create only due to path inconsistency), tagConfig (full CRUD), tagGroupConfig (full CRUD). Created 9 custom tools: registerLocationTools (3 tools using singular /location/{id} path), registerControlPanelArchiveTools (6 archive/unarchive tools using PATCH is_archived). All tools follow project error handling patterns. Total new tools ready: 21 (when wired in plan 07-03). Two commits: 17d6e6a (configs), 12e54d0 (custom tools). Duration: 2min 21sec.
 
-**What's next:** Plan 07-02 (Registry wiring) per plan sequence
+**What's next:** Plan 07-03 (Registry Wiring) to wire all Phase 7 tools
 
 **Context for next session:**
-- Phase 7 progress: 1/3 plans complete
-- Plan 07-01 deliverables: BukkuClient.postMultipart, file entity config, custom upload-file tool
-- File operations ready for registry wiring
-- Commits: 3d90f1f (postMultipart + file config), 663999f (upload-file tool)
+- Phase 7 progress: 2/3 plans complete (07-01, 07-02 done)
+- Phase 7 deliverables so far: File entity config + 3 control panel configs + 12 custom tools (1 upload + 3 location + 6 archive + 2 location archive)
+- New tools created but not wired: 3 file tools (2 factory + 1 custom) + 21 control panel tools
+- Tool count: 149 tools wired (no change yet, wiring happens in 07-03)
+- Commits: 17d6e6a, 12e54d0 (plan 07-02); 3d90f1f, 663999f (plan 07-01)
 
 ---
 *State tracking since: 2026-02-06*
