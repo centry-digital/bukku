@@ -1,5 +1,5 @@
 ---
-status: complete
+status: diagnosed
 phase: 07-files-control-panel
 source: 07-01-SUMMARY.md, 07-02-SUMMARY.md, 07-03-SUMMARY.md
 started: 2026-02-09T12:00:00Z
@@ -82,17 +82,27 @@ skipped: 3
   reason: "PATCH /tags/groups/{id} endpoint does not exist in Bukku API. API spec only defines PATCH for /location/{id}. Archive tools for tag groups use a non-existent endpoint."
   severity: major
   test: 10
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "Bukku API does not define PATCH endpoints for /tags/groups/{id}. The tagPatch requestBody schema exists in control-panel.yaml (line 466) but is orphaned — not referenced by any path. No tagGroupPatch schema exists at all. The archive pattern was incorrectly assumed to apply uniformly to all control panel entities."
+  artifacts:
+    - path: "src/tools/custom/control-panel-archive.ts"
+      issue: "Lines 150-209: archive-tag-group and unarchive-tag-group call PATCH on non-existent endpoint"
+    - path: "src/tools/registry.ts"
+      issue: "registerControlPanelArchiveTools returns 6 but should return 2 after removing tag/tag-group archive tools"
+  missing:
+    - "Remove archive-tag-group and unarchive-tag-group tool definitions from control-panel-archive.ts"
+    - "Update registerControlPanelArchiveTools return count from 6 to 2"
+    - "Update registry JSDoc tool counts (Phase 7: 24 -> 20, Total: 173 -> 169)"
+  debug_session: ".planning/debug/tag-archive-no-patch-endpoint.md"
 
 - truth: "archive-tag and unarchive-tag toggle is_archived on tags"
   status: failed
   reason: "PATCH /tags/{id} endpoint does not exist in Bukku API. Additionally, archive-tag has Zod type coercion issue (id received as string). API spec only defines PATCH for /location/{id}."
   severity: major
   test: 12
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "Same as test 10 — Bukku API does not define PATCH for /tags/{id}. The tagPatch schema is orphaned. Secondary issue: z.number() in archive-tag is fragile when LLM sends id as string; z.coerce.number() would be more resilient but this is moot since the tools need removal."
+  artifacts:
+    - path: "src/tools/custom/control-panel-archive.ts"
+      issue: "Lines 88-148: archive-tag and unarchive-tag call PATCH on non-existent endpoint"
+  missing:
+    - "Remove archive-tag and unarchive-tag tool definitions from control-panel-archive.ts"
+  debug_session: ".planning/debug/tag-archive-patch-missing.md"

@@ -18,7 +18,7 @@
     "accounting"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.26.0",
     "zod": "^4.3.6"

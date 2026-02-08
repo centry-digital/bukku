@@ -1,94 +1,160 @@
 # Bukku MCP Server
 
-MCP server that lets Claude read and write accounting data in Bukku.
+An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that connects AI assistants to [Bukku](https://bukku.my), a Malaysian accounting platform. This gives your AI the ability to read, create, and manage your accounting data — invoices, bills, payments, contacts, products, and more.
 
-## Quick Start
+## What can it do?
 
-1. **Clone and install**
-   ```bash
-   git clone https://github.com/your-org/bukku-mcp.git
-   cd bukku-mcp
-   npm install
-   ```
+With this MCP server connected, you can ask your AI things like:
 
-2. **Build**
-   ```bash
-   npm run build
-   ```
+- "List my unpaid sales invoices"
+- "Create an invoice for RM 5,000 to Acme Corp for consulting services"
+- "Show me all purchase bills from last month"
+- "Record a bank transfer of RM 10,000 from Maybank to CIMB"
+- "Create a new contact for my supplier"
+- "Upload this receipt and attach it to the purchase bill"
 
-3. **Get your Bukku API token**
-   - Log into your Bukku account
-   - Navigate to Control Panel → Integrations → API Access
-   - Generate a new API token or copy your existing token
-   - Note your company subdomain (e.g., `mycompany` from `mycompany.bukku.my`)
+The server exposes **173 tools** covering the full Bukku API:
 
-4. **Configure Claude Desktop**
+| Category | Tools | What you can do |
+|----------|-------|-----------------|
+| **Sales** | 42 | Quotes, orders, delivery orders, invoices, credit notes, payments, refunds |
+| **Purchases** | 36 | Purchase orders, bills, credit notes, goods received notes, payments, refunds |
+| **Banking** | 18 | Money in, money out, bank transfers |
+| **Contacts** | 12 | Customers, suppliers, contact groups |
+| **Products** | 18 | Products, product bundles, product groups |
+| **Accounting** | 13 | Journal entries, chart of accounts |
+| **Files** | 3 | Upload and manage file attachments |
+| **Organisation** | 21 | Locations, tags, tag groups |
+| **Reference Data** | 10 | Tax codes, currencies, payment methods, terms, and more |
 
-   Open your Claude Desktop configuration file:
-   - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+## Prerequisites
 
-   Add the Bukku MCP server:
-   ```json
-   {
-     "mcpServers": {
-       "bukku": {
-         "type": "stdio",
-         "command": "node",
-         "args": ["/absolute/path/to/bukku-mcp/build/index.js"],
-         "env": {
-           "BUKKU_API_TOKEN": "your-token-here",
-           "BUKKU_COMPANY_SUBDOMAIN": "your-subdomain"
-         }
-       }
-     }
-   }
-   ```
+- [Node.js](https://nodejs.org) v18 or later
+- A [Bukku](https://bukku.my) account with API access enabled
+- An AI client that supports MCP (e.g. [Claude Desktop](https://claude.ai/download), [Claude Code](https://docs.anthropic.com/en/docs/claude-code))
 
-   Replace `/absolute/path/to/bukku-mcp` with the actual absolute path to your cloned repository.
+## Setup
 
-5. **Restart Claude Desktop**
+### 1. Clone and build
 
-   Completely quit and restart Claude Desktop for the configuration to take effect.
+```bash
+git clone https://github.com/centry-digital/bukku-mcp.git
+cd bukku-mcp
+npm install
+npm run build
+```
 
-6. **Try it**
+### 2. Get your Bukku API token
 
-   Ask Claude: "List my sales invoices from last month"
+1. Log into your Bukku account
+2. Go to **Control Panel > Integrations > API Access**
+3. Generate a new API token (or copy your existing one)
+4. Note your company subdomain — e.g. `mycompany` from `mycompany.bukku.my`
+
+### 3. Connect to your AI client
+
+#### Claude Desktop
+
+Open your config file:
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+Add the Bukku MCP server:
+
+```json
+{
+  "mcpServers": {
+    "bukku": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["/absolute/path/to/bukku-mcp/build/index.js"],
+      "env": {
+        "BUKKU_API_TOKEN": "your-token-here",
+        "BUKKU_COMPANY_SUBDOMAIN": "your-subdomain"
+      }
+    }
+  }
+}
+```
+
+Then restart Claude Desktop.
+
+#### Claude Code
+
+Add to your Claude Code settings (`.claude/settings.json` or project-level):
+
+```json
+{
+  "mcpServers": {
+    "bukku": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["/absolute/path/to/bukku-mcp/build/index.js"],
+      "env": {
+        "BUKKU_API_TOKEN": "your-token-here",
+        "BUKKU_COMPANY_SUBDOMAIN": "your-subdomain"
+      }
+    }
+  }
+}
+```
+
+#### Other MCP clients
+
+Any client that supports the [MCP stdio transport](https://modelcontextprotocol.io/docs/concepts/transports) can use this server. Set the command to `node /path/to/bukku-mcp/build/index.js` and provide the two environment variables.
 
 ## Configuration
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| BUKKU_API_TOKEN | Yes | Your Bukku API access token from Control Panel → Integrations → API Access |
-| BUKKU_COMPANY_SUBDOMAIN | Yes | Your company subdomain (e.g., 'mycompany' from mycompany.bukku.my) |
-
-## Available Tools
-
-Tools are added as the project develops. See the roadmap for planned coverage of all Bukku API categories.
+| `BUKKU_API_TOKEN` | Yes | Your Bukku API token from Control Panel > Integrations > API Access |
+| `BUKKU_COMPANY_SUBDOMAIN` | Yes | Your company subdomain (e.g. `mycompany` from `mycompany.bukku.my`) |
 
 ## Development
 
-- `npm run build` - Compile TypeScript
-- `npm test` - Run tests
-- `npm start` - Start server (requires env vars)
+```bash
+npm run build    # Compile TypeScript
+npm test         # Run tests
+npm start        # Start server (requires env vars)
+```
+
+### Project structure
+
+```
+src/
+├── client/       # Bukku API HTTP client
+├── config/       # Environment validation
+├── errors/       # Error handling and transformation
+├── tools/        # MCP tool definitions (one folder per category)
+│   ├── sales/
+│   ├── purchases/
+│   ├── banking/
+│   ├── contacts/
+│   ├── products/
+│   ├── accounting/
+│   ├── files/
+│   └── ...
+└── index.ts      # Server entry point
+```
 
 ## Troubleshooting
 
 **"Configuration Error" on startup**
-- Check that both `BUKKU_API_TOKEN` and `BUKKU_COMPANY_SUBDOMAIN` are set in your Claude Desktop config
+- Check that both `BUKKU_API_TOKEN` and `BUKKU_COMPANY_SUBDOMAIN` are set in your client config
 - Verify the environment variables are inside the `"env"` object
 
 **"Token validation failed"**
-- Verify your API token is valid and not expired
-- Log into Bukku and regenerate your token if needed
-- Ensure you're using the token from Control Panel → Integrations → API Access
+- Your API token may be invalid or expired
+- Log into Bukku and regenerate your token at Control Panel > Integrations > API Access
 
 **Server doesn't appear in Claude Desktop**
-- Check that the absolute path in your config points to the correct location
-- Ensure you ran `npm run build` to compile the TypeScript
-- Look for `build/index.js` in your project directory
-- Completely restart Claude Desktop (quit and reopen)
+- Confirm the path in your config points to `build/index.js`
+- Make sure you ran `npm run build`
+- Fully quit and restart Claude Desktop
 
 **Cannot find module errors**
-- Run `npm install` to ensure all dependencies are installed
-- Run `npm run build` to recompile TypeScript
+- Run `npm install` then `npm run build`
+
+## License
+
+MIT

@@ -1,3 +1,16 @@
 node_modules/
 build/
 *.js.map
+
+# Environment & secrets
+.env
+.env.*
+
+# IDE & OS
+.DS_Store
+*.swp
+*.swo
+
+# Local tooling
+.claude/
+.playwright-mcp/

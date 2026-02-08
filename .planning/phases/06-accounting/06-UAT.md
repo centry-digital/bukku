@@ -1,5 +1,5 @@
 ---
-status: complete
+status: diagnosed
 phase: 06-accounting
 source: [06-01-SUMMARY.md, 06-02-SUMMARY.md, 06-03-SUMMARY.md]
 started: 2026-02-08T15:44:00Z
@@ -69,7 +69,13 @@ skipped: 0
   reason: "User reported: Client-side validateDoubleEntry() checks debit/credit fields but API uses debit_amount/credit_amount. Validation is a no-op — always reads 0 for both totals. Unbalanced entries pass validation and get rejected by API with raw error instead of conversational message with totals/difference."
   severity: major
   test: 4
-  root_cause: ""
-  artifacts: []
-  missing: []
+  root_cause: "JournalEntryLine interface in double-entry.ts uses field names debit/credit, but Bukku API journal_items use debit_amount/credit_amount. The validation function sums line.debit and line.credit which are always undefined (read as 0), so totalDebits and totalCredits are always 0, making every entry appear balanced."
+  artifacts:
+    - path: "src/tools/validation/double-entry.ts"
+      issue: "JournalEntryLine interface uses debit/credit instead of debit_amount/credit_amount"
+    - path: "src/tools/validation/double-entry.test.ts"
+      issue: "Tests use debit/credit fields matching the wrong interface, so they pass despite the bug"
+  missing:
+    - "Change JournalEntryLine to use debit_amount/credit_amount (or support both field name patterns)"
+    - "Update all tests to use debit_amount/credit_amount field names"
   debug_session: ""
