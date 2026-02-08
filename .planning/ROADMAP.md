@@ -213,12 +213,13 @@ Plans:
 
 **Dependencies:** Phase 2 (reuses factory pattern), Phase 5 (needs reference data for account types)
 
-**Plans:** 3 plans
+**Plans:** 4 plans
 
 Plans:
 - [x] 06-01-PLAN.md -- Double-entry validation function (TDD)
 - [x] 06-02-PLAN.md -- Journal entry and account entity configs with account custom tools
 - [x] 06-03-PLAN.md -- Journal entry custom tools with validation and registry wiring
+- [ ] 06-04-PLAN.md -- UAT gap closure: fix double-entry validation field name mismatch
 
 **Requirements:**
 - ACCT-01: User can list journal entries with search, date range, and pagination filters
@@ -271,7 +272,7 @@ Plans:
 | 3 - Purchases Category | 18 | Complete | 3 | 3 |
 | 4 - Banking & Contacts | 10 | Complete | 2 | 2 |
 | 5 - Products & Lists | 8 | Complete | 4 | 4 |
-| 6 - Accounting | 4 | Complete | 3 | 3 |
+| 6 - Accounting | 4 | Complete | 4 | 3 |
 | 7 - Files & Control Panel | 8 | Pending | 0 | 0 |
 
 **Total:** 80 requirements across 7 phases
