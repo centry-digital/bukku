@@ -1,5 +1,7 @@
 import type { Env } from "../config/env.js";
 import { log } from "../utils/logger.js";
+import { readFile } from "node:fs/promises";
+import { basename, extname } from "node:path";
 
 /**
  * HTTP client for Bukku API.
@@ -32,6 +34,27 @@ export class BukkuClient {
     }
 
     return headers;
+  }
+
+  /**
+   * Map file extensions to MIME types for common file types.
+   * Returns null for unknown extensions.
+   */
+  private getMimeType(extension: string): string | null {
+    const mimeMap: Record<string, string> = {
+      ".pdf": "application/pdf",
+      ".png": "image/png",
+      ".jpg": "image/jpeg",
+      ".jpeg": "image/jpeg",
+      ".gif": "image/gif",
+      ".txt": "text/plain",
+      ".csv": "text/csv",
+      ".json": "application/json",
+      ".xml": "application/xml",
+      ".zip": "application/zip",
+    };
+
+    return mimeMap[extension.toLowerCase()] || null;
   }
 
   /**
@@ -135,6 +158,47 @@ export class BukkuClient {
     if (!response.ok) {
       throw response;
     }
+  }
+
+  /**
+   * POST multipart/form-data request for file uploads.
+   * Reads file from disk and sends as multipart form data.
+   * CRITICAL: Does NOT manually set Content-Type - fetch sets it automatically with boundary.
+   *
+   * @param path - API endpoint path
+   * @param filePath - Absolute path to file on disk
+   * @returns API response
+   */
+  async postMultipart(path: string, filePath: string): Promise<unknown> {
+    const url = this.buildUrl(path);
+
+    // Read file from disk
+    const fileBuffer = await readFile(filePath);
+    const fileName = basename(filePath);
+    const fileExtension = extname(filePath);
+
+    // Determine MIME type, fallback to generic binary
+    const mimeType = this.getMimeType(fileExtension) || "application/octet-stream";
+
+    // Create File object and FormData
+    const file = new File([fileBuffer], fileName, { type: mimeType });
+    const form = new FormData();
+    form.append("file", file);
+
+    // Get auth headers WITHOUT Content-Type (fetch sets it with boundary)
+    const headers = this.getHeaders(false);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers,
+      body: form,
+    });
+
+    if (!response.ok) {
+      throw response;
+    }
+
+    return response.json();
   }
 
   /**
