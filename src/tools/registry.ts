@@ -74,7 +74,7 @@ import { ReferenceDataCache } from "./cache/reference-cache.js";
  * Phase 4 added banking + contact entity configs (5 entities, 28 factory tools + 2 custom archive tools = 30 tools).
  * Phase 5 added product entity configs (3 entities, 14 factory tools + 4 custom archive tools + 10 reference data tools = 28 tools).
  * Phase 6 added accounting entity configs (2 entities, 8 factory tools + 2 custom journal tools + 3 custom account tools = 13 tools).
- * Phase 7 added file + control panel entity configs (4 entities, 14 factory tools + 1 custom upload tool + 3 custom location tools + 6 custom archive tools = 24 tools).
+ * Phase 7 added file + control panel entity configs (4 entities, 14 factory tools + 1 custom upload tool + 3 custom location tools + 2 custom archive tools = 20 tools).
  */
 
 /**
@@ -169,7 +169,7 @@ export function registerAllTools(server: McpServer, client: BukkuClient): number
   // Tag group: 5 factory tools (list, get, create, update, delete)
   totalTools += registerCrudTools(server, client, tagGroupConfig);
 
-  // Custom control panel archive tools (Phase 7) — 6 tools (archive/unarchive for locations, tags, tag groups)
+  // Custom control panel archive tools (Phase 7) — 2 tools (archive/unarchive for locations only)
   totalTools += registerControlPanelArchiveTools(server, client);
 
   return totalTools;
