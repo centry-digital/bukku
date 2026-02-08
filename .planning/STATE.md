@@ -6,15 +6,15 @@
 
 **Core Value:** Claude can read and write accounting data in Bukku reliably, so the user can do bookkeeping work through natural conversation instead of manual data entry.
 
-**Current Focus:** Phase 5 (Products & Lists) — Complete (137 MCP tools operational)
+**Current Focus:** Phase 5 (Products & Lists) — Complete (136 MCP tools operational)
 
 ## Current Position
 
 **Active Phase:** Phase 5 - Products & Lists
-**Active Plan:** 3 of 3 (Phase complete)
+**Active Plan:** 4 of 4 (Phase complete with gap closure)
 **Plan Status:** Phase complete
 **Current Task:** N/A
-**Last activity:** 2026-02-08 - Completed 05-03-PLAN.md (Registry Wiring)
+**Last activity:** 2026-02-08 - Completed 05-04-PLAN.md (Gap Closure)
 
 **Progress:**
 ```
@@ -26,7 +26,7 @@
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 5 | 7 | On Track |
-| Plans Complete | 15 | TBD | On Track |
+| Plans Complete | 16 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -70,6 +70,8 @@
 | 05-03 | ReferenceDataCache instantiated inside registerAllTools with default 5-minute TTL | Cache lifecycle tied to server instance, simple instantiation pattern | Cache available to reference data tools without global state |
 | 05-03 | Registry organized by phase with clear comment blocks and tool counts | Phase-based organization with inline documentation for maintenance | Easy to scan, understand tool distribution, and validate counts |
 | 05-03 | Product entities registered before custom tools (established pattern from Phase 4) | Factory tools first, then custom tools that extend their capabilities | Consistent registration order across all phases |
+| 05-04 | 500 errors include response body to debug Bukku's incorrect status codes | Bukku API sometimes returns validation errors as 500 instead of 400 - including body surfaces hidden details | Improved debugging experience, faster issue resolution |
+| 05-04 | Product bundles have no list operation - users directed to list-products with type=bundle | Bukku API has no GET /products/bundles endpoint - bundles listed via GET /products?type=bundle | Eliminates phantom tool, guides users to correct approach, accurate tool count (136 not 137) |
 
 ### Active TODOs
 
@@ -81,7 +83,8 @@
 
 ### Recent Changes
 
-- **2026-02-08:** Completed plan 05-03 (Registry Wiring) - Wired all Phase 5 entities into registry, producing 137-tool MCP server (108 prior + 29 new). Phase 5 complete.
+- **2026-02-08:** Completed plan 05-04 (Gap Closure) - Fixed two UAT issues: enhanced 500 errors to include response body (surfaces hidden validation errors), removed phantom list-product-bundles tool. Tool count corrected from 137 to 136.
+- **2026-02-08:** Completed plan 05-03 (Registry Wiring) - Wired all Phase 5 entities into registry, producing 137-tool MCP server (108 prior + 29 new).
 - **2026-02-08:** Completed plan 05-02 (Reference Data Cache & Tools) - Created ReferenceDataCache class with 5-minute TTL and 10 reference data list tools using POST /v2/lists endpoint
 - **2026-02-08:** Completed plan 05-01 (Product Catalog Configurations) - Created 3 product entity configs (product, bundle, group) and 4 custom archive tools
 - **2026-02-08:** Completed plan 04-02 (Registry Wiring) - Wired all Phase 4 entities into registry, producing 108-tool MCP server (78 prior + 30 new)
@@ -96,19 +99,20 @@
 ## Session Continuity
 
 **Last session:** 2026-02-08
-**Stopped at:** Phase 5 complete (3 of 3 plans done)
-**Resume file:** .planning/phases/05-products-lists/05-03-SUMMARY.md
+**Stopped at:** Phase 5 complete with gap closure (4 of 4 plans done)
+**Resume file:** .planning/phases/05-products-lists/05-04-SUMMARY.md
 
-**What just happened:** Executed plan 05-03 (Registry Wiring). Wired all Phase 5 entities into registry. Tool count increased from 108 to 137 (29 new Phase 5 tools: 15 product factory + 4 archive + 10 reference data). All TypeScript compiles cleanly, build passes, all tests pass. Phase 5 complete.
+**What just happened:** Executed plan 05-04 (Gap Closure). Closed two UAT issues from Phase 5 testing: (1) Enhanced 500 error handler to include response body, surfacing hidden validation errors that Bukku incorrectly returns as 500s. (2) Removed phantom list-product-bundles tool - Bukku has no GET /products/bundles endpoint, bundles are listed via list-products with type=bundle. Tool count corrected from 137 to 136. All tests pass, TypeScript compiles cleanly. Phase 5 complete.
 
 **What's next:** Phase 6 (next phase to be planned)
 
 **Context for next session:**
-- Phase 5 complete: 3 of 3 plans done
-- Total tools: 137 (42 sales + 36 purchase + 30 banking/contact + 29 product/reference)
+- Phase 5 complete: 4 of 4 plans done (including gap closure)
+- Total tools: 136 (42 sales + 36 purchase + 30 banking/contact + 28 product/reference)
 - Product catalog: Full CRUD for products, bundles, groups
 - Reference data: 10 list tools with 5-minute cache
-- Commits: 2c0ec26 (registry wiring)
+- Error handling: Enhanced 500 errors show response body for debugging
+- Commits: 7be1b5f (500 error fix), 164aa56 (remove list-bundles)
 
 ---
 *State tracking since: 2026-02-06*
