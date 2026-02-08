@@ -19,11 +19,11 @@ This roadmap delivers a Model Context Protocol (MCP) server that exposes all Buk
 **Plans:** 5 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Project scaffold, env validation, and authenticated Bukku HTTP client
-- [ ] 01-02-PLAN.md -- HTTP-to-MCP error transformation (TDD)
-- [ ] 01-03-PLAN.md -- TypeScript types from OpenAPI specs
-- [ ] 01-04-PLAN.md -- CRUD factory pattern, tool registry, and MCP server entry point
-- [ ] 01-05-PLAN.md -- README setup guide and end-to-end verification
+- [x] 01-01-PLAN.md -- Project scaffold, env validation, and authenticated Bukku HTTP client
+- [x] 01-02-PLAN.md -- HTTP-to-MCP error transformation (TDD)
+- [x] 01-03-PLAN.md -- TypeScript types from OpenAPI specs
+- [x] 01-04-PLAN.md -- CRUD factory pattern, tool registry, and MCP server entry point
+- [x] 01-05-PLAN.md -- README setup guide and end-to-end verification
 
 **Requirements:**
 - INFRA-01: MCP server starts via stdio transport and connects to Claude Desktop / Claude Code
@@ -45,7 +45,7 @@ Plans:
 4. Missing or invalid environment variables produce clear, actionable error messages
 5. HTTP errors from Bukku API are transformed into structured MCP errors with what/why/how-to-fix context
 
-**Status:** Pending
+**Status:** Complete (2026-02-07)
 
 ---
 
@@ -245,7 +245,7 @@ Plans:
 
 | Phase | Requirements | Status | Plans | Completed Plans |
 |-------|--------------|--------|-------|-----------------|
-| 1 - Foundation Infrastructure | 11 | Pending | 5 | 0 |
+| 1 - Foundation Infrastructure | 11 | Complete | 5 | 5 |
 | 2 - Sales Category | 21 | Complete | 3 | 3 |
 | 3 - Purchases Category | 18 | Complete | 3 | 3 |
 | 4 - Banking & Contacts | 10 | Pending | 0 | 0 |
