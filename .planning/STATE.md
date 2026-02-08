@@ -10,15 +10,15 @@
 
 ## Current Position
 
-**Active Phase:** Phase 2 - Sales Category (COMPLETE)
-**Active Plan:** 3 of 3 (all plans complete, including gap closure)
-**Plan Status:** Phase complete
+**Active Phase:** Phase 3 - Purchases Category (IN PROGRESS)
+**Active Plan:** 2 of 3 (plan 03-02 complete)
+**Plan Status:** In progress
 **Current Task:** N/A
-**Last activity:** 2026-02-08 - Completed 02-03-PLAN.md (GAP-01 closure)
+**Last activity:** 2026-02-08 - Completed 03-02-PLAN.md (Purchase Entity Configurations)
 
 **Progress:**
 ```
-[██████████>                                        ] 10% (0/7 phases complete, phase 2 fully done)
+[██████████>                                        ] 10% (0/7 phases complete, phase 3 in progress: 1/3 plans done)
 ```
 
 ## Performance Metrics
@@ -26,7 +26,7 @@
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 0 | 7 | On Track |
-| Plans Complete | 7 | TBD | On Track |
+| Plans Complete | 8 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -67,28 +67,29 @@
 
 ### Recent Changes
 
+- **2026-02-08:** Completed plan 03-02 (Purchase Entity Configurations) - Created 6 CrudEntityConfig objects for all purchase entities with entity-specific filters and pending_approval workflow
 - **2026-02-08:** Completed plan 02-03 (GAP-01 Closure) - Business-rule context embedded in MCP tool descriptions for delete constraints and status lifecycle
 - **2026-02-07:** Completed plan 02-02 (Tool Registry Wiring) - Wired all 7 sales entity configs into registry, producing 42 working MCP tools
 - **2026-02-07:** Completed plan 02-01 (Sales Entity Configurations) - Created 7 CrudEntityConfig objects for all sales transaction types, ready for registry wiring
 - **2026-02-06:** Completed plan 01-04 (CRUD Factory & MCP Server) - Generic factory pattern generates tools from config, MCP server entry point with stdio transport
 - **2026-02-06:** Completed plan 01-03 (TypeScript Types) - Core Bukku API types created
-- **2026-02-06:** Completed plan 01-02 (Error Transformation) - HTTP-to-MCP error transformer with conversational messages
 
 ## Session Continuity
 
 **Last session:** 2026-02-08
-**Stopped at:** Phase 2 fully complete (including GAP-01 closure)
-**Resume file:** None
+**Stopped at:** Phase 3 Plan 02 complete (Purchase Entity Configurations)
+**Resume file:** .planning/phases/03-purchases-category/03-03-PLAN.md
 
-**What just happened:** Executed plan 02-03 (GAP-01 closure). Added optional `businessRules` field to CrudEntityConfig. Factory now appends business-rule text to delete and update-status tool descriptions. All 7 sales entity configs declare draft-only delete constraints and draft->ready->void status lifecycle. Build and all tests pass.
+**What just happened:** Executed plan 03-02. Created 6 CrudEntityConfig objects for all purchase entities: purchase-order, goods-received-note, purchase-bill, purchase-credit-note, purchase-payment, purchase-refund. Each config includes entity-specific filters (bills use payment_mode, payments/refunds add account_id). All purchase entities use pending_approval workflow (draft -> pending_approval -> ready -> void) unlike sales (draft -> ready -> void). TypeScript compilation passes.
 
-**What's next:** Phase 3 (Purchases Category) — replicate sales entity pattern for purchase entities, including businessRules.
+**What's next:** Phase 3 Plan 03 — Wire purchase configs into tool registry to generate 36 new MCP tools (6 entities × 6 operations).
 
 **Context for next session:**
-- 42 MCP tools registered: 7 sales entities x 6 operations (list, get, create, update, delete, update-status)
-- Tool descriptions now include business-rule context (e.g., "Only draft invoices can be deleted")
-- `businessRules` pattern established: declare in entity config, factory appends to tool descriptions
-- Phase 3 (Purchases) should follow same pattern including businessRules for each entity
+- 42 MCP tools registered: 7 sales entities x 6 operations
+- 6 purchase entity configs ready for registration
+- Purchase filter variations: bills (payment_mode), credit notes (no email_status), payments/refunds (account_id)
+- Purchase status workflow includes pending_approval state
+- Next plan will bring total to 78 MCP tools (42 sales + 36 purchases)
 
 ---
 *State tracking since: 2026-02-06*
