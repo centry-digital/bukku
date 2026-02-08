@@ -179,12 +179,13 @@ Plans:
 
 **Dependencies:** Phase 2 (reuses factory pattern)
 
-**Plans:** 3 plans
+**Plans:** 4 plans
 
 Plans:
 - [x] 05-01-PLAN.md -- Product, bundle, and group entity configs with custom archive tools
 - [x] 05-02-PLAN.md -- Reference data cache and list tools (POST /v2/lists)
 - [x] 05-03-PLAN.md -- Wire all Phase 5 entities into registry and verify build
+- [ ] 05-04-PLAN.md -- UAT gap closure: fix 500 error visibility and remove phantom bundle list tool
 
 **Requirements:**
 - PROD-01: User can list products with search and pagination filters
@@ -262,7 +263,7 @@ Plans:
 | 2 - Sales Category | 21 | Complete | 3 | 3 |
 | 3 - Purchases Category | 18 | Complete | 3 | 3 |
 | 4 - Banking & Contacts | 10 | Complete | 2 | 2 |
-| 5 - Products & Lists | 8 | Complete | 3 | 3 |
+| 5 - Products & Lists | 8 | Complete | 4 | 3 |
 | 6 - Accounting | 4 | Pending | 0 | 0 |
 | 7 - Files & Control Panel | 8 | Pending | 0 | 0 |
 
