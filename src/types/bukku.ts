@@ -97,4 +97,12 @@ export interface CrudEntityConfig {
 
   /** Additional list filter parameters beyond the common ones */
   listFilters?: string[];
+
+  /** Optional business-rule context surfaced in tool descriptions to guide LLM behavior */
+  businessRules?: {
+    /** Constraints on when delete is allowed and what to do instead (appended to delete tool description) */
+    delete?: string;
+    /** Valid status transitions and lifecycle rules (appended to update-status tool description) */
+    statusTransitions?: string;
+  };
 }

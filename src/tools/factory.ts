@@ -198,7 +198,7 @@ export function registerCrudTools(
   // Delete tool: delete-{entity}
   if (config.operations.includes("delete")) {
     const deleteName = `delete-${config.entity}`;
-    const deleteDescription = `Delete a ${config.description}`;
+    const deleteDescription = `Delete a ${config.description}. ${config.businessRules?.delete ?? ''}`.trim();
 
     server.tool(
       deleteName,
@@ -233,7 +233,7 @@ export function registerCrudTools(
   // Status update tool: update-{entity}-status
   if (config.hasStatusUpdate) {
     const statusName = `update-${config.entity}-status`;
-    const statusDescription = `Update the status of a ${config.description}`;
+    const statusDescription = `Update the status of a ${config.description}. ${config.businessRules?.statusTransitions ?? ''}`.trim();
 
     server.tool(
       statusName,
