@@ -98,9 +98,16 @@ Plans:
 
 ### Phase 3: Purchases Category
 
-**Goal:** Complete purchasing workflow tools using validated patterns from Phase 2
+**Goal:** Complete purchasing workflow tools with corrected business rules for both sales and purchases
 
 **Dependencies:** Phase 2 (reuses factory pattern, tool description standards)
+
+**Plans:** 3 plans
+
+Plans:
+- [ ] 03-01-PLAN.md -- Correct business rules in all 7 sales entity configs
+- [ ] 03-02-PLAN.md -- Create 6 purchase entity configs
+- [ ] 03-03-PLAN.md -- Wire purchase configs into registry and verify 78-tool build
 
 **Requirements:**
 - PURC-01: User can list purchase orders with search, date range, status, and pagination filters
@@ -240,7 +247,7 @@ Plans:
 |-------|--------------|--------|-------|-----------------|
 | 1 - Foundation Infrastructure | 11 | Pending | 5 | 0 |
 | 2 - Sales Category | 21 | Complete | 3 | 3 |
-| 3 - Purchases Category | 18 | Pending | 0 | 0 |
+| 3 - Purchases Category | 18 | Pending | 3 | 0 |
 | 4 - Banking & Contacts | 10 | Pending | 0 | 0 |
 | 5 - Products & Lists | 8 | Pending | 0 | 0 |
 | 6 - Accounting | 4 | Pending | 0 | 0 |
