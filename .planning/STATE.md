@@ -18,15 +18,15 @@
 
 **Progress:**
 ```
-[██████████████████>                               ] 30% (3/7 phases complete, ready for phase 4)
+[████████████████>                                  ] 28% (2/7 phases marked complete, ready for phase 4)
 ```
 
 ## Performance Metrics
 
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
-| Phases Complete | 3 | 7 | On Track |
-| Plans Complete | 11 | TBD | On Track |
+| Phases Complete | 2 | 7 | On Track |
+| Plans Complete | 10 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -56,6 +56,11 @@
 | 02-02 | Sequential registration over loop for entity configs | Explicit calls to registerCrudTools for each config | Easier to read, debug, and maintain. Clear tool count tracking per entity |
 | 02-03 | Business rules in tool descriptions (proactive) not error messages (reactive) | LLM reads tool descriptions before calling tools, enabling correct decisions upfront | Prevents invalid recovery suggestions like reverting ready invoices to draft |
 | 02-03 | businessRules field is optional on CrudEntityConfig | Backward compatibility with configs that lack rules | Non-breaking change, future entity categories can adopt incrementally |
+| 03-01 | Corrected delete to "draft and void" (not "draft only") | Both draft and void transactions are deletable per API behavior | All 13 entity configs use consistent delete constraint |
+| 03-01 | Added pending_approval to status lifecycle | Approval workflow: draft -> pending_approval -> ready is valid path | Accurate status guidance prevents failed operations |
+| 03-02 | Bills/credit notes omit email_status filter | OpenAPI purchase.yaml confirms these entities lack email_status | Accurate filter lists match API spec |
+| 03-02 | Bills include payment_mode with 'claim' option | Purchase-specific expense claims/reimbursement scenario | JSDoc documents purchase-specific business context |
+| 03-03 | Sequential registration in workflow order (order -> GRN -> bill -> credit -> payment -> refund) | Mirrors sales pattern for consistency and readability | Registry easy to scan, reflects business flow |
 
 ### Active TODOs
 
