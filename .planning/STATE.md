@@ -1,24 +1,24 @@
 # Project State: Bukku MCP Server
 
-**Last updated:** 2026-02-07
+**Last updated:** 2026-02-08
 
 ## Project Reference
 
 **Core Value:** Claude can read and write accounting data in Bukku reliably, so the user can do bookkeeping work through natural conversation instead of manual data entry.
 
-**Current Focus:** Phase 2 complete — ready for Phase 3 (Purchases Category)
+**Current Focus:** Phase 2 fully complete (including GAP-01 closure) — ready for Phase 3 (Purchases Category)
 
 ## Current Position
 
 **Active Phase:** Phase 2 - Sales Category (COMPLETE)
-**Active Plan:** 2 of 2 (all plans complete)
-**Plan Status:** Phase complete, human verification pending
+**Active Plan:** 3 of 3 (all plans complete, including gap closure)
+**Plan Status:** Phase complete
 **Current Task:** N/A
-**Last activity:** 2026-02-07 - Phase 2 execution complete
+**Last activity:** 2026-02-08 - Completed 02-03-PLAN.md (GAP-01 closure)
 
 **Progress:**
 ```
-[██████>                                            ] 10% (0/7 phases complete, phase 2 done pending verification)
+[██████████>                                        ] 10% (0/7 phases complete, phase 2 fully done)
 ```
 
 ## Performance Metrics
@@ -26,7 +26,7 @@
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 0 | 7 | On Track |
-| Plans Complete | 6 | TBD | On Track |
+| Plans Complete | 7 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -54,17 +54,20 @@
 | 02-01 | Entity-specific list filters per OpenAPI spec | Each entity config declares its own listFilters array | Different sales entities support different filter parameters (invoice has payment_status, payment has payment_mode, etc.) |
 | 02-01 | All 7 sales entities support uniform operations | All configs enable all 5 CRUD operations + status updates | OpenAPI spec shows all sales transaction types support full CRUD + status changes |
 | 02-02 | Sequential registration over loop for entity configs | Explicit calls to registerCrudTools for each config | Easier to read, debug, and maintain. Clear tool count tracking per entity |
+| 02-03 | Business rules in tool descriptions (proactive) not error messages (reactive) | LLM reads tool descriptions before calling tools, enabling correct decisions upfront | Prevents invalid recovery suggestions like reverting ready invoices to draft |
+| 02-03 | businessRules field is optional on CrudEntityConfig | Backward compatibility with configs that lack rules | Non-breaking change, future entity categories can adopt incrementally |
 
 ### Active TODOs
 
-*No active TODOs yet - awaiting Phase 1 planning*
+*None - Phase 2 fully complete*
 
 ### Blockers
 
-*No blockers - ready to begin Phase 1 planning*
+*No blockers - ready for Phase 3 (Purchases Category)*
 
 ### Recent Changes
 
+- **2026-02-08:** Completed plan 02-03 (GAP-01 Closure) - Business-rule context embedded in MCP tool descriptions for delete constraints and status lifecycle
 - **2026-02-07:** Completed plan 02-02 (Tool Registry Wiring) - Wired all 7 sales entity configs into registry, producing 42 working MCP tools
 - **2026-02-07:** Completed plan 02-01 (Sales Entity Configurations) - Created 7 CrudEntityConfig objects for all sales transaction types, ready for registry wiring
 - **2026-02-06:** Completed plan 01-04 (CRUD Factory & MCP Server) - Generic factory pattern generates tools from config, MCP server entry point with stdio transport
@@ -73,19 +76,19 @@
 
 ## Session Continuity
 
-**Last session:** 2026-02-07
-**Stopped at:** Phase 2 execution complete, human verification pending
+**Last session:** 2026-02-08
+**Stopped at:** Phase 2 fully complete (including GAP-01 closure)
 **Resume file:** None
 
-**What just happened:** Executed all Phase 2 plans (02-01 entity configs, 02-02 registry wiring). 42 MCP tools registered for 7 sales entities. Build and tests pass. Verification report created — all automated checks passed, 5 items need human testing with live API.
+**What just happened:** Executed plan 02-03 (GAP-01 closure). Added optional `businessRules` field to CrudEntityConfig. Factory now appends business-rule text to delete and update-status tool descriptions. All 7 sales entity configs declare draft-only delete constraints and draft->ready->void status lifecycle. Build and all tests pass.
 
-**What's next:** Human verification of sales tools with live Bukku API, then Phase 3 (Purchases).
+**What's next:** Phase 3 (Purchases Category) — replicate sales entity pattern for purchase entities, including businessRules.
 
 **Context for next session:**
-- 42 MCP tools registered: 7 sales entities × 6 operations (list, get, create, update, delete, update-status)
-- Tool names follow kebab-case: list-sales-invoices, create-delivery-order, update-sales-payment-status
-- Verification report: .planning/phases/02-sales-category/02-VERIFICATION.md
-- Phase 3 (Purchases) follows same pattern — just add configs for purchase entities
+- 42 MCP tools registered: 7 sales entities x 6 operations (list, get, create, update, delete, update-status)
+- Tool descriptions now include business-rule context (e.g., "Only draft invoices can be deleted")
+- `businessRules` pattern established: declare in entity config, factory appends to tool descriptions
+- Phase 3 (Purchases) should follow same pattern including businessRules for each entity
 
 ---
 *State tracking since: 2026-02-06*
