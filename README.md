@@ -33,6 +33,7 @@ MCP server that lets Claude read and write accounting data in Bukku.
    {
      "mcpServers": {
        "bukku": {
+         "type": "stdio",
          "command": "node",
          "args": ["/absolute/path/to/bukku-mcp/build/index.js"],
          "env": {

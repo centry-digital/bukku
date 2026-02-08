@@ -43,6 +43,7 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
 {
   "mcpServers": {
     "bukku": {
+      "type": "stdio",
       "command": "node",
       "args": ["/absolute/path/to/bukku-mcp/build/index.js"],
       "env": {
