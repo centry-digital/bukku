@@ -15,4 +15,8 @@ export const salesRefundConfig: CrudEntityConfig = {
   operations: ["list", "get", "create", "update", "delete"],
   hasStatusUpdate: true,
   listFilters: ["contact_id"],
+  businessRules: {
+    delete: "Only draft refunds can be deleted. Ready or void refunds cannot be deleted — use update-sales-refund-status to void a ready refund instead.",
+    statusTransitions: "Valid transitions: draft -> ready, ready -> void. A void refund is final and cannot be changed. There is no way to revert a ready or void refund back to draft.",
+  },
 };

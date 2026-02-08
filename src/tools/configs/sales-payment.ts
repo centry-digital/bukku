@@ -15,4 +15,8 @@ export const salesPaymentConfig: CrudEntityConfig = {
   operations: ["list", "get", "create", "update", "delete"],
   hasStatusUpdate: true,
   listFilters: ["contact_id", "payment_mode"],
+  businessRules: {
+    delete: "Only draft payments can be deleted. Ready or void payments cannot be deleted — use update-sales-payment-status to void a ready payment instead.",
+    statusTransitions: "Valid transitions: draft -> ready, ready -> void. A void payment is final and cannot be changed. There is no way to revert a ready or void payment back to draft.",
+  },
 };

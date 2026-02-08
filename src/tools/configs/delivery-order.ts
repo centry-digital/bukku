@@ -15,4 +15,8 @@ export const deliveryOrderConfig: CrudEntityConfig = {
   operations: ["list", "get", "create", "update", "delete"],
   hasStatusUpdate: true,
   listFilters: ["contact_id", "email_status", "transfer_status"],
+  businessRules: {
+    delete: "Only draft delivery orders can be deleted. Ready or void delivery orders cannot be deleted — use update-delivery-order-status to void a ready delivery order instead.",
+    statusTransitions: "Valid transitions: draft -> ready, ready -> void. A void delivery order is final and cannot be changed. There is no way to revert a ready or void delivery order back to draft.",
+  },
 };

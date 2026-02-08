@@ -15,4 +15,8 @@ export const salesCreditNoteConfig: CrudEntityConfig = {
   operations: ["list", "get", "create", "update", "delete"],
   hasStatusUpdate: true,
   listFilters: ["contact_id", "email_status"],
+  businessRules: {
+    delete: "Only draft credit notes can be deleted. Ready or void credit notes cannot be deleted — use update-sales-credit-note-status to void a ready credit note instead.",
+    statusTransitions: "Valid transitions: draft -> ready, ready -> void. A void credit note is final and cannot be changed. There is no way to revert a ready or void credit note back to draft.",
+  },
 };
