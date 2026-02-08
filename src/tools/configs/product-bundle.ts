@@ -10,6 +10,9 @@ import type { CrudEntityConfig } from "../../types/bukku.js";
  * NOT the factory status tool, because the API expects { is_archived: boolean }
  * instead of { status: string }.
  *
+ * Note: Bukku API has no GET /products/bundles endpoint.
+ * To list bundles, use GET /products?type=bundle (the list-products tool with type=bundle filter).
+ *
  * Cross-references:
  * - Use list-products to find product IDs for bundle items
  */
@@ -19,8 +22,8 @@ export const productBundleConfig: CrudEntityConfig = {
   singularKey: "bundle",
   pluralKey: "bundles",
   description:
-    "product bundle. Bundles aggregate multiple products with optional discounts. Use list-products to find product IDs for bundle items.",
-  operations: ["list", "get", "create", "update", "delete"],
+    "product bundle. Bundles aggregate multiple products with optional discounts. To list bundles, use list-products with type=bundle. Use list-products to find product IDs for bundle items.",
+  operations: ["get", "create", "update", "delete"],
   hasStatusUpdate: false,
   listFilters: [],
   businessRules: {

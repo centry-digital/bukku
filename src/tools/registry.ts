@@ -51,7 +51,7 @@ import { ReferenceDataCache } from "./cache/reference-cache.js";
  * Phase 2 added sales entity configs (7 entities, 42 tools).
  * Phase 3 added purchase entity configs (6 entities, 36 tools).
  * Phase 4 added banking + contact entity configs (5 entities, 28 factory tools + 2 custom archive tools = 30 tools).
- * Phase 5 added product entity configs (3 entities, 15 factory tools + 4 custom archive tools + 10 reference data tools = 29 tools).
+ * Phase 5 added product entity configs (3 entities, 14 factory tools + 4 custom archive tools + 10 reference data tools = 28 tools).
  */
 
 /**
@@ -100,7 +100,7 @@ export function registerAllTools(server: McpServer, client: BukkuClient): number
 
   // Product entities (Phase 5)
   // Product: 5 tools (no status — archive handled by custom tools)
-  // Product bundle: 5 tools (no status — archive handled by custom tools)
+  // Product bundle: 4 tools (no list — use list-products with type=bundle; no status — archive handled by custom tools)
   // Product group: 5 tools (no status — groups have no archive)
   totalTools += registerCrudTools(server, client, productConfig);
   totalTools += registerCrudTools(server, client, productBundleConfig);
