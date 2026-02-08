@@ -37,6 +37,14 @@ import { productGroupConfig } from "./configs/product-group.js";
 import { journalEntryConfig } from "./configs/journal-entry.js";
 import { accountConfig } from "./configs/account.js";
 
+// File entities (Phase 7)
+import { fileConfig } from "./configs/file.js";
+
+// Control panel entities (Phase 7)
+import { locationConfig } from "./configs/location.js";
+import { tagConfig } from "./configs/tag.js";
+import { tagGroupConfig } from "./configs/tag-group.js";
+
 // Custom tools (Phase 4)
 import { registerContactArchiveTools } from "./custom/contact-archive.js";
 
@@ -47,6 +55,11 @@ import { registerReferenceDataTools } from "./custom/reference-data.js";
 // Custom tools (Phase 6)
 import { registerJournalEntryTools } from "./custom/journal-entry-tools.js";
 import { registerAccountCustomTools } from "./custom/account-tools.js";
+
+// Custom tools (Phase 7)
+import { registerFileUploadTool } from "./custom/file-upload.js";
+import { registerLocationTools } from "./custom/location-tools.js";
+import { registerControlPanelArchiveTools } from "./custom/control-panel-archive.js";
 
 // Cache (Phase 5)
 import { ReferenceDataCache } from "./cache/reference-cache.js";
@@ -61,6 +74,7 @@ import { ReferenceDataCache } from "./cache/reference-cache.js";
  * Phase 4 added banking + contact entity configs (5 entities, 28 factory tools + 2 custom archive tools = 30 tools).
  * Phase 5 added product entity configs (3 entities, 14 factory tools + 4 custom archive tools + 10 reference data tools = 28 tools).
  * Phase 6 added accounting entity configs (2 entities, 8 factory tools + 2 custom journal tools + 3 custom account tools = 13 tools).
+ * Phase 7 added file + control panel entity configs (4 entities, 14 factory tools + 1 custom upload tool + 3 custom location tools + 6 custom archive tools = 24 tools).
  */
 
 /**
@@ -134,6 +148,29 @@ export function registerAllTools(server: McpServer, client: BukkuClient): number
 
   // Custom account tools (Phase 6) — 3 tools (search-accounts, archive-account, unarchive-account)
   totalTools += registerAccountCustomTools(server, client);
+
+  // File entity (Phase 7)
+  // File: 2 factory tools (list, get) — no create/update/delete (files are immutable, upload handled by custom tool)
+  totalTools += registerCrudTools(server, client, fileConfig);
+
+  // Custom file upload tool (Phase 7) — 1 tool (multipart/form-data upload)
+  totalTools += registerFileUploadTool(server, client);
+
+  // Control panel entities (Phase 7)
+  // Location: 2 factory tools (list, create) — get/update/delete use singular /location/{id} path, handled by custom tools
+  totalTools += registerCrudTools(server, client, locationConfig);
+
+  // Custom location tools (Phase 7) — 3 tools (get, update, delete with singular /location/{id} path)
+  totalTools += registerLocationTools(server, client);
+
+  // Tag: 5 factory tools (list, get, create, update, delete)
+  totalTools += registerCrudTools(server, client, tagConfig);
+
+  // Tag group: 5 factory tools (list, get, create, update, delete)
+  totalTools += registerCrudTools(server, client, tagGroupConfig);
+
+  // Custom control panel archive tools (Phase 7) — 6 tools (archive/unarchive for locations, tags, tag groups)
+  totalTools += registerControlPanelArchiveTools(server, client);
 
   return totalTools;
 }
