@@ -216,9 +216,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 06-01-PLAN.md -- Double-entry validation function (TDD)
-- [ ] 06-02-PLAN.md -- Journal entry and account entity configs with account custom tools
-- [ ] 06-03-PLAN.md -- Journal entry custom tools with validation and registry wiring
+- [x] 06-01-PLAN.md -- Double-entry validation function (TDD)
+- [x] 06-02-PLAN.md -- Journal entry and account entity configs with account custom tools
+- [x] 06-03-PLAN.md -- Journal entry custom tools with validation and registry wiring
 
 **Requirements:**
 - ACCT-01: User can list journal entries with search, date range, and pagination filters
@@ -232,7 +232,7 @@ Plans:
 3. User can view and modify the chart of accounts structure
 4. Journal entry creation references valid accounts from the chart of accounts
 
-**Status:** In Progress
+**Status:** Complete (2026-02-08)
 
 ---
 
@@ -270,8 +270,8 @@ Plans:
 | 2 - Sales Category | 21 | Complete | 3 | 3 |
 | 3 - Purchases Category | 18 | Complete | 3 | 3 |
 | 4 - Banking & Contacts | 10 | Complete | 2 | 2 |
-| 5 - Products & Lists | 8 | Complete | 4 | 3 |
-| 6 - Accounting | 4 | In Progress | 3 | 0 |
+| 5 - Products & Lists | 8 | Complete | 4 | 4 |
+| 6 - Accounting | 4 | Complete | 3 | 3 |
 | 7 - Files & Control Panel | 8 | Pending | 0 | 0 |
 
 **Total:** 80 requirements across 7 phases
