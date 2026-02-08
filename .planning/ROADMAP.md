@@ -60,7 +60,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md -- Create CrudEntityConfig for all 7 sales entities
 - [x] 02-02-PLAN.md -- Wire registry and verify 42-tool build
-- [ ] 02-03-PLAN.md -- Add business-rule context to tool descriptions (GAP-01 fix)
+- [x] 02-03-PLAN.md -- Add business-rule context to tool descriptions (GAP-01 fix)
 
 **Requirements:**
 - SALE-01: User can list sales quotes with search, date range, status, and pagination filters
@@ -92,7 +92,7 @@ Plans:
 4. Claude can correctly select the appropriate sales tool based on natural language requests
 5. All sales tools provide clear error messages when operations fail (validation, API errors)
 
-**Status:** Complete (2026-02-07) — GAP-01 fix pending
+**Status:** Complete (2026-02-08)
 
 ---
 
@@ -239,7 +239,7 @@ Plans:
 | Phase | Requirements | Status | Plans | Completed Plans |
 |-------|--------------|--------|-------|-----------------|
 | 1 - Foundation Infrastructure | 11 | Pending | 5 | 0 |
-| 2 - Sales Category | 21 | GAP-01 fix pending | 3 | 2 |
+| 2 - Sales Category | 21 | Complete | 3 | 3 |
 | 3 - Purchases Category | 18 | Pending | 0 | 0 |
 | 4 - Banking & Contacts | 10 | Pending | 0 | 0 |
 | 5 - Products & Lists | 8 | Pending | 0 | 0 |
