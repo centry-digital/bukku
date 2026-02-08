@@ -92,7 +92,7 @@
 
 **What just happened:** Executed plan 04-02 (Registry Wiring). Wired all 5 Phase 4 entity configs + 2 custom archive tools into registry. MCP server now produces 108 tools (42 sales + 36 purchases + 18 banking + 5 contact + 5 contact-group + 2 custom archive). Build and all 10 tests pass cleanly.
 
-**What's next:** Phase 5 (Inventory) or next planned phase.
+**What's next:** Phase 5 (Products & Lists) — product catalog tools and reference data access.
 
 **Context for next session:**
 - Phase 4 complete: 108-tool MCP server operational
