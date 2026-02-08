@@ -4,8 +4,8 @@
  */
 
 export interface MCPErrorResponse {
+  isError: true;
   content: Array<{ type: 'text'; text: string }>;
-  isError?: true;
   [key: string]: unknown;
 }
 
@@ -17,6 +17,7 @@ export function transformHttpError(
   // Handle authentication errors (401)
   if (status === 401) {
     return {
+      isError: true,
       content: [
         {
           type: 'text',
@@ -29,6 +30,7 @@ export function transformHttpError(
   // Handle permission errors (403)
   if (status === 403) {
     return {
+      isError: true,
       content: [
         {
           type: 'text',
@@ -41,6 +43,7 @@ export function transformHttpError(
   // Handle not found errors (404)
   if (status === 404) {
     return {
+      isError: true,
       content: [
         {
           type: 'text',
@@ -88,6 +91,7 @@ export function transformHttpError(
   // Handle service unavailable (503)
   if (status === 503) {
     return {
+      isError: true,
       content: [
         {
           type: 'text',
@@ -99,11 +103,17 @@ export function transformHttpError(
 
   // Handle server errors (500+)
   if (status !== null && status >= 500) {
+    // Include response body for debugging server errors
+    // Often these contain validation errors that should have been 400s
+    const parsedBody = body as Record<string, unknown>;
+    const bodyText = body ? `\n\nServer response: ${JSON.stringify(parsedBody, null, 2)}` : '';
+
     return {
+      isError: true,
       content: [
         {
           type: 'text',
-          text: `An unexpected error occurred on Bukku's servers while trying to "${operation}". Please try again, and if the issue persists, contact Bukku support.`,
+          text: `An unexpected error occurred on Bukku's servers while trying to "${operation}". Please try again, and if the issue persists, contact Bukku support.${bodyText}`,
         },
       ],
     };
@@ -135,6 +145,7 @@ export function transformNetworkError(
     error instanceof TypeError
   ) {
     return {
+      isError: true,
       content: [
         {
           type: 'text',

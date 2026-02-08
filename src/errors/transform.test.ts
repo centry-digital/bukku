@@ -1,6 +1,6 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert';
-import { transformHttpError, transformNetworkError } from './transform.js';
+import { transformHttpError, transformNetworkError } from './transform.ts';
 
 describe('transformHttpError', () => {
   test('401 error produces auth failure message mentioning BUKKU_API_TOKEN', () => {
@@ -120,6 +120,19 @@ describe('transformHttpError', () => {
       text.toLowerCase().includes('try') || text.toLowerCase().includes('again'),
       'Should suggest trying again'
     );
+  });
+
+  test('500 error includes response body for debugging', () => {
+    const result = transformHttpError(
+      500,
+      { message: 'Internal error', errors: { name: ['is already taken'] } },
+      'update product'
+    );
+
+    assert.strictEqual(result.isError, true);
+    const text = result.content[0].text;
+    assert.ok(text.includes('Server response:'), 'Should include server response label');
+    assert.ok(text.includes('is already taken'), 'Should include actual error details from body');
   });
 
   test('503 error suggests trying later', () => {
