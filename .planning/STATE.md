@@ -11,10 +11,10 @@
 ## Current Position
 
 **Active Phase:** Phase 3 - Purchases Category (IN PROGRESS)
-**Active Plan:** 2 of 3 (plan 03-02 complete)
+**Active Plan:** 1 of 3 (plan 03-01 complete)
 **Plan Status:** In progress
 **Current Task:** N/A
-**Last activity:** 2026-02-08 - Completed 03-02-PLAN.md (Purchase Entity Configurations)
+**Last activity:** 2026-02-08 - Completed 03-01-PLAN.md (Correct Sales Business Rules)
 
 **Progress:**
 ```
@@ -67,7 +67,7 @@
 
 ### Recent Changes
 
-- **2026-02-08:** Completed plan 03-02 (Purchase Entity Configurations) - Created 6 CrudEntityConfig objects for all purchase entities with entity-specific filters and pending_approval workflow
+- **2026-02-08:** Completed plan 03-01 (Correct Sales Business Rules) - Fixed delete constraints (draft+void) and added pending_approval status to all 7 sales entity configs
 - **2026-02-08:** Completed plan 02-03 (GAP-01 Closure) - Business-rule context embedded in MCP tool descriptions for delete constraints and status lifecycle
 - **2026-02-07:** Completed plan 02-02 (Tool Registry Wiring) - Wired all 7 sales entity configs into registry, producing 42 working MCP tools
 - **2026-02-07:** Completed plan 02-01 (Sales Entity Configurations) - Created 7 CrudEntityConfig objects for all sales transaction types, ready for registry wiring
@@ -77,19 +77,18 @@
 ## Session Continuity
 
 **Last session:** 2026-02-08
-**Stopped at:** Phase 3 Plan 02 complete (Purchase Entity Configurations)
-**Resume file:** .planning/phases/03-purchases-category/03-03-PLAN.md
+**Stopped at:** Phase 3 Plan 01 complete
+**Resume file:** .planning/phases/03-purchases-category/03-01-SUMMARY.md
 
-**What just happened:** Executed plan 03-02. Created 6 CrudEntityConfig objects for all purchase entities: purchase-order, goods-received-note, purchase-bill, purchase-credit-note, purchase-payment, purchase-refund. Each config includes entity-specific filters (bills use payment_mode, payments/refunds add account_id). All purchase entities use pending_approval workflow (draft -> pending_approval -> ready -> void) unlike sales (draft -> ready -> void). TypeScript compilation passes.
+**What just happened:** Executed plan 03-01 (Correct Sales Business Rules). Corrected two inaccuracies discovered during Phase 3 discussion: (1) delete constraint now allows draft AND void statuses, (2) status lifecycle now includes pending_approval state. All 7 sales entity configs updated. Build and all tests pass (10/10).
 
-**What's next:** Phase 3 Plan 03 — Wire purchase configs into tool registry to generate 36 new MCP tools (6 entities × 6 operations).
+**What's next:** Phase 3 Plan 02 (Purchase Quote & Order Configs) — create purchase entity configs using the corrected business rules pattern.
 
 **Context for next session:**
-- 42 MCP tools registered: 7 sales entities x 6 operations
-- 6 purchase entity configs ready for registration
-- Purchase filter variations: bills (payment_mode), credit notes (no email_status), payments/refunds (account_id)
-- Purchase status workflow includes pending_approval state
-- Next plan will bring total to 78 MCP tools (42 sales + 36 purchases)
+- Sales business rules corrected: delete allows draft+void, lifecycle includes pending_approval
+- All 7 sales configs updated: quotes, orders, delivery orders, invoices, credit notes, payments, refunds
+- Purchase entity configs (03-02, 03-03) will use corrected rules from the start
+- Commit: 2104ef1 (fix(03-01): correct business rules in all 7 sales entity configs)
 
 ---
 *State tracking since: 2026-02-06*
