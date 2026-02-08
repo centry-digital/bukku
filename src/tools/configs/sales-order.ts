@@ -16,7 +16,7 @@ export const salesOrderConfig: CrudEntityConfig = {
   hasStatusUpdate: true,
   listFilters: ["contact_id", "email_status", "transfer_status"],
   businessRules: {
-    delete: "Only draft orders can be deleted. Ready or void orders cannot be deleted — use update-sales-order-status to void a ready order instead.",
-    statusTransitions: "Valid transitions: draft -> ready, ready -> void. A void order is final and cannot be changed. There is no way to revert a ready or void order back to draft.",
+    delete: "Only draft and void orders can be deleted. Ready or pending approval orders cannot be deleted — use update-sales-order-status to void a ready order instead.",
+    statusTransitions: "Valid transitions: draft -> pending_approval, draft -> ready, pending_approval -> ready, ready -> void. A void order is final and cannot be changed. There is no way to revert from ready, pending_approval, or void back to draft.",
   },
 };
