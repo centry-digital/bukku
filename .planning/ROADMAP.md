@@ -145,6 +145,12 @@ Plans:
 
 **Dependencies:** Phase 2 (reuses factory pattern)
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 04-01-PLAN.md -- Banking entity configs, contact entity configs, and custom contact archive tools
+- [ ] 04-02-PLAN.md -- Wire registry and verify 108-tool build
+
 **Requirements:**
 - BANK-01: User can list bank incomes with search, date range, and pagination filters
 - BANK-02: User can create, read, update, and delete a bank income
@@ -248,7 +254,7 @@ Plans:
 | 1 - Foundation Infrastructure | 11 | Complete | 5 | 5 |
 | 2 - Sales Category | 21 | Complete | 3 | 3 |
 | 3 - Purchases Category | 18 | Complete | 3 | 3 |
-| 4 - Banking & Contacts | 10 | Pending | 0 | 0 |
+| 4 - Banking & Contacts | 10 | Pending | 2 | 0 |
 | 5 - Products & Lists | 8 | Pending | 0 | 0 |
 | 6 - Accounting | 4 | Pending | 0 | 0 |
 | 7 - Files & Control Panel | 8 | Pending | 0 | 0 |
