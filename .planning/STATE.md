@@ -6,27 +6,27 @@
 
 **Core Value:** Claude can read and write accounting data in Bukku reliably, so the user can do bookkeeping work through natural conversation instead of manual data entry.
 
-**Current Focus:** Phase 2 fully complete (including GAP-01 closure) — ready for Phase 3 (Purchases Category)
+**Current Focus:** Phase 3 (Purchases Category) complete — ready for Phase 4 (Contacts & Banking Category)
 
 ## Current Position
 
-**Active Phase:** Phase 3 - Purchases Category (IN PROGRESS)
-**Active Plan:** 1 of 3 (plan 03-01 complete)
-**Plan Status:** In progress
+**Active Phase:** Phase 3 - Purchases Category (COMPLETE)
+**Active Plan:** 3 of 3 (all plans complete)
+**Plan Status:** Phase complete
 **Current Task:** N/A
-**Last activity:** 2026-02-08 - Completed 03-01-PLAN.md (Correct Sales Business Rules)
+**Last activity:** 2026-02-08 - Completed 03-03-PLAN.md (Purchase Registry Wiring)
 
 **Progress:**
 ```
-[██████████>                                        ] 10% (0/7 phases complete, phase 3 in progress: 1/3 plans done)
+[██████████████████>                               ] 30% (3/7 phases complete, ready for phase 4)
 ```
 
 ## Performance Metrics
 
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
-| Phases Complete | 0 | 7 | On Track |
-| Plans Complete | 8 | TBD | On Track |
+| Phases Complete | 3 | 7 | On Track |
+| Plans Complete | 11 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -59,36 +59,37 @@
 
 ### Active TODOs
 
-*None - Phase 2 fully complete*
+*None - Phase 3 fully complete*
 
 ### Blockers
 
-*No blockers - ready for Phase 3 (Purchases Category)*
+*No blockers - ready for Phase 4 (Contacts & Banking Category)*
 
 ### Recent Changes
 
+- **2026-02-08:** Completed plan 03-03 (Purchase Registry Wiring) - Wired all 6 purchase entity configs into registry, producing 78 total working MCP tools (42 sales + 36 purchases)
+- **2026-02-08:** Completed plan 03-02 (Purchase Entity Configurations) - Created 6 purchase entity configs with corrected business rules
 - **2026-02-08:** Completed plan 03-01 (Correct Sales Business Rules) - Fixed delete constraints (draft+void) and added pending_approval status to all 7 sales entity configs
 - **2026-02-08:** Completed plan 02-03 (GAP-01 Closure) - Business-rule context embedded in MCP tool descriptions for delete constraints and status lifecycle
 - **2026-02-07:** Completed plan 02-02 (Tool Registry Wiring) - Wired all 7 sales entity configs into registry, producing 42 working MCP tools
 - **2026-02-07:** Completed plan 02-01 (Sales Entity Configurations) - Created 7 CrudEntityConfig objects for all sales transaction types, ready for registry wiring
-- **2026-02-06:** Completed plan 01-04 (CRUD Factory & MCP Server) - Generic factory pattern generates tools from config, MCP server entry point with stdio transport
-- **2026-02-06:** Completed plan 01-03 (TypeScript Types) - Core Bukku API types created
 
 ## Session Continuity
 
 **Last session:** 2026-02-08
-**Stopped at:** Phase 3 Plan 01 complete
-**Resume file:** .planning/phases/03-purchases-category/03-01-SUMMARY.md
+**Stopped at:** Phase 3 complete (all 3 plans done)
+**Resume file:** .planning/phases/03-purchases-category/03-03-SUMMARY.md
 
-**What just happened:** Executed plan 03-01 (Correct Sales Business Rules). Corrected two inaccuracies discovered during Phase 3 discussion: (1) delete constraint now allows draft AND void statuses, (2) status lifecycle now includes pending_approval state. All 7 sales entity configs updated. Build and all tests pass (10/10).
+**What just happened:** Executed plan 03-03 (Purchase Registry Wiring). Wired all 6 purchase entity configs into tool registry. MCP server now produces 78 working tools (42 sales + 36 purchases). Build and all tests pass (10/10). Phase 3 complete.
 
-**What's next:** Phase 3 Plan 02 (Purchase Quote & Order Configs) — create purchase entity configs using the corrected business rules pattern.
+**What's next:** Phase 4 (Contacts & Banking Category) — add contact, banking account, and banking transaction entity configs.
 
 **Context for next session:**
-- Sales business rules corrected: delete allows draft+void, lifecycle includes pending_approval
-- All 7 sales configs updated: quotes, orders, delivery orders, invoices, credit notes, payments, refunds
-- Purchase entity configs (03-02, 03-03) will use corrected rules from the start
-- Commit: 2104ef1 (fix(03-01): correct business rules in all 7 sales entity configs)
+- Phase 3 complete: 78 working MCP tools across sales and purchases categories
+- All purchase entities follow corrected business rules from plan 03-01
+- Sequential registration pattern maintained in registry.ts
+- Proven CRUD factory pattern ready for rapid entity additions
+- Commit: 975ef7b (feat(03-03): wire purchase entity configs into tool registry)
 
 ---
 *State tracking since: 2026-02-06*
