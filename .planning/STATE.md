@@ -6,19 +6,19 @@
 
 **Core Value:** Claude can read and write accounting data in Bukku reliably, so the user can do bookkeeping work through natural conversation instead of manual data entry.
 
-**Current Focus:** Phase 3 (Purchases Category) complete — ready for Phase 4 (Contacts & Banking Category)
+**Current Focus:** Phase 4 (Banking & Contacts) Plan 01 complete — ready for Plan 02 (Registry Wiring)
 
 ## Current Position
 
-**Active Phase:** Phase 3 - Purchases Category (COMPLETE)
-**Active Plan:** 3 of 3 (all plans complete)
-**Plan Status:** Phase complete
+**Active Phase:** Phase 4 - Banking & Contacts
+**Active Plan:** 1 of 2 (Plan 01 complete)
+**Plan Status:** In progress
 **Current Task:** N/A
-**Last activity:** 2026-02-08 - Completed 03-03-PLAN.md (Purchase Registry Wiring)
+**Last activity:** 2026-02-08 - Completed 04-01-PLAN.md (Entity Configs & Custom Tools)
 
 **Progress:**
 ```
-[█████████████████████>                             ] 43% (3/7 phases complete, ready for phase 4)
+[████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░] 48% (3/7 phases complete, phase 4 plan 1/2 done)
 ```
 
 ## Performance Metrics
@@ -26,7 +26,7 @@
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
 | Phases Complete | 3 | 7 | On Track |
-| Plans Complete | 10 | TBD | On Track |
+| Plans Complete | 11 | TBD | On Track |
 | Requirements Delivered | 0 | 80 | On Track |
 | Blockers | 0 | 0 | Green |
 
@@ -61,17 +61,21 @@
 | 03-02 | Bills/credit notes omit email_status filter | OpenAPI purchase.yaml confirms these entities lack email_status | Accurate filter lists match API spec |
 | 03-02 | Bills include payment_mode with 'claim' option | Purchase-specific expense claims/reimbursement scenario | JSDoc documents purchase-specific business context |
 | 03-03 | Sequential registration in workflow order (order -> GRN -> bill -> credit -> payment -> refund) | Mirrors sales pattern for consistency and readability | Registry easy to scan, reflects business flow |
+| 04-01 | Contact archive uses PATCH with is_archived boolean, not factory status tool | API expects { is_archived: boolean } not { status: string } | Custom tools needed for non-standard API patterns |
+| 04-01 | Bank transfer has only account_id filter (no contact_id, no email_status) | Transfers are account-to-account, no contact involved | Accurate filter set matches API spec |
+| 04-01 | Contacts use custom wrapper keys (contact/contacts, group/groups) | First non-transaction entities break from transaction/transactions pattern | Validates CrudEntityConfig flexibility |
 
 ### Active TODOs
 
-*None - Phase 3 fully complete*
+*None - Plan 04-01 complete, ready for Plan 04-02*
 
 ### Blockers
 
-*No blockers - ready for Phase 4 (Contacts & Banking Category)*
+*No blockers - ready for Plan 04-02 (Registry Wiring)*
 
 ### Recent Changes
 
+- **2026-02-08:** Completed plan 04-01 (Entity Configs & Custom Tools) - Created 5 CrudEntityConfig objects (3 banking, 2 contacts) and 2 custom archive tools
 - **2026-02-08:** Completed plan 03-03 (Purchase Registry Wiring) - Wired all 6 purchase entity configs into registry, producing 78 total working MCP tools (42 sales + 36 purchases)
 - **2026-02-08:** Completed plan 03-02 (Purchase Entity Configurations) - Created 6 purchase entity configs with corrected business rules
 - **2026-02-08:** Completed plan 03-01 (Correct Sales Business Rules) - Fixed delete constraints (draft+void) and added pending_approval status to all 7 sales entity configs
@@ -82,19 +86,19 @@
 ## Session Continuity
 
 **Last session:** 2026-02-08
-**Stopped at:** Phase 3 complete (all 3 plans done)
-**Resume file:** .planning/phases/03-purchases-category/03-03-SUMMARY.md
+**Stopped at:** Phase 4 Plan 01 complete (Entity Configs & Custom Tools)
+**Resume file:** .planning/phases/04-banking-contacts/04-01-SUMMARY.md
 
-**What just happened:** Executed plan 03-03 (Purchase Registry Wiring). Wired all 6 purchase entity configs into tool registry. MCP server now produces 78 working tools (42 sales + 36 purchases). Build and all tests pass (10/10). Phase 3 complete.
+**What just happened:** Executed plan 04-01 (Entity Configs & Custom Tools). Created 5 CrudEntityConfig objects (3 banking, 2 contacts) and 2 custom contact archive tools. All 6 files compile cleanly. First non-transaction entities (contact, contact-group) with custom wrapper keys. Custom tools pattern established for non-standard API operations.
 
-**What's next:** Phase 4 (Contacts & Banking Category) — add contact, banking account, and banking transaction entity configs.
+**What's next:** Plan 04-02 (Registry Wiring) — wire all 5 entity configs and custom archive tools into the tool registry.
 
 **Context for next session:**
-- Phase 3 complete: 78 working MCP tools across sales and purchases categories
-- All purchase entities follow corrected business rules from plan 03-01
-- Sequential registration pattern maintained in registry.ts
-- Proven CRUD factory pattern ready for rapid entity additions
-- Commit: 975ef7b (feat(03-03): wire purchase entity configs into tool registry)
+- Plan 04-01 complete: 5 CrudEntityConfig objects + 2 custom tools ready
+- New directory: src/tools/custom/ for non-standard tool patterns
+- Contact config has hasStatusUpdate: false (archive handled by custom tools)
+- Bank transfer has reduced filters (account_id only)
+- Commits: aabfdd4, 0c94983, 46bc5c9
 
 ---
 *State tracking since: 2026-02-06*
