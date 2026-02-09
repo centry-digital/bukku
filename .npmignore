@@ -1,0 +1,27 @@
+# Source code (build output ships instead)
+src/
+
+# Dev/planning files
+.planning/
+.api-specs/
+.claude/
+.github/
+.playwright-mcp/
+
+# Dev config
+tsconfig.json
+.gitignore
+.env
+.env.*
+
+# OS/IDE artifacts
+.DS_Store
+*.swp
+*.swo
+
+# Dev artifacts
+node_modules/
+*.tgz
+
+# Misc
+sales-snapshot.md
