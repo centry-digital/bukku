@@ -12,12 +12,18 @@
  * 6. Log startup to stderr
  */
 
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { validateEnv } from "./config/env.js";
 import { BukkuClient } from "./client/bukku-client.js";
 import { registerAllTools } from "./tools/registry.js";
 import { log } from "./utils/logger.js";
+
+// Read package.json version dynamically
+const packageJsonPath = new URL("../package.json", import.meta.url);
+const pkg = JSON.parse(readFileSync(fileURLToPath(packageJsonPath), "utf-8"));
 
 /**
  * Main entry point.
@@ -36,7 +42,7 @@ async function main(): Promise<void> {
   // Step 4: Create MCP server
   const server = new McpServer({
     name: "bukku",
-    version: "1.0.0",
+    version: pkg.version,
   });
 
   // Step 5: Register all tools
