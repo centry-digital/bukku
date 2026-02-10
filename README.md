@@ -1,5 +1,7 @@
 # Bukku MCP Server
 
+[![npm version](https://img.shields.io/npm/v/@centry-digital/bukku-mcp)](https://www.npmjs.com/package/@centry-digital/bukku-mcp)
+
 An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that connects AI assistants to [Bukku](https://bukku.my), a Malaysian accounting platform. This gives your AI the ability to read, create, and manage your accounting data — invoices, bills, payments, contacts, products, and more.
 
 ## What can it do?
@@ -27,15 +29,206 @@ The server exposes **173 tools** covering the full Bukku API:
 | **Organisation** | 21 | Locations, tags, tag groups |
 | **Reference Data** | 10 | Tax codes, currencies, payment methods, terms, and more |
 
-## Prerequisites
+## Quick Start
+
+Get up and running in under 2 minutes.
+
+### Prerequisites
 
 - [Node.js](https://nodejs.org) v18 or later
 - A [Bukku](https://bukku.my) account with API access enabled
 - An AI client that supports MCP (e.g. [Claude Desktop](https://claude.ai/download), [Claude Code](https://docs.anthropic.com/en/docs/claude-code))
 
-## Setup
+### Step 1: Get your Bukku API token
 
-### 1. Clone and build
+1. Log into your Bukku account
+2. Go to **Control Panel > Integrations > API Access**
+3. Generate a new API token (or copy your existing one)
+4. Note your company subdomain — e.g. `mycompany` from `mycompany.bukku.my`
+
+### Step 2: Add to your AI client
+
+For Claude Desktop, open your config file:
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+Add this configuration:
+
+```json
+{
+  "mcpServers": {
+    "bukku": {
+      "command": "npx",
+      "args": ["-y", "@centry-digital/bukku-mcp"],
+      "env": {
+        "BUKKU_API_TOKEN": "your-token-here",
+        "BUKKU_COMPANY_SUBDOMAIN": "your-subdomain"
+      }
+    }
+  }
+}
+```
+
+### Step 3: Restart your AI client
+
+Quit and reopen Claude Desktop. That's it — you're ready to go!
+
+## Installation
+
+### npx (recommended)
+
+The quickest way to use the server is with `npx`. No installation needed — it downloads and runs the latest version automatically:
+
+```bash
+npx @centry-digital/bukku-mcp
+```
+
+This is what the Quick Start configuration uses. `npx` ensures you're always running the latest version without manual updates.
+
+### npm global install
+
+If you prefer a persistent installation:
+
+```bash
+npm install -g @centry-digital/bukku-mcp
+```
+
+Then update your AI client configuration to use the installed command instead:
+
+```json
+{
+  "mcpServers": {
+    "bukku": {
+      "command": "bukku-mcp",
+      "env": {
+        "BUKKU_API_TOKEN": "your-token-here",
+        "BUKKU_COMPANY_SUBDOMAIN": "your-subdomain"
+      }
+    }
+  }
+}
+```
+
+## Configuration
+
+### Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `BUKKU_API_TOKEN` | Yes | Your Bukku API token from Control Panel > Integrations > API Access |
+| `BUKKU_COMPANY_SUBDOMAIN` | Yes | Your company subdomain (e.g. `mycompany` from `mycompany.bukku.my`) |
+
+### Claude Desktop
+
+Open your configuration file:
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+**Using npx (recommended):**
+
+```json
+{
+  "mcpServers": {
+    "bukku": {
+      "command": "npx",
+      "args": ["-y", "@centry-digital/bukku-mcp"],
+      "env": {
+        "BUKKU_API_TOKEN": "your-token-here",
+        "BUKKU_COMPANY_SUBDOMAIN": "your-subdomain"
+      }
+    }
+  }
+}
+```
+
+**If you installed globally:**
+
+```json
+{
+  "mcpServers": {
+    "bukku": {
+      "command": "bukku-mcp",
+      "env": {
+        "BUKKU_API_TOKEN": "your-token-here",
+        "BUKKU_COMPANY_SUBDOMAIN": "your-subdomain"
+      }
+    }
+  }
+}
+```
+
+After updating the config, restart Claude Desktop.
+
+### Claude Code
+
+Add to `.claude/settings.json` in your home directory or project:
+
+**Using npx (recommended):**
+
+```json
+{
+  "mcpServers": {
+    "bukku": {
+      "command": "npx",
+      "args": ["-y", "@centry-digital/bukku-mcp"],
+      "env": {
+        "BUKKU_API_TOKEN": "your-token-here",
+        "BUKKU_COMPANY_SUBDOMAIN": "your-subdomain"
+      }
+    }
+  }
+}
+```
+
+**If you installed globally:**
+
+```json
+{
+  "mcpServers": {
+    "bukku": {
+      "command": "bukku-mcp",
+      "env": {
+        "BUKKU_API_TOKEN": "your-token-here",
+        "BUKKU_COMPANY_SUBDOMAIN": "your-subdomain"
+      }
+    }
+  }
+}
+```
+
+### Other MCP Clients
+
+Any client that supports the [MCP stdio transport](https://modelcontextprotocol.io/docs/concepts/transports) can use this server. Use the `npx @centry-digital/bukku-mcp` command with the two environment variables shown above.
+
+## Troubleshooting
+
+**"Configuration Error" on startup**
+- Check that both `BUKKU_API_TOKEN` and `BUKKU_COMPANY_SUBDOMAIN` are set in your client config
+- Verify the environment variables are inside the `"env"` object
+
+**"Token validation failed"**
+- Your API token may be invalid or expired
+- Log into Bukku and regenerate your token at Control Panel > Integrations > API Access
+
+**Server doesn't appear in your AI client**
+- Verify your configuration JSON syntax is correct (no trailing commas)
+- Make sure you've restarted your AI client after editing the config
+- Check that Node.js v18 or later is installed: `node --version`
+
+**"Could not resolve package" with npx**
+- Check that you have Node.js v18 or later installed
+- Verify your network connection and proxy settings if applicable
+- Try running `npm view @centry-digital/bukku-mcp` to confirm the package is accessible
+
+**Permission errors with global install**
+- Consider using `npx` instead (no installation needed)
+- Or fix npm permissions: [https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally)
+
+## Development
+
+Want to contribute or run from source? Here's how to set up your development environment.
+
+### Clone and build
 
 ```bash
 git clone https://github.com/centry-digital/bukku-mcp.git
@@ -44,73 +237,7 @@ npm install
 npm run build
 ```
 
-### 2. Get your Bukku API token
-
-1. Log into your Bukku account
-2. Go to **Control Panel > Integrations > API Access**
-3. Generate a new API token (or copy your existing one)
-4. Note your company subdomain — e.g. `mycompany` from `mycompany.bukku.my`
-
-### 3. Connect to your AI client
-
-#### Claude Desktop
-
-Open your config file:
-- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
-
-Add the Bukku MCP server:
-
-```json
-{
-  "mcpServers": {
-    "bukku": {
-      "type": "stdio",
-      "command": "node",
-      "args": ["/absolute/path/to/bukku-mcp/build/index.js"],
-      "env": {
-        "BUKKU_API_TOKEN": "your-token-here",
-        "BUKKU_COMPANY_SUBDOMAIN": "your-subdomain"
-      }
-    }
-  }
-}
-```
-
-Then restart Claude Desktop.
-
-#### Claude Code
-
-Add to your Claude Code settings (`.claude/settings.json` or project-level):
-
-```json
-{
-  "mcpServers": {
-    "bukku": {
-      "type": "stdio",
-      "command": "node",
-      "args": ["/absolute/path/to/bukku-mcp/build/index.js"],
-      "env": {
-        "BUKKU_API_TOKEN": "your-token-here",
-        "BUKKU_COMPANY_SUBDOMAIN": "your-subdomain"
-      }
-    }
-  }
-}
-```
-
-#### Other MCP clients
-
-Any client that supports the [MCP stdio transport](https://modelcontextprotocol.io/docs/concepts/transports) can use this server. Set the command to `node /path/to/bukku-mcp/build/index.js` and provide the two environment variables.
-
-## Configuration
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `BUKKU_API_TOKEN` | Yes | Your Bukku API token from Control Panel > Integrations > API Access |
-| `BUKKU_COMPANY_SUBDOMAIN` | Yes | Your company subdomain (e.g. `mycompany` from `mycompany.bukku.my`) |
-
-## Development
+### Commands
 
 ```bash
 npm run build    # Compile TypeScript
@@ -136,24 +263,6 @@ src/
 │   └── ...
 └── index.ts      # Server entry point
 ```
-
-## Troubleshooting
-
-**"Configuration Error" on startup**
-- Check that both `BUKKU_API_TOKEN` and `BUKKU_COMPANY_SUBDOMAIN` are set in your client config
-- Verify the environment variables are inside the `"env"` object
-
-**"Token validation failed"**
-- Your API token may be invalid or expired
-- Log into Bukku and regenerate your token at Control Panel > Integrations > API Access
-
-**Server doesn't appear in Claude Desktop**
-- Confirm the path in your config points to `build/index.js`
-- Make sure you ran `npm run build`
-- Fully quit and restart Claude Desktop
-
-**Cannot find module errors**
-- Run `npm install` then `npm run build`
 
 ## License
 
