@@ -48,11 +48,9 @@ Get up and running in under 2 minutes.
 
 ### Step 2: Add to your AI client
 
-For Claude Desktop, open your config file:
-- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+The configuration includes your organisation's API token and subdomain, so make sure you're connecting to the right Bukku organisation.
 
-Add this configuration:
+**Claude Code (recommended):** Add to your **project-level** `.claude/settings.json` to keep credentials scoped to the relevant project:
 
 ```json
 {
@@ -69,9 +67,17 @@ Add this configuration:
 }
 ```
 
+**Claude Desktop:** Open your config file:
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+Add the same configuration as above.
+
+> **Note:** Claude Desktop uses a single global config, so the MCP server will be available across all conversations. Double-check that your API token and subdomain match the Bukku organisation you intend to work with.
+
 ### Step 3: Restart your AI client
 
-Quit and reopen Claude Desktop. That's it — you're ready to go!
+Quit and reopen your AI client. That's it — you're ready to go!
 
 ## Installation
 
