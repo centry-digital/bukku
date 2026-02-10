@@ -5,7 +5,7 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** - Phases 1-7 (shipped 2026-02-09)
-- 🚧 **v1.1 npm Package Release** - Phases 8-11 (in progress)
+- ✅ **v1.1 npm Package Release** - Phases 8-11 (shipped 2026-02-10)
 
 ## Phases
 
@@ -25,7 +25,7 @@
 
 </details>
 
-### 🚧 v1.1 npm Package Release (In Progress)
+### ✅ v1.1 npm Package Release (Shipped 2026-02-10)
 
 **Milestone Goal:** Publish @centry-digital/bukku-mcp on npm with CI/CD automation and npx support for zero-install usage.
 
@@ -80,7 +80,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 11-01-PLAN.md — Restructure README around npm distribution with Quick Start, config, and usage docs
+- [x] 11-01-PLAN.md — Restructure README around npm distribution with Quick Start, config, and usage docs
 
 ## Progress
 
@@ -92,4 +92,4 @@ Phases execute in numeric order: 8 → 9 → 10 → 11
 | 8. Package Configuration | v1.1 | 1/1 | ✓ Complete | 2026-02-09 |
 | 9. Build & Distribution | v1.1 | 1/1 | ✓ Complete | 2026-02-09 |
 | 10. CI/CD Automation | v1.1 | 1/1 | ✓ Complete | 2026-02-09 |
-| 11. Documentation | v1.1 | 0/TBD | Not started | - |
+| 11. Documentation | v1.1 | 1/1 | ✓ Complete | 2026-02-10 |
