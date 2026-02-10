@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
-import { validateDoubleEntry } from "./double-entry.js";
+import { validateDoubleEntry } from "./double-entry.ts";
 
 describe("validateDoubleEntry", () => {
   describe("balanced entries", () => {
