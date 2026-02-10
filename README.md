@@ -161,7 +161,7 @@ After updating the config, restart Claude Desktop.
 
 ### Claude Code
 
-Add to `.claude/settings.json` in your home directory or project:
+We recommend adding this to your **project-level** `.claude/settings.json` rather than your home directory, since the configuration includes organisation-specific credentials (API token and subdomain). This keeps credentials scoped to the relevant project and avoids accidentally connecting to the wrong Bukku organisation.
 
 **Using npx (recommended):**
 
