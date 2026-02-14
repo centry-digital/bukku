@@ -230,6 +230,38 @@ Any client that supports the [MCP stdio transport](https://modelcontextprotocol.
 - Consider using `npx` instead (no installation needed)
 - Or fix npm permissions: [https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally)
 
+## Uninstalling
+
+### Step 1: Remove the MCP server configuration
+
+Remove the `"bukku"` entry from the `"mcpServers"` object in your AI client's config file.
+
+**Claude Code:** Remove from `.claude/settings.json` in your project directory (or `~/.claude/settings.json` if added globally).
+
+**Claude Desktop:** Remove from your config file:
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+After editing, restart your AI client for the changes to take effect.
+
+### Step 2: Remove the package (if installed globally)
+
+If you installed the package globally with `npm install -g`, uninstall it:
+
+```bash
+npm uninstall -g @centry-digital/bukku-mcp
+```
+
+If you were using `npx` (the default Quick Start method), there is no persistent installation to remove — `npx` downloads the package temporarily each time it runs. You can optionally clear the npx cache:
+
+```bash
+npx clear-npx-cache
+```
+
+### Step 3: Revoke your API token (optional)
+
+If you no longer need API access, log into your Bukku account and revoke the token at **Control Panel > Integrations > API Access**.
+
 ## Development
 
 Want to contribute or run from source? Here's how to set up your development environment.
