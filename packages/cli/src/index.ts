@@ -8,6 +8,8 @@ import { registerReferenceDataCommands } from './commands/custom/reference-data.
 import { registerSearchAccountsCommand } from './commands/custom/search-accounts.js';
 import { registerArchiveCommands } from './commands/custom/archive.js';
 import { registerLocationWriteCommands } from './commands/custom/location-write.js';
+import { registerJournalEntryCommands } from './commands/custom/journal-entry.js';
+import { registerFileUploadCommand } from './commands/custom/file-upload.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -36,6 +38,8 @@ registerReferenceDataCommands(program);
 registerSearchAccountsCommand(program);
 registerArchiveCommands(program);
 registerLocationWriteCommands(program);
+registerJournalEntryCommands(program);
+registerFileUploadCommand(program);
 
 // Config command
 program.addCommand(configCommand);
