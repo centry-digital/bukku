@@ -76,7 +76,10 @@ Plans:
   3. When credentials are missing, `bukku` exits non-zero and writes a structured JSON error to stderr with no output on stdout
   4. Any successful command writes only valid JSON to stdout — `JSON.parse(stdout)` succeeds for every command that produces output
   5. Auth resolves correctly across all three tiers: CLI flags override env vars, env vars override `~/.bukkurc`
-**Plans**: 2 (13-01: entry point + auth + config, 13-02: output contract + withAuth wrapper + tests)
+**Plans:** 2 plans
+Plans:
+- [ ] 13-01-PLAN.md — CLI entry point + Commander.js setup + auth resolution + config subcommand
+- [ ] 13-02-PLAN.md — Output contract + withAuth wrapper + exit codes + tests
 **Brief**: [briefs/v2.0/PHASE-13-BRIEF.md](briefs/v2.0/PHASE-13-BRIEF.md)
 
 ### Phase 14: CLI Read Commands
