@@ -22,16 +22,16 @@ await build({
     js: '#!/usr/bin/env node',
   },
 });
-
 console.log('Built packages/mcp/build/index.js');
 
-// Bundle packages/cli (placeholder — built when cli has content)
-// await build({
-//   ...shared,
-//   entryPoints: ['packages/cli/src/index.ts'],
-//   outfile: 'packages/cli/build/index.js',
-//   external: ['commander', 'zod'],
-//   banner: {
-//     js: '#!/usr/bin/env node',
-//   },
-// });
+// Bundle packages/cli
+await build({
+  ...shared,
+  entryPoints: ['packages/cli/src/index.ts'],
+  outfile: 'packages/cli/build/index.js',
+  external: ['commander', 'zod'],
+  banner: {
+    js: '#!/usr/bin/env node',
+  },
+});
+console.log('Built packages/cli/build/index.js');
