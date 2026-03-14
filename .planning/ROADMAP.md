@@ -91,7 +91,10 @@ Plans:
   2. `bukku <category> <resource> get <id>` returns the full resource JSON for any valid resource ID
   3. `bukku <category> <resource> list --format table` renders a human-readable table with sensible per-resource columns (id, date, contact, total, status as applicable)
   4. All list commands exit with code 0 on success and non-zero on API or auth errors, with no output mixed onto stdout when an error occurs
-**Plans**: 2 (14-01: command factory + group mapping, 14-02: table formatter + reference data + custom overrides)
+**Plans:** 2 plans
+Plans:
+- [ ] 14-01-PLAN.md — CLI command factory (list + get generation) + group mapping + standard flags
+- [ ] 14-02-PLAN.md — Table formatter + per-resource columns + reference data commands + custom overrides
 **Brief**: [briefs/v2.0/PHASE-14-BRIEF.md](briefs/v2.0/PHASE-14-BRIEF.md)
 
 ### Phase 15: CLI Write Commands
