@@ -76,7 +76,7 @@ Plans:
   3. When credentials are missing, `bukku` exits non-zero and writes a structured JSON error to stderr with no output on stdout
   4. Any successful command writes only valid JSON to stdout — `JSON.parse(stdout)` succeeds for every command that produces output
   5. Auth resolves correctly across all three tiers: CLI flags override env vars, env vars override `~/.bukkurc`
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 Plans:
 - [ ] 13-01-PLAN.md — CLI entry point + Commander.js setup + auth resolution + config subcommand
 - [ ] 13-02-PLAN.md — Output contract + withAuth wrapper + exit codes + tests
@@ -134,7 +134,7 @@ Plans:
 | 10. CI/CD Automation | v1.1 | 1/1 | ✓ Complete | 2026-02-09 |
 | 11. Documentation | v1.1 | 1/1 | ✓ Complete | 2026-02-10 |
 | 12. Monorepo Foundation | 3/3 | Complete   | 2026-03-14 | — |
-| 13. CLI Foundation + Auth | v2.0 | 0/2 | Not started | — |
+| 13. CLI Foundation + Auth | 1/2 | In Progress|  | — |
 | 14. CLI Read Commands | v2.0 | 0/2 | Not started | — |
 | 15. CLI Write Commands | v2.0 | 0/3 | Not started | — |
 | 16. Distribution | v2.0 | 0/1 | Not started | — |

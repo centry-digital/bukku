@@ -19,17 +19,17 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 
 ### CLI Auth
 
-- [ ] **AUTH-01**: CLI resolves credentials via three-tier precedence: CLI flags > env vars > config file
-- [ ] **AUTH-02**: Config file at ~/.bukkurc with INI format storing api_token and company_subdomain
-- [ ] **AUTH-03**: Config file created with secure permissions (0o600) and warns on insecure permissions
-- [ ] **AUTH-04**: `bukku config set <key> <value>` writes to config file
-- [ ] **AUTH-05**: `bukku config show` displays current resolved config (token masked)
+- [x] **AUTH-01**: CLI resolves credentials via three-tier precedence: CLI flags > env vars > config file
+- [x] **AUTH-02**: Config file at ~/.bukkurc with INI format storing api_token and company_subdomain
+- [x] **AUTH-03**: Config file created with secure permissions (0o600) and warns on insecure permissions
+- [x] **AUTH-04**: `bukku config set <key> <value>` writes to config file
+- [x] **AUTH-05**: `bukku config show` displays current resolved config (token masked)
 
 ### CLI Core
 
-- [ ] **CORE-01**: CLI entry point with nested subcommands (bukku <group> <resource> <action>)
-- [ ] **CORE-02**: --help available at every command level with usage examples
-- [ ] **CORE-03**: --version flag showing package version
+- [x] **CORE-01**: CLI entry point with nested subcommands (bukku <group> <resource> <action>)
+- [x] **CORE-02**: --help available at every command level with usage examples
+- [x] **CORE-03**: --version flag showing package version
 - [ ] **CORE-04**: Non-zero exit codes on all errors (API, auth, validation)
 - [ ] **CORE-05**: All errors and diagnostics go to stderr, only data to stdout
 - [ ] **CORE-06**: Structured error JSON to stderr when errors occur
@@ -90,14 +90,14 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 | MONO-05 | Phase 12 | Complete (12-01) |
 | MONO-06 | Phase 12 | Complete |
 | MONO-07 | Phase 12 | Complete |
-| AUTH-01 | Phase 13 | Pending |
-| AUTH-02 | Phase 13 | Pending |
-| AUTH-03 | Phase 13 | Pending |
-| AUTH-04 | Phase 13 | Pending |
-| AUTH-05 | Phase 13 | Pending |
-| CORE-01 | Phase 13 | Pending |
-| CORE-02 | Phase 13 | Pending |
-| CORE-03 | Phase 13 | Pending |
+| AUTH-01 | Phase 13 | Complete |
+| AUTH-02 | Phase 13 | Complete |
+| AUTH-03 | Phase 13 | Complete |
+| AUTH-04 | Phase 13 | Complete |
+| AUTH-05 | Phase 13 | Complete |
+| CORE-01 | Phase 13 | Complete |
+| CORE-02 | Phase 13 | Complete |
+| CORE-03 | Phase 13 | Complete |
 | CORE-04 | Phase 13 | Pending |
 | CORE-05 | Phase 13 | Pending |
 | CORE-06 | Phase 13 | Pending |
