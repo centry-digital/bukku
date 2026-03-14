@@ -73,7 +73,7 @@ describe('CLI integration', () => {
       'products',
       'accounting',
       'files',
-      'settings',
+      'control-panel',
       'config',
     ]) {
       assert.ok(output.includes(group), `Expected "${group}" in help output`);
