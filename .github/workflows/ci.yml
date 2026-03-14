@@ -33,4 +33,19 @@ jobs:
         run: npm run build
 
       - name: Test
-        run: npm test
+        run: npm test --workspaces --if-present
+
+      - name: Verify MCP tarball
+        run: |
+          cd packages/mcp
+          npm pack --dry-run 2>&1 | tee /tmp/pack-output.txt
+          # Verify no 'core' in dependencies
+          node -e "
+            const pkg = require('./package.json');
+            const deps = Object.keys(pkg.dependencies || {});
+            if (deps.includes('core')) {
+              console.error('ERROR: core must not be in published dependencies');
+              process.exit(1);
+            }
+            console.log('Tarball dependencies OK:', deps.join(', '));
+          "

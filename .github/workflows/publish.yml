@@ -1,8 +1,9 @@
 # Release flow:
-# 1. npm version patch/minor/major (bumps package.json, creates git commit + tag)
-# 2. git push && git push --tags
-# 3. Create GitHub release from the tag
-# 4. This workflow auto-publishes to npm via trusted publishing (OIDC)
+# 1. Update version in packages/mcp/package.json
+# 2. git commit + git tag
+# 3. git push && git push --tags
+# 4. Create GitHub release from the tag
+# 5. This workflow auto-publishes to npm via trusted publishing (OIDC)
 
 name: Publish to npm
 
@@ -38,7 +39,7 @@ jobs:
         run: npm run build
 
       - name: Test
-        run: npm test
+        run: npm test --workspaces --if-present
 
       - name: Publish to npm
-        run: npm publish --provenance
+        run: npm publish --workspace packages/mcp --provenance
