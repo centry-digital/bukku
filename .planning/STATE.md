@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Monorepo + CLI
-status: in-progress
-stopped_at: Completed 15-03-PLAN.md (dry-run + parity verification)
-last_updated: "2026-03-14T09:35:54.396Z"
-last_activity: 2026-03-14 — Plan 15-03 executed (dry-run + parity verification)
+status: complete
+stopped_at: Completed 16-01-PLAN.md (CLI distribution)
+last_updated: "2026-03-14T09:46:46.417Z"
+last_activity: 2026-03-14 — Plan 16-01 executed (CLI distribution)
 progress:
   total_phases: 5
-  completed_phases: 4
-  total_plans: 10
-  completed_plans: 10
-  percent: 97
+  completed_phases: 5
+  total_plans: 11
+  completed_plans: 11
+  percent: 100
 ---
 
 # Project State: Bukku
@@ -23,18 +23,18 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Users can read and write accounting data in Bukku efficiently — through AI conversation (MCP) or direct commands (CLI) — instead of manual data entry in the web UI.
-**Current focus:** v2.0 Monorepo + CLI — Phase 15 complete (3/3 plans), Phase 16 next
+**Current focus:** v2.0 Monorepo + CLI — Complete (all 5 phases, 11 plans)
 
 ## Current Position
 
-Phase: 15 (CLI Write Commands) — Complete
-Plan: 03 completed (3/3 plans)
-Status: Phase 15 complete — all mutation commands with dry-run + 169/169 parity verification
-Last activity: 2026-03-14 — Plan 15-03 executed (dry-run + parity verification)
+Phase: 16 (Distribution) — Complete
+Plan: 01 completed (1/1 plans)
+Status: v2.0 milestone complete — CLI package v2.0.0 ready for npm publish
+Last activity: 2026-03-14 — Plan 16-01 executed (CLI distribution)
 
 ```
-Progress: [██████████] 97%
-Phase 12 #####  Phase 13 #####  Phase 14 #####  Phase 15 #####  Phase 16 ░░░░░
+Progress: [██████████] 100%
+Phase 12 #####  Phase 13 #####  Phase 14 #####  Phase 15 #####  Phase 16 #####
 ```
 
 ## Performance Metrics
@@ -52,7 +52,7 @@ Phase 12 #####  Phase 13 #####  Phase 14 #####  Phase 15 #####  Phase 16 ░░�
 - Shipped: npm package @centry-digital/bukku-mcp with CI/CD
 
 **v2.0 Milestone (Phases 12-16):**
-- Total plans completed: 5
+- Total plans completed: 11
 - Started: 2026-03-14
 - Requirements: 34 total (7 + 13 + 4 + 7 + 3)
 - Plan 12-01: 4min, 2 tasks, 45 files
@@ -65,6 +65,7 @@ Phase 12 #####  Phase 13 #####  Phase 14 #####  Phase 15 #####  Phase 16 ░░�
 - Plan 15-01: 2min, 1 task, 2 files
 - Plan 15-02: 3min, 2 tasks, 6 files
 - Plan 15-03: 4min, 2 tasks, 9 files
+- Plan 16-01: 3min, 2 tasks, 5 files
 
 ## Accumulated Context
 
@@ -98,6 +99,8 @@ See `.planning/PROJECT.md` Key Decisions table for full list with outcomes.
 - Custom commands find existing group/resource commands and add subcommands to them
 - Separate dry-run.ts output module for clean separation of concerns
 - Auth credentials exposed in CommandContext for dry-run token masking
+- Node 20+22 CI matrix matching engines >=20.0.0 requirement
+- Dual-package npm publish workflow with OIDC provenance
 
 ### Active TODOs
 
@@ -117,9 +120,9 @@ No blockers.
 
 ## Session Continuity
 
-**Last session:** 2026-03-14T09:35:54.394Z
-**Stopped at:** Completed 15-03-PLAN.md (dry-run + parity verification)
-**What's next:** Phase 16 (CLI packaging)
+**Last session:** 2026-03-14T09:46:46.415Z
+**Stopped at:** Completed 16-01-PLAN.md (CLI distribution)
+**What's next:** v2.0 milestone complete -- publish release
 
 ---
 *State tracking since: 2026-02-06*

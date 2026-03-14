@@ -55,9 +55,9 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 
 ### Distribution
 
-- [ ] **DIST-01**: Published as @centry-digital/bukku-cli on npm
-- [ ] **DIST-02**: npx @centry-digital/bukku-cli zero-install execution
-- [ ] **DIST-03**: README with installation, configuration, and usage examples
+- [x] **DIST-01**: Published as @centry-digital/bukku-cli on npm
+- [x] **DIST-02**: npx @centry-digital/bukku-cli zero-install execution
+- [x] **DIST-03**: README with installation, configuration, and usage examples
 
 ## Future Requirements
 
@@ -114,9 +114,9 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 | CMD-07 | Phase 15 | Complete |
 | CMD-08 | Phase 15 | Complete |
 | OUT-04 | Phase 15 | Complete |
-| DIST-01 | Phase 16 | Pending |
-| DIST-02 | Phase 16 | Pending |
-| DIST-03 | Phase 16 | Pending |
+| DIST-01 | Phase 16 | Complete |
+| DIST-02 | Phase 16 | Complete |
+| DIST-03 | Phase 16 | Complete |
 
 **Coverage:**
 - v2.0 requirements: 34 total
