@@ -49,8 +49,8 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 - [x] **CMD-03**: All create commands accepting JSON via `--data` flag or stdin pipe
 - [x] **CMD-04**: All update commands accepting JSON via `--data` flag or stdin pipe
 - [x] **CMD-05**: All delete commands by resource ID
-- [ ] **CMD-06**: All status update commands (approve, void, etc.)
-- [ ] **CMD-07**: File upload command accepting file path
+- [x] **CMD-06**: All status update commands (approve, void, etc.)
+- [x] **CMD-07**: File upload command accepting file path
 - [ ] **CMD-08**: Full parity with all 169 MCP tool operations
 
 ### Distribution
@@ -110,8 +110,8 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 | CMD-03 | Phase 15 | Complete |
 | CMD-04 | Phase 15 | Complete |
 | CMD-05 | Phase 15 | Complete |
-| CMD-06 | Phase 15 | Pending |
-| CMD-07 | Phase 15 | Pending |
+| CMD-06 | Phase 15 | Complete |
+| CMD-07 | Phase 15 | Complete |
 | CMD-08 | Phase 15 | Pending |
 | OUT-04 | Phase 15 | Pending |
 | DIST-01 | Phase 16 | Pending |
