@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { configCommand } from './commands/config.js';
+import { registerEntityCommands } from './commands/factory.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -23,15 +24,8 @@ program
   .option('--api-token <token>', 'API token')
   .option('--company-subdomain <subdomain>', 'Company subdomain');
 
-// Command groups (placeholders for Phase 14)
-program.command('sales').description('Sales invoices, quotes, orders, credit notes, payments, refunds');
-program.command('purchases').description('Purchase bills, orders, credit notes, payments, refunds');
-program.command('banking').description('Bank accounts and transactions');
-program.command('contacts').description('Customers, suppliers, and contacts');
-program.command('products').description('Products and services');
-program.command('accounting').description('Chart of accounts, journal entries, tax codes');
-program.command('files').description('File uploads and attachments');
-program.command('settings').description('Company settings and preferences');
+// Register all entity commands (list/get) from core configs
+registerEntityCommands(program);
 
 // Config command
 program.addCommand(configCommand);
