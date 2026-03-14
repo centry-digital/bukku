@@ -1,0 +1,38 @@
+{
+  "name": "@centry-digital/bukku-mcp",
+  "version": "1.1.1",
+  "description": "Bukku accounting API tools for Claude via Model Context Protocol",
+  "type": "module",
+  "main": "build/index.js",
+  "bin": {
+    "bukku-mcp": "build/index.js"
+  },
+  "files": ["build/", "LICENSE", "README.md"],
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "keywords": [
+    "mcp", "bukku", "accounting", "claude",
+    "anthropic", "api", "bookkeeping", "invoicing"
+  ],
+  "author": "Centry Digital",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/centry-digital/bukku-mcp.git"
+  },
+  "homepage": "https://github.com/centry-digital/bukku-mcp",
+  "bugs": {
+    "url": "https://github.com/centry-digital/bukku-mcp/issues"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "zod": "^4.3.6"
+  }
+}
