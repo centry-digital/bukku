@@ -10,8 +10,8 @@ progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 10
-  completed_plans: 8
-  percent: 92
+  completed_plans: 9
+  percent: 95
 ---
 
 # Project State: Bukku
@@ -28,12 +28,12 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 15 (CLI Write Commands) — In Progress
-Plan: 01 completed (1/3 plans)
-Status: Plan 15-01 complete — factory extended with create/update/delete
-Last activity: 2026-03-14 — Plan 15-01 executed (CLI write command factory with create/update/delete)
+Plan: 02 completed (2/3 plans)
+Status: Plan 15-02 complete — custom CLI commands (status, archive, journal entry, file upload, location write)
+Last activity: 2026-03-14 — Plan 15-02 executed (custom CLI commands)
 
 ```
-Progress: [█████████░] 90%
+Progress: [█████████░] 95%
 Phase 12 #####  Phase 13 #####  Phase 14 #####  Phase 15 ░░░░░  Phase 16 ░░░░░
 ```
 
@@ -63,6 +63,7 @@ Phase 12 #####  Phase 13 #####  Phase 14 #####  Phase 15 ░░░░░  Phase 
 - Plan 14-01: 3min, 2 tasks, 2 files
 - Plan 14-02: 2min, 2 tasks, 4 files
 - Plan 15-01: 2min, 1 task, 2 files
+- Plan 15-02: 3min, 2 tasks, 6 files
 
 ## Accumulated Context
 
@@ -91,6 +92,9 @@ See `.planning/PROJECT.md` Key Decisions table for full list with outcomes.
 - ref-data top-level group for reference data commands (not nested under accounting)
 - zero-dependency table formatter with string padding (cli-table3 unnecessary)
 - JSON input parsed inside withAuth handler (after auth), matching security-first design
+- Reused readJsonInput from 15-01 instead of inlining JSON parsing (15-01 already landed)
+- Status command uses requiredOption for --status flag to enforce value at Commander level
+- Custom commands find existing group/resource commands and add subcommands to them
 
 ### Active TODOs
 
@@ -110,9 +114,9 @@ No blockers.
 
 ## Session Continuity
 
-**Last session:** 2026-03-14T09:23:02.758Z
-**Stopped at:** Completed 15-01-PLAN.md (CLI write command factory with create/update/delete)
-**What's next:** Plan 15-02 — status update commands
+**Last session:** 2026-03-14T09:27:43Z
+**Stopped at:** Completed 15-02-PLAN.md (custom CLI commands: status, archive, journal entry, file upload, location write)
+**What's next:** Plan 15-03 or Phase 16 (CLI packaging)
 
 ---
 *State tracking since: 2026-02-06*
