@@ -42,7 +42,7 @@
 ### v2.0 Monorepo + CLI
 
 - [x] **Phase 12: Monorepo Foundation** — Restructure into npm workspaces with shared core; preserve MCP package with zero regression (completed 2026-03-14)
-- [ ] **Phase 13: CLI Foundation + Auth** — Entry point, auth resolution chain, output contract, config subcommand
+- [x] **Phase 13: CLI Foundation + Auth** — Entry point, auth resolution chain, output contract, config subcommand (completed 2026-03-14)
 - [ ] **Phase 14: CLI Read Commands** — All list and get operations across all 8 categories with table output
 - [ ] **Phase 15: CLI Write Commands** — All create, update, delete, status, file upload, and --dry-run
 - [ ] **Phase 16: Distribution** — Publish @centry-digital/bukku-cli, npx support, README
@@ -76,10 +76,10 @@ Plans:
   3. When credentials are missing, `bukku` exits non-zero and writes a structured JSON error to stderr with no output on stdout
   4. Any successful command writes only valid JSON to stdout — `JSON.parse(stdout)` succeeds for every command that produces output
   5. Auth resolves correctly across all three tiers: CLI flags override env vars, env vars override `~/.bukkurc`
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 Plans:
-- [ ] 13-01-PLAN.md — CLI entry point + Commander.js setup + auth resolution + config subcommand
-- [ ] 13-02-PLAN.md — Output contract + withAuth wrapper + exit codes + tests
+- [x] 13-01-PLAN.md — CLI entry point + Commander.js setup + auth resolution + config subcommand
+- [x] 13-02-PLAN.md — Output contract + withAuth wrapper + exit codes + tests
 **Brief**: [briefs/v2.0/PHASE-13-BRIEF.md](briefs/v2.0/PHASE-13-BRIEF.md)
 
 ### Phase 14: CLI Read Commands
@@ -134,7 +134,7 @@ Plans:
 | 10. CI/CD Automation | v1.1 | 1/1 | ✓ Complete | 2026-02-09 |
 | 11. Documentation | v1.1 | 1/1 | ✓ Complete | 2026-02-10 |
 | 12. Monorepo Foundation | 3/3 | Complete   | 2026-03-14 | — |
-| 13. CLI Foundation + Auth | 1/2 | In Progress|  | — |
+| 13. CLI Foundation + Auth | v2.0 | 2/2 | Complete | 2026-03-14 |
 | 14. CLI Read Commands | v2.0 | 0/2 | Not started | — |
 | 15. CLI Write Commands | v2.0 | 0/3 | Not started | — |
 | 16. Distribution | v2.0 | 0/1 | Not started | — |
