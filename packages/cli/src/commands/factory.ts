@@ -5,6 +5,7 @@ import { withAuth } from './wrapper.js';
 import { outputJson } from '../output/json.js';
 import { outputTable } from '../output/table.js';
 import { readJsonInput } from '../input/json.js';
+import { outputDryRun } from '../output/dry-run.js';
 
 /**
  * Map entity name to CLI resource subcommand name.
@@ -225,11 +226,16 @@ function addCreateCommand(resourceCmd: Command, config: CrudEntityConfig): void 
   const createCmd = resourceCmd
     .command('create')
     .description(`Create a new ${config.description}`)
-    .option('--data <json>', 'JSON data (or pipe to stdin)');
+    .option('--data <json>', 'JSON data (or pipe to stdin)')
+    .option('--dry-run', 'Show request details without executing', false);
 
   createCmd.action(
-    withAuth(async ({ client, opts }) => {
+    withAuth(async ({ client, opts, auth }) => {
       const body = await readJsonInput(opts);
+      if (opts.dryRun) {
+        outputDryRun({ method: 'POST', path: config.apiBasePath, token: auth.apiToken, subdomain: auth.companySubdomain, body });
+        return;
+      }
       const data = await client.post(config.apiBasePath, body);
       outputJson(data);
     }),
@@ -243,11 +249,16 @@ function addUpdateCommand(resourceCmd: Command, config: CrudEntityConfig): void 
   const updateCmd = resourceCmd
     .command('update <id>')
     .description(`Update a ${config.description}`)
-    .option('--data <json>', 'JSON data (or pipe to stdin)');
+    .option('--data <json>', 'JSON data (or pipe to stdin)')
+    .option('--dry-run', 'Show request details without executing', false);
 
-  const wrappedHandler = withAuth(async ({ client, opts }) => {
+  const wrappedHandler = withAuth(async ({ client, opts, auth }) => {
     const parsedId = opts._entityId as number;
     const body = await readJsonInput(opts);
+    if (opts.dryRun) {
+      outputDryRun({ method: 'PUT', path: `${config.apiBasePath}/${parsedId}`, token: auth.apiToken, subdomain: auth.companySubdomain, body });
+      return;
+    }
     const data = await client.put(`${config.apiBasePath}/${parsedId}`, body);
     outputJson(data);
   });
@@ -273,10 +284,15 @@ function addUpdateCommand(resourceCmd: Command, config: CrudEntityConfig): void 
 function addDeleteCommand(resourceCmd: Command, config: CrudEntityConfig): void {
   const deleteCmd = resourceCmd
     .command('delete <id>')
-    .description(`Delete a ${config.description}`);
+    .description(`Delete a ${config.description}`)
+    .option('--dry-run', 'Show request details without executing', false);
 
-  const wrappedHandler = withAuth(async ({ client, opts }) => {
+  const wrappedHandler = withAuth(async ({ client, opts, auth }) => {
     const parsedId = opts._entityId as number;
+    if (opts.dryRun) {
+      outputDryRun({ method: 'DELETE', path: `${config.apiBasePath}/${parsedId}`, token: auth.apiToken, subdomain: auth.companySubdomain });
+      return;
+    }
     await client.delete(`${config.apiBasePath}/${parsedId}`);
     outputJson({});
   });
@@ -304,11 +320,16 @@ function addStatusCommand(resourceCmd: Command, config: CrudEntityConfig): void 
   const statusCmd = resourceCmd
     .command('status <id>')
     .description(`Update status of a ${config.description}`)
-    .requiredOption('--status <status>', 'New status value');
+    .requiredOption('--status <status>', 'New status value')
+    .option('--dry-run', 'Show request details without executing', false);
 
-  const wrappedHandler = withAuth(async ({ client, opts }) => {
+  const wrappedHandler = withAuth(async ({ client, opts, auth }) => {
     const parsedId = opts._entityId as number;
     const status = opts.status as string;
+    if (opts.dryRun) {
+      outputDryRun({ method: 'PATCH', path: `${config.apiBasePath}/${parsedId}`, token: auth.apiToken, subdomain: auth.companySubdomain, body: { status } });
+      return;
+    }
     const data = await client.patch(`${config.apiBasePath}/${parsedId}`, { status });
     outputJson(data);
   });

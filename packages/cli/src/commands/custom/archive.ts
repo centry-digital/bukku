@@ -1,6 +1,7 @@
 import type { Command } from 'commander';
 import { withAuth } from '../wrapper.js';
 import { outputJson } from '../../output/json.js';
+import { outputDryRun } from '../../output/dry-run.js';
 import { outputError, ExitCode } from '../../output/error.js';
 
 /**
@@ -47,8 +48,12 @@ export function registerArchiveCommands(program: Command): void {
     if (!resourceCmd) continue;
 
     // Add archive subcommand
-    const archiveHandler = withAuth(async ({ client, opts }) => {
+    const archiveHandler = withAuth(async ({ client, opts, auth }) => {
       const id = opts._entityId as number;
+      if (opts.dryRun) {
+        outputDryRun({ method: 'PATCH', path: `${config.apiPath}/${id}`, token: auth.apiToken, subdomain: auth.companySubdomain, body: { is_archived: true } });
+        return;
+      }
       const data = await client.patch(`${config.apiPath}/${id}`, { is_archived: true });
       outputJson(data);
     });
@@ -56,6 +61,7 @@ export function registerArchiveCommands(program: Command): void {
     resourceCmd
       .command('archive <id>')
       .description(`Archive a ${config.description}`)
+      .option('--dry-run', 'Show request details without executing', false)
       .action(function (this: Command, idArg: string, ...rest: unknown[]) {
         const id = parseId(idArg);
         this.setOptionValue('_entityId', id);
@@ -63,8 +69,12 @@ export function registerArchiveCommands(program: Command): void {
       });
 
     // Add unarchive subcommand
-    const unarchiveHandler = withAuth(async ({ client, opts }) => {
+    const unarchiveHandler = withAuth(async ({ client, opts, auth }) => {
       const id = opts._entityId as number;
+      if (opts.dryRun) {
+        outputDryRun({ method: 'PATCH', path: `${config.apiPath}/${id}`, token: auth.apiToken, subdomain: auth.companySubdomain, body: { is_archived: false } });
+        return;
+      }
       const data = await client.patch(`${config.apiPath}/${id}`, { is_archived: false });
       outputJson(data);
     });
@@ -72,6 +82,7 @@ export function registerArchiveCommands(program: Command): void {
     resourceCmd
       .command('unarchive <id>')
       .description(`Unarchive a ${config.description}`)
+      .option('--dry-run', 'Show request details without executing', false)
       .action(function (this: Command, idArg: string, ...rest: unknown[]) {
         const id = parseId(idArg);
         this.setOptionValue('_entityId', id);

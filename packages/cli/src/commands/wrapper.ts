@@ -9,6 +9,7 @@ import { outputError, ExitCode } from '../output/error.js';
 export interface CommandContext {
   client: BukkuClient;
   opts: Record<string, unknown>;
+  auth: { apiToken: string; companySubdomain: string };
 }
 
 /**
@@ -55,7 +56,7 @@ export function withAuth(
     });
 
     try {
-      await handler({ client, opts: mergedOpts as Record<string, unknown> });
+      await handler({ client, opts: mergedOpts as Record<string, unknown>, auth });
     } catch (err) {
       if (err instanceof Response) {
         let body: Record<string, unknown> = {};

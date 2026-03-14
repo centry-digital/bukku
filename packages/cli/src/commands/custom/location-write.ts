@@ -1,6 +1,7 @@
 import type { Command } from 'commander';
 import { withAuth } from '../wrapper.js';
 import { outputJson } from '../../output/json.js';
+import { outputDryRun } from '../../output/dry-run.js';
 import { outputTable } from '../../output/table.js';
 import { outputError, ExitCode } from '../../output/error.js';
 import { readJsonInput } from '../../input/json.js';
@@ -60,9 +61,13 @@ export function registerLocationWriteCommands(program: Command): void {
     });
 
   // Add update subcommand
-  const updateHandler = withAuth(async ({ client, opts }) => {
+  const updateHandler = withAuth(async ({ client, opts, auth }) => {
     const id = opts._entityId as number;
     const body = await readJsonInput(opts);
+    if (opts.dryRun) {
+      outputDryRun({ method: 'PUT', path: `/location/${id}`, token: auth.apiToken, subdomain: auth.companySubdomain, body });
+      return;
+    }
     const data = await client.put(`/location/${id}`, body);
     outputJson(data);
   });
@@ -71,6 +76,7 @@ export function registerLocationWriteCommands(program: Command): void {
     .command('update <id>')
     .description('Update a location')
     .option('--data <json>', 'JSON data (or pipe to stdin)')
+    .option('--dry-run', 'Show request details without executing', false)
     .action(function (this: Command, idArg: string, ...rest: unknown[]) {
       const id = parseId(idArg);
       this.setOptionValue('_entityId', id);
@@ -78,8 +84,12 @@ export function registerLocationWriteCommands(program: Command): void {
     });
 
   // Add delete subcommand
-  const deleteHandler = withAuth(async ({ client, opts }) => {
+  const deleteHandler = withAuth(async ({ client, opts, auth }) => {
     const id = opts._entityId as number;
+    if (opts.dryRun) {
+      outputDryRun({ method: 'DELETE', path: `/location/${id}`, token: auth.apiToken, subdomain: auth.companySubdomain });
+      return;
+    }
     await client.delete(`/location/${id}`);
     outputJson({});
   });
@@ -87,6 +97,7 @@ export function registerLocationWriteCommands(program: Command): void {
   resourceCmd
     .command('delete <id>')
     .description('Delete a location')
+    .option('--dry-run', 'Show request details without executing', false)
     .action(function (this: Command, idArg: string, ...rest: unknown[]) {
       const id = parseId(idArg);
       this.setOptionValue('_entityId', id);
