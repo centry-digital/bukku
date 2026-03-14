@@ -43,7 +43,7 @@
 
 - [x] **Phase 12: Monorepo Foundation** — Restructure into npm workspaces with shared core; preserve MCP package with zero regression (completed 2026-03-14)
 - [x] **Phase 13: CLI Foundation + Auth** — Entry point, auth resolution chain, output contract, config subcommand (completed 2026-03-14)
-- [ ] **Phase 14: CLI Read Commands** — All list and get operations across all 8 categories with table output
+- [x] **Phase 14: CLI Read Commands** — All list and get operations across all 8 categories with table output (completed 2026-03-14)
 - [ ] **Phase 15: CLI Write Commands** — All create, update, delete, status, file upload, and --dry-run
 - [ ] **Phase 16: Distribution** — Publish @centry-digital/bukku-cli, npx support, README
 
@@ -91,10 +91,10 @@ Plans:
   2. `bukku <category> <resource> get <id>` returns the full resource JSON for any valid resource ID
   3. `bukku <category> <resource> list --format table` renders a human-readable table with sensible per-resource columns (id, date, contact, total, status as applicable)
   4. All list commands exit with code 0 on success and non-zero on API or auth errors, with no output mixed onto stdout when an error occurs
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 Plans:
 - [x] 14-01-PLAN.md — CLI command factory (list + get generation) + group mapping + standard flags
-- [ ] 14-02-PLAN.md — Table formatter + per-resource columns + reference data commands + custom overrides
+- [x] 14-02-PLAN.md — Table formatter + per-resource columns + reference data commands + custom overrides
 **Brief**: [briefs/v2.0/PHASE-14-BRIEF.md](briefs/v2.0/PHASE-14-BRIEF.md)
 
 ### Phase 15: CLI Write Commands
@@ -138,6 +138,6 @@ Plans:
 | 11. Documentation | v1.1 | 1/1 | ✓ Complete | 2026-02-10 |
 | 12. Monorepo Foundation | 3/3 | Complete   | 2026-03-14 | — |
 | 13. CLI Foundation + Auth | v2.0 | 2/2 | Complete | 2026-03-14 |
-| 14. CLI Read Commands | v2.0 | 1/2 | In progress | — |
+| 14. CLI Read Commands | v2.0 | 2/2 | Complete | 2026-03-14 |
 | 15. CLI Write Commands | v2.0 | 0/3 | Not started | — |
 | 16. Distribution | v2.0 | 0/1 | Not started | — |
