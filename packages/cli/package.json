@@ -10,7 +10,7 @@
   "files": ["build/", "LICENSE", "README.md"],
   "scripts": {
     "build": "tsc --build",
-    "test": "node --test --experimental-strip-types 'src/**/*.test.ts'"
+    "test": "node --test --import tsx/esm 'src/**/*.test.ts'"
   },
   "keywords": [
     "bukku", "accounting", "cli", "invoicing", "bookkeeping"
