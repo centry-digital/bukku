@@ -1,6 +1,6 @@
 {
   "name": "@centry-digital/bukku-cli",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "description": "Bukku accounting CLI - manage invoices, contacts, and accounting from the command line",
   "type": "module",
   "main": "build/index.js",
@@ -13,8 +13,12 @@
     "test": "node --test --import tsx/esm 'src/**/*.test.ts'"
   },
   "keywords": [
-    "bukku", "accounting", "cli", "invoicing", "bookkeeping"
+    "bukku", "accounting", "cli", "invoicing", "bookkeeping", "malaysia"
   ],
+  "homepage": "https://github.com/centry-digital/bukku-mcp",
+  "bugs": {
+    "url": "https://github.com/centry-digital/bukku-mcp/issues"
+  },
   "author": "Centry Digital",
   "license": "MIT",
   "repository": {

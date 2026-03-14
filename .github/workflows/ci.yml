@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [22]
+        node-version: [20, 22]
       fail-fast: false
     steps:
       - name: Checkout code
@@ -43,9 +43,23 @@ jobs:
           node -e "
             const pkg = require('./package.json');
             const deps = Object.keys(pkg.dependencies || {});
-            if (deps.includes('core')) {
+            if (deps.some(d => d.includes('core'))) {
               console.error('ERROR: core must not be in published dependencies');
               process.exit(1);
             }
-            console.log('Tarball dependencies OK:', deps.join(', '));
+            console.log('MCP tarball dependencies OK:', deps.join(', '));
+          "
+
+      - name: Verify CLI tarball
+        run: |
+          cd packages/cli
+          npm pack --dry-run 2>&1 | tee /tmp/cli-pack-output.txt
+          node -e "
+            const pkg = require('./package.json');
+            const deps = Object.keys(pkg.dependencies || {});
+            if (deps.some(d => d.includes('core'))) {
+              console.error('ERROR: core must not be in published dependencies');
+              process.exit(1);
+            }
+            console.log('CLI tarball dependencies OK:', deps.join(', '));
           "
