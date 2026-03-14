@@ -9,7 +9,8 @@
   },
   "files": ["build/", "LICENSE", "README.md"],
   "scripts": {
-    "build": "tsc --build"
+    "build": "tsc --build",
+    "test": "node --test --experimental-strip-types 'src/**/*.test.ts'"
   },
   "keywords": [
     "bukku", "accounting", "cli", "invoicing", "bookkeeping"
