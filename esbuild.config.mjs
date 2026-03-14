@@ -29,7 +29,7 @@ await build({
   ...shared,
   entryPoints: ['packages/cli/src/index.ts'],
   outfile: 'packages/cli/build/index.js',
-  external: ['commander', 'zod'],
+  external: ['commander'],
   banner: {
     js: '#!/usr/bin/env node',
   },
