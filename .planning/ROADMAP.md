@@ -63,7 +63,7 @@
 Plans:
 - [x] 12-01-PLAN.md — Workspace root + packages/core (move shared code, refactor logger, add cliGroup)
 - [x] 12-02-PLAN.md — packages/mcp + import rewiring (move MCP files, esbuild bundling)
-- [ ] 12-03-PLAN.md — CLI skeleton + CI update + tarball verification
+- [x] 12-03-PLAN.md — CLI skeleton + CI update + tarball verification
 **Brief**: [briefs/v2.0/PHASE-12-BRIEF.md](briefs/v2.0/PHASE-12-BRIEF.md)
 
 ### Phase 13: CLI Foundation + Auth
@@ -109,9 +109,9 @@ Plans:
   5. Every mutation command supports `--dry-run` and prints the full request details (method, URL, body) to stdout without executing the API call
 **Plans:** 3/3 plans complete
 Plans:
-- [ ] 15-01-PLAN.md — Factory extension for create/update/delete + stdin JSON input
-- [ ] 15-02-PLAN.md — Status + archive/unarchive + journal entry validation + file upload
-- [ ] 15-03-PLAN.md — --dry-run support + parity verification
+- [x] 15-01-PLAN.md — Factory extension for create/update/delete + stdin JSON input
+- [x] 15-02-PLAN.md — Status + archive/unarchive + journal entry validation + file upload
+- [x] 15-03-PLAN.md — --dry-run support + parity verification
 **Brief**: [briefs/v2.0/PHASE-15-BRIEF.md](briefs/v2.0/PHASE-15-BRIEF.md)
 
 ### Phase 16: Distribution
@@ -122,7 +122,9 @@ Plans:
   1. `npm install -g @centry-digital/bukku-cli` installs the `bukku` binary and `bukku --version` prints the correct version
   2. `npx @centry-digital/bukku-cli --help` executes without prior installation and prints top-level usage
   3. The README contains: installation instructions, configuration steps (env vars and ~/.bukkurc), and at least one working end-to-end usage example per command category
-**Plans**: 1 (16-01: package finalization + CI/CD + npx verification + README)
+**Plans:** 1 plan
+Plans:
+- [ ] 16-01-PLAN.md — Package finalization + CI/CD + npx verification + README
 **Brief**: [briefs/v2.0/PHASE-16-BRIEF.md](briefs/v2.0/PHASE-16-BRIEF.md)
 
 ## Progress
@@ -140,8 +142,8 @@ Plans:
 | 9. Build & Distribution | v1.1 | 1/1 | ✓ Complete | 2026-02-09 |
 | 10. CI/CD Automation | v1.1 | 1/1 | ✓ Complete | 2026-02-09 |
 | 11. Documentation | v1.1 | 1/1 | ✓ Complete | 2026-02-10 |
-| 12. Monorepo Foundation | 3/3 | Complete   | 2026-03-14 | — |
-| 13. CLI Foundation + Auth | v2.0 | 2/2 | Complete | 2026-03-14 |
-| 14. CLI Read Commands | v2.0 | 2/2 | Complete | 2026-03-14 |
-| 15. CLI Write Commands | 3/3 | Complete   | 2026-03-14 | — |
-| 16. Distribution | v2.0 | 0/1 | Not started | — |
+| 12. Monorepo Foundation | v2.0 | 3/3 | ✓ Complete | 2026-03-14 |
+| 13. CLI Foundation + Auth | v2.0 | 2/2 | ✓ Complete | 2026-03-14 |
+| 14. CLI Read Commands | v2.0 | 2/2 | ✓ Complete | 2026-03-14 |
+| 15. CLI Write Commands | v2.0 | 3/3 | ✓ Complete | 2026-03-14 |
+| 16. Distribution | v2.0 | 0/1 | Not started | -- |
