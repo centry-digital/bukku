@@ -62,7 +62,7 @@
 **Plans:** 3 plans
 Plans:
 - [x] 12-01-PLAN.md — Workspace root + packages/core (move shared code, refactor logger, add cliGroup)
-- [ ] 12-02-PLAN.md — packages/mcp + import rewiring (move MCP files, esbuild bundling)
+- [x] 12-02-PLAN.md — packages/mcp + import rewiring (move MCP files, esbuild bundling)
 - [ ] 12-03-PLAN.md — CLI skeleton + CI update + tarball verification
 **Brief**: [briefs/v2.0/PHASE-12-BRIEF.md](briefs/v2.0/PHASE-12-BRIEF.md)
 
@@ -130,7 +130,7 @@ Plans:
 | 9. Build & Distribution | v1.1 | 1/1 | ✓ Complete | 2026-02-09 |
 | 10. CI/CD Automation | v1.1 | 1/1 | ✓ Complete | 2026-02-09 |
 | 11. Documentation | v1.1 | 1/1 | ✓ Complete | 2026-02-10 |
-| 12. Monorepo Foundation | v2.0 | 1/3 | In progress | — |
+| 12. Monorepo Foundation | v2.0 | 2/3 | In progress | — |
 | 13. CLI Foundation + Auth | v2.0 | 0/2 | Not started | — |
 | 14. CLI Read Commands | v2.0 | 0/2 | Not started | — |
 | 15. CLI Write Commands | v2.0 | 0/3 | Not started | — |

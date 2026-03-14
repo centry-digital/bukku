@@ -11,7 +11,7 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 
 - [x] **MONO-01**: Repository restructured into npm workspaces with packages/core, packages/mcp, packages/cli
 - [x] **MONO-02**: Shared core package contains BukkuClient, types, tool configs, validation, and error transforms
-- [ ] **MONO-03**: MCP server relocated to packages/mcp with identical published behavior (zero regression)
+- [x] **MONO-03**: MCP server relocated to packages/mcp with identical published behavior (zero regression)
 - [x] **MONO-04**: TypeScript project references with composite builds across packages
 - [x] **MONO-05**: Node.js minimum version bumped to 20
 - [ ] **MONO-06**: CI/CD updated for multi-package testing and publishing
@@ -85,7 +85,7 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 |-------------|-------|--------|
 | MONO-01 | Phase 12 | Complete (12-01) |
 | MONO-02 | Phase 12 | Complete (12-01) |
-| MONO-03 | Phase 12 | Pending |
+| MONO-03 | Phase 12 | Complete |
 | MONO-04 | Phase 12 | Complete (12-01) |
 | MONO-05 | Phase 12 | Complete (12-01) |
 | MONO-06 | Phase 12 | Pending |
