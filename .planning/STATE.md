@@ -3,38 +3,38 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Monorepo + CLI
 status: in-progress
-stopped_at: Completed 13-02-PLAN.md (output formatters + withAuth + tests)
-last_updated: "2026-03-14T08:55:26Z"
-last_activity: 2026-03-14 — Plan 13-02 executed (output formatters, withAuth wrapper, 25 tests)
+stopped_at: Completed 14-01-PLAN.md (CLI command factory for list/get)
+last_updated: "2026-03-14T09:07:29Z"
+last_activity: 2026-03-14 — Plan 14-01 executed (command factory, 27 entities, list/get subcommands)
 progress:
   total_phases: 5
   completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
-  percent: 100
+  total_plans: 7
+  completed_plans: 6
+  percent: 86
 ---
 
 # Project State: Bukku
 
-**Last updated:** 2026-03-14T08:55Z
+**Last updated:** 2026-03-14T09:07Z
 
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Users can read and write accounting data in Bukku efficiently — through AI conversation (MCP) or direct commands (CLI) — instead of manual data entry in the web UI.
-**Current focus:** v2.0 Monorepo + CLI — Phase 13 complete, ready for Phase 14
+**Current focus:** v2.0 Monorepo + CLI — Phase 14 in progress (1/2 plans complete)
 
 ## Current Position
 
-Phase: 13 (CLI Foundation + Auth) — Complete
-Plan: 02 completed (2/2 plans)
-Status: Phase 13 complete, ready for Phase 14 (CLI Read Commands)
-Last activity: 2026-03-14 — Plan 13-02 executed (output formatters, withAuth wrapper, 25 tests)
+Phase: 14 (CLI Read Commands) — In Progress
+Plan: 01 completed (1/2 plans)
+Status: Plan 14-01 complete (command factory), ready for Plan 14-02 (table formatter)
+Last activity: 2026-03-14 — Plan 14-01 executed (command factory, 27 entities, list/get subcommands)
 
 ```
-Progress: [██████████] 100%
-Phase 12 #####  Phase 13 #####  Phase 14 ░░░░░  Phase 15 ░░░░░  Phase 16 ░░░░░
+Progress: [████████░░] 86%
+Phase 12 #####  Phase 13 #####  Phase 14 ##░░░  Phase 15 ░░░░░  Phase 16 ░░░░░
 ```
 
 ## Performance Metrics
@@ -60,6 +60,7 @@ Phase 12 #####  Phase 13 #####  Phase 14 ░░░░░  Phase 15 ░░░░�
 - Plan 12-03: 3min, 1 task, 8 files
 - Plan 13-01: 2min, 2 tasks, 5 files
 - Plan 13-02: 5min, 2 tasks, 11 files
+- Plan 14-01: 3min, 2 tasks, 2 files
 
 ## Accumulated Context
 
@@ -83,6 +84,8 @@ See `.planning/PROJECT.md` Key Decisions table for full list with outcomes.
 - tsx dev dependency for test execution -- Node --experimental-strip-types cannot resolve .js -> .ts imports
 - Integration tests run against built JS (packages/cli/build/) matching production execution
 - withAuth wrapper pattern: resolves auth, creates BukkuClient, catches typed errors with mapped exit codes
+- Explicit RESOURCE_NAME_MAP over prefix-stripping heuristics for entity-to-subcommand mapping
+- get command uses setOptionValue to pass parsed ID through withAuth wrapper
 
 ### Active TODOs
 
@@ -102,9 +105,9 @@ No blockers.
 
 ## Session Continuity
 
-**Last session:** 2026-03-14T08:55:26Z
-**Stopped at:** Completed 13-02-PLAN.md (output formatters + withAuth + tests)
-**What's next:** Phase 14 — CLI Read Commands (list/get operations with table output)
+**Last session:** 2026-03-14T09:07:29Z
+**Stopped at:** Completed 14-01-PLAN.md (CLI command factory for list/get)
+**What's next:** Plan 14-02 — Table formatter + per-resource columns + reference data commands
 
 ---
 *State tracking since: 2026-02-06*

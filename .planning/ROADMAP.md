@@ -93,7 +93,7 @@ Plans:
   4. All list commands exit with code 0 on success and non-zero on API or auth errors, with no output mixed onto stdout when an error occurs
 **Plans:** 2 plans
 Plans:
-- [ ] 14-01-PLAN.md — CLI command factory (list + get generation) + group mapping + standard flags
+- [x] 14-01-PLAN.md — CLI command factory (list + get generation) + group mapping + standard flags
 - [ ] 14-02-PLAN.md — Table formatter + per-resource columns + reference data commands + custom overrides
 **Brief**: [briefs/v2.0/PHASE-14-BRIEF.md](briefs/v2.0/PHASE-14-BRIEF.md)
 
@@ -138,6 +138,6 @@ Plans:
 | 11. Documentation | v1.1 | 1/1 | ✓ Complete | 2026-02-10 |
 | 12. Monorepo Foundation | 3/3 | Complete   | 2026-03-14 | — |
 | 13. CLI Foundation + Auth | v2.0 | 2/2 | Complete | 2026-03-14 |
-| 14. CLI Read Commands | v2.0 | 0/2 | Not started | — |
+| 14. CLI Read Commands | v2.0 | 1/2 | In progress | — |
 | 15. CLI Write Commands | v2.0 | 0/3 | Not started | — |
 | 16. Distribution | v2.0 | 0/1 | Not started | — |

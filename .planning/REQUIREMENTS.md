@@ -44,8 +44,8 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 
 ### CLI Commands
 
-- [ ] **CMD-01**: All list commands with pagination (--limit, --all) and filtering flags
-- [ ] **CMD-02**: All get commands returning single resource by ID
+- [x] **CMD-01**: All list commands with pagination (--limit, --all) and filtering flags
+- [x] **CMD-02**: All get commands returning single resource by ID
 - [ ] **CMD-03**: All create commands accepting JSON via `--data` flag or stdin pipe
 - [ ] **CMD-04**: All update commands accepting JSON via `--data` flag or stdin pipe
 - [ ] **CMD-05**: All delete commands by resource ID
@@ -103,8 +103,8 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 | CORE-06 | Phase 13 | Complete (13-02) |
 | OUT-01 | Phase 13 | Complete (13-02) |
 | OUT-05 | Phase 13 | Complete (13-02) |
-| CMD-01 | Phase 14 | Pending |
-| CMD-02 | Phase 14 | Pending |
+| CMD-01 | Phase 14 | Complete (14-01) |
+| CMD-02 | Phase 14 | Complete (14-01) |
 | OUT-02 | Phase 14 | Pending |
 | OUT-03 | Phase 14 | Pending |
 | CMD-03 | Phase 15 | Pending |
