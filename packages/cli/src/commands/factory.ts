@@ -56,6 +56,20 @@ const GROUP_DESCRIPTIONS: Record<string, string> = {
 };
 
 /**
+ * Simple pluralization for entity descriptions.
+ * Handles common cases: "entry" -> "entries", "note" -> "notes".
+ */
+function pluralize(desc: string): string {
+  if (desc.endsWith('y') && !desc.endsWith('ay') && !desc.endsWith('ey') && !desc.endsWith('oy') && !desc.endsWith('uy')) {
+    return desc.slice(0, -1) + 'ies';
+  }
+  if (desc.endsWith('s') || desc.endsWith('x') || desc.endsWith('z') || desc.endsWith('ch') || desc.endsWith('sh')) {
+    return desc + 'es';
+  }
+  return desc + 's';
+}
+
+/**
  * Convert a flag name with hyphens to underscore parameter name.
  * e.g., "contact-id" -> "contact_id"
  */
@@ -77,7 +91,7 @@ function toFlagName(param: string): string {
 function addListCommand(resourceCmd: Command, config: CrudEntityConfig): void {
   const listCmd = resourceCmd
     .command('list')
-    .description(`List ${config.description}s`);
+    .description(`List ${pluralize(config.description)}`);
 
   // Standard options
   listCmd
@@ -374,7 +388,7 @@ export function registerEntityCommands(program: Command): void {
     // Create resource subcommand under the group
     const resourceCmd = groupCmd
       .command(resourceName)
-      .description(`Manage ${config.description}s`);
+      .description(`Manage ${pluralize(config.description)}`);
 
     // Add list subcommand if supported
     if (config.operations.includes('list')) {
