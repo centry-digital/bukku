@@ -37,8 +37,8 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 ### CLI Output
 
 - [x] **OUT-01**: JSON output to stdout by default for all commands
-- [ ] **OUT-02**: --format table flag for human-readable tabular output
-- [ ] **OUT-03**: Sensible per-resource table column definitions (id, date, contact, total, status etc.)
+- [x] **OUT-02**: --format table flag for human-readable tabular output
+- [x] **OUT-03**: Sensible per-resource table column definitions (id, date, contact, total, status etc.)
 - [ ] **OUT-04**: --dry-run flag on mutation commands showing request details without executing
 - [x] **OUT-05**: Consistent flag naming across all subcommands (--format, --limit, --page)
 
@@ -105,8 +105,8 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 | OUT-05 | Phase 13 | Complete (13-02) |
 | CMD-01 | Phase 14 | Complete (14-01) |
 | CMD-02 | Phase 14 | Complete (14-01) |
-| OUT-02 | Phase 14 | Pending |
-| OUT-03 | Phase 14 | Pending |
+| OUT-02 | Phase 14 | Complete (14-02) |
+| OUT-03 | Phase 14 | Complete (14-02) |
 | CMD-03 | Phase 15 | Pending |
 | CMD-04 | Phase 15 | Pending |
 | CMD-05 | Phase 15 | Pending |

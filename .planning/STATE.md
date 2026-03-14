@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Monorepo + CLI
 status: in-progress
-stopped_at: Completed 14-01-PLAN.md (CLI command factory for list/get)
-last_updated: "2026-03-14T09:07:29Z"
-last_activity: 2026-03-14 — Plan 14-01 executed (command factory, 27 entities, list/get subcommands)
+stopped_at: Completed 14-02-PLAN.md (table formatter, reference data, search-accounts)
+last_updated: "2026-03-14T09:12:19Z"
+last_activity: 2026-03-14 — Plan 14-02 executed (table formatter, reference data, search-accounts)
 progress:
   total_phases: 5
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 7
-  completed_plans: 6
-  percent: 86
+  completed_plans: 7
+  percent: 90
 ---
 
 # Project State: Bukku
@@ -23,18 +23,18 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Users can read and write accounting data in Bukku efficiently — through AI conversation (MCP) or direct commands (CLI) — instead of manual data entry in the web UI.
-**Current focus:** v2.0 Monorepo + CLI — Phase 14 in progress (1/2 plans complete)
+**Current focus:** v2.0 Monorepo + CLI — Phase 14 complete, ready for Phase 15
 
 ## Current Position
 
-Phase: 14 (CLI Read Commands) — In Progress
-Plan: 01 completed (1/2 plans)
-Status: Plan 14-01 complete (command factory), ready for Plan 14-02 (table formatter)
-Last activity: 2026-03-14 — Plan 14-01 executed (command factory, 27 entities, list/get subcommands)
+Phase: 14 (CLI Read Commands) — Complete
+Plan: 02 completed (2/2 plans)
+Status: Phase 14 complete — all CLI read commands implemented
+Last activity: 2026-03-14 — Plan 14-02 executed (table formatter, reference data, search-accounts)
 
 ```
-Progress: [████████░░] 86%
-Phase 12 #####  Phase 13 #####  Phase 14 ##░░░  Phase 15 ░░░░░  Phase 16 ░░░░░
+Progress: [█████████░] 90%
+Phase 12 #####  Phase 13 #####  Phase 14 #####  Phase 15 ░░░░░  Phase 16 ░░░░░
 ```
 
 ## Performance Metrics
@@ -61,6 +61,7 @@ Phase 12 #####  Phase 13 #####  Phase 14 ##░░░  Phase 15 ░░░░░  
 - Plan 13-01: 2min, 2 tasks, 5 files
 - Plan 13-02: 5min, 2 tasks, 11 files
 - Plan 14-01: 3min, 2 tasks, 2 files
+- Plan 14-02: 2min, 2 tasks, 4 files
 
 ## Accumulated Context
 
@@ -76,7 +77,7 @@ See `.planning/PROJECT.md` Key Decisions table for full list with outcomes.
 - Config file (~/.bukkurc) for CLI auth — convenience for interactive use; env vars still supported
 - Nested subcommands — natural grouping (e.g., bukku sales invoices list)
 - commander v14.0.3 for CLI; shebang only in esbuild banner not source (avoids double-shebang bug)
-- commander v14 + ini v6 + cli-table3 — lean, well-maintained, no unnecessary deps
+- commander v14 + ini v6 — lean, well-maintained, no unnecessary deps (cli-table3 not needed; custom table formatter)
 - Node.js minimum version bump to 20 — commander v14 and ini v6 require Node 20; Node 18 EOL April 2025
 - AuthMissingError as custom Error subclass with code/missingFields for typed error handling in withAuth wrapper
 - Config show resolves precedence independently per field, matching resolveAuth behavior
@@ -86,6 +87,8 @@ See `.planning/PROJECT.md` Key Decisions table for full list with outcomes.
 - withAuth wrapper pattern: resolves auth, creates BukkuClient, catches typed errors with mapped exit codes
 - Explicit RESOURCE_NAME_MAP over prefix-stripping heuristics for entity-to-subcommand mapping
 - get command uses setOptionValue to pass parsed ID through withAuth wrapper
+- ref-data top-level group for reference data commands (not nested under accounting)
+- zero-dependency table formatter with string padding (cli-table3 unnecessary)
 
 ### Active TODOs
 
@@ -105,9 +108,9 @@ No blockers.
 
 ## Session Continuity
 
-**Last session:** 2026-03-14T09:07:29Z
-**Stopped at:** Completed 14-01-PLAN.md (CLI command factory for list/get)
-**What's next:** Plan 14-02 — Table formatter + per-resource columns + reference data commands
+**Last session:** 2026-03-14T09:12:19Z
+**Stopped at:** Completed 14-02-PLAN.md (table formatter, reference data, search-accounts)
+**What's next:** Phase 15 — CLI write commands
 
 ---
 *State tracking since: 2026-02-06*
