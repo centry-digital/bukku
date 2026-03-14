@@ -1,7 +1,9 @@
 import type { Command } from 'commander';
+import { basename } from 'node:path';
 import { access } from 'node:fs/promises';
 import { withAuth } from '../wrapper.js';
 import { outputJson } from '../../output/json.js';
+import { outputDryRun } from '../../output/dry-run.js';
 import { outputError, ExitCode } from '../../output/error.js';
 
 /**
@@ -21,7 +23,7 @@ export function registerFileUploadCommand(program: Command): void {
       .description('File uploads and attachments');
   }
 
-  const wrappedHandler = withAuth(async ({ client, opts }) => {
+  const wrappedHandler = withAuth(async ({ client, opts, auth }) => {
     const filePath = opts._filePath as string;
 
     // Validate file exists
@@ -34,6 +36,11 @@ export function registerFileUploadCommand(program: Command): void {
       );
     }
 
+    if (opts.dryRun) {
+      outputDryRun({ method: 'POST', path: '/files', token: auth.apiToken, subdomain: auth.companySubdomain, body: { file: basename(filePath) } });
+      return;
+    }
+
     const data = await client.postMultipart('/files', filePath);
     outputJson(data);
   });
@@ -41,6 +48,7 @@ export function registerFileUploadCommand(program: Command): void {
   groupCmd
     .command('upload <path>')
     .description('Upload a file to Bukku')
+    .option('--dry-run', 'Show request details without executing', false)
     .action(function (this: Command, pathArg: string, ...rest: unknown[]) {
       this.setOptionValue('_filePath', pathArg);
       return wrappedHandler.call(this, pathArg, ...rest);

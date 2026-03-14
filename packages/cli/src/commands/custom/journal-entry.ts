@@ -2,6 +2,7 @@ import type { Command } from 'commander';
 import { validateDoubleEntry } from 'core';
 import { withAuth } from '../wrapper.js';
 import { outputJson } from '../../output/json.js';
+import { outputDryRun } from '../../output/dry-run.js';
 import { outputError, ExitCode } from '../../output/error.js';
 import { readJsonInput } from '../../input/json.js';
 
@@ -39,8 +40,9 @@ export function registerJournalEntryCommands(program: Command): void {
     .command('create')
     .description('Create a new journal entry')
     .option('--data <json>', 'JSON data (or pipe to stdin)')
+    .option('--dry-run', 'Show request details without executing', false)
     .action(
-      withAuth(async ({ client, opts }) => {
+      withAuth(async ({ client, opts, auth }) => {
         const body = await readJsonInput(opts) as Record<string, unknown>;
 
         // Validate double-entry balance if journal_items present
@@ -54,13 +56,18 @@ export function registerJournalEntryCommands(program: Command): void {
           }
         }
 
+        if (opts.dryRun) {
+          outputDryRun({ method: 'POST', path: '/journal_entries', token: auth.apiToken, subdomain: auth.companySubdomain, body });
+          return;
+        }
+
         const data = await client.post('/journal_entries', body);
         outputJson(data);
       }),
     );
 
   // Add update subcommand
-  const updateHandler = withAuth(async ({ client, opts }) => {
+  const updateHandler = withAuth(async ({ client, opts, auth }) => {
     const id = opts._entityId as number;
     const body = await readJsonInput(opts) as Record<string, unknown>;
 
@@ -75,6 +82,11 @@ export function registerJournalEntryCommands(program: Command): void {
       }
     }
 
+    if (opts.dryRun) {
+      outputDryRun({ method: 'PUT', path: `/journal_entries/${id}`, token: auth.apiToken, subdomain: auth.companySubdomain, body });
+      return;
+    }
+
     const data = await client.put(`/journal_entries/${id}`, body);
     outputJson(data);
   });
@@ -83,6 +95,7 @@ export function registerJournalEntryCommands(program: Command): void {
     .command('update <id>')
     .description('Update a journal entry')
     .option('--data <json>', 'JSON data (or pipe to stdin)')
+    .option('--dry-run', 'Show request details without executing', false)
     .action(function (this: Command, idArg: string, ...rest: unknown[]) {
       const id = parseId(idArg);
       this.setOptionValue('_entityId', id);
