@@ -45,7 +45,7 @@
 - [x] **Phase 13: CLI Foundation + Auth** — Entry point, auth resolution chain, output contract, config subcommand (completed 2026-03-14)
 - [x] **Phase 14: CLI Read Commands** — All list and get operations across all 8 categories with table output (completed 2026-03-14)
 - [x] **Phase 15: CLI Write Commands** — All create, update, delete, status, file upload, and --dry-run (completed 2026-03-14)
-- [ ] **Phase 16: Distribution** — Publish @centry-digital/bukku-cli, npx support, README
+- [x] **Phase 16: Distribution** — Publish @centry-digital/bukku-cli, npx support, README (completed 2026-03-14)
 
 ## Phase Details
 
@@ -122,7 +122,7 @@ Plans:
   1. `npm install -g @centry-digital/bukku-cli` installs the `bukku` binary and `bukku --version` prints the correct version
   2. `npx @centry-digital/bukku-cli --help` executes without prior installation and prints top-level usage
   3. The README contains: installation instructions, configuration steps (env vars and ~/.bukkurc), and at least one working end-to-end usage example per command category
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 Plans:
 - [ ] 16-01-PLAN.md — Package finalization + CI/CD + npx verification + README
 **Brief**: [briefs/v2.0/PHASE-16-BRIEF.md](briefs/v2.0/PHASE-16-BRIEF.md)
@@ -146,4 +146,4 @@ Plans:
 | 13. CLI Foundation + Auth | v2.0 | 2/2 | ✓ Complete | 2026-03-14 |
 | 14. CLI Read Commands | v2.0 | 2/2 | ✓ Complete | 2026-03-14 |
 | 15. CLI Write Commands | v2.0 | 3/3 | ✓ Complete | 2026-03-14 |
-| 16. Distribution | v2.0 | 0/1 | Not started | -- |
+| 16. Distribution | 1/1 | Complete   | 2026-03-14 | -- |
