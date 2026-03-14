@@ -4,6 +4,7 @@ import type { CrudEntityConfig, BukkuPaging } from 'core';
 import { withAuth } from './wrapper.js';
 import { outputJson } from '../output/json.js';
 import { outputTable } from '../output/table.js';
+import { readJsonInput } from '../input/json.js';
 
 /**
  * Map entity name to CLI resource subcommand name.
@@ -218,6 +219,84 @@ function addGetCommand(resourceCmd: Command, config: CrudEntityConfig): void {
 }
 
 /**
+ * Add the `create` subcommand to a resource command.
+ */
+function addCreateCommand(resourceCmd: Command, config: CrudEntityConfig): void {
+  const createCmd = resourceCmd
+    .command('create')
+    .description(`Create a new ${config.description}`)
+    .option('--data <json>', 'JSON data (or pipe to stdin)');
+
+  createCmd.action(
+    withAuth(async ({ client, opts }) => {
+      const body = await readJsonInput(opts);
+      const data = await client.post(config.apiBasePath, body);
+      outputJson(data);
+    }),
+  );
+}
+
+/**
+ * Add the `update` subcommand to a resource command.
+ */
+function addUpdateCommand(resourceCmd: Command, config: CrudEntityConfig): void {
+  const updateCmd = resourceCmd
+    .command('update <id>')
+    .description(`Update a ${config.description}`)
+    .option('--data <json>', 'JSON data (or pipe to stdin)');
+
+  const wrappedHandler = withAuth(async ({ client, opts }) => {
+    const parsedId = opts._entityId as number;
+    const body = await readJsonInput(opts);
+    const data = await client.put(`${config.apiBasePath}/${parsedId}`, body);
+    outputJson(data);
+  });
+
+  updateCmd.action(function (this: Command, idArg: string, ...rest: unknown[]) {
+    const parsedId = parseInt(idArg, 10);
+
+    if (isNaN(parsedId) || parsedId <= 0) {
+      process.stderr.write(
+        JSON.stringify({ error: 'ID must be a positive integer', code: 'VALIDATION_ERROR' }) + '\n',
+      );
+      process.exit(4);
+    }
+
+    this.setOptionValue('_entityId', parsedId);
+    return wrappedHandler.call(this, idArg, ...rest);
+  });
+}
+
+/**
+ * Add the `delete` subcommand to a resource command.
+ */
+function addDeleteCommand(resourceCmd: Command, config: CrudEntityConfig): void {
+  const deleteCmd = resourceCmd
+    .command('delete <id>')
+    .description(`Delete a ${config.description}`);
+
+  const wrappedHandler = withAuth(async ({ client, opts }) => {
+    const parsedId = opts._entityId as number;
+    await client.delete(`${config.apiBasePath}/${parsedId}`);
+    outputJson({});
+  });
+
+  deleteCmd.action(function (this: Command, idArg: string, ...rest: unknown[]) {
+    const parsedId = parseInt(idArg, 10);
+
+    if (isNaN(parsedId) || parsedId <= 0) {
+      process.stderr.write(
+        JSON.stringify({ error: 'ID must be a positive integer', code: 'VALIDATION_ERROR' }) + '\n',
+      );
+      process.exit(4);
+    }
+
+    this.setOptionValue('_entityId', parsedId);
+    return wrappedHandler.call(this, idArg, ...rest);
+  });
+}
+
+/**
  * Register all entity CRUD commands on the Commander program.
  *
  * Iterates allEntityConfigs from core, creates group and resource subcommands,
@@ -252,6 +331,21 @@ export function registerEntityCommands(program: Command): void {
     // Add get subcommand if supported
     if (config.operations.includes('get')) {
       addGetCommand(resourceCmd, config);
+    }
+
+    // Add create subcommand if supported
+    if (config.operations.includes('create')) {
+      addCreateCommand(resourceCmd, config);
+    }
+
+    // Add update subcommand if supported
+    if (config.operations.includes('update')) {
+      addUpdateCommand(resourceCmd, config);
+    }
+
+    // Add delete subcommand if supported
+    if (config.operations.includes('delete')) {
+      addDeleteCommand(resourceCmd, config);
     }
   }
 }
