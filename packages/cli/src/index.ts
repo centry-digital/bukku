@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { configCommand } from './commands/config.js';
 import { registerEntityCommands } from './commands/factory.js';
+import { registerReferenceDataCommands } from './commands/custom/reference-data.js';
+import { registerSearchAccountsCommand } from './commands/custom/search-accounts.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -26,6 +28,10 @@ program
 
 // Register all entity commands (list/get) from core configs
 registerEntityCommands(program);
+
+// Custom commands (reference data, search-accounts)
+registerReferenceDataCommands(program);
+registerSearchAccountsCommand(program);
 
 // Config command
 program.addCommand(configCommand);
