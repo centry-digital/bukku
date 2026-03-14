@@ -107,7 +107,11 @@ Plans:
   3. `bukku <category> <resource> <status-verb> <id>` (approve, void, etc.) executes the status transition and returns the updated resource
   4. `bukku files upload <path>` uploads the file and returns the file metadata as JSON
   5. Every mutation command supports `--dry-run` and prints the full request details (method, URL, body) to stdout without executing the API call
-**Plans**: 3 (15-01: create/update/delete factory + stdin JSON, 15-02: status + archive + validation + upload, 15-03: dry-run + parity verification)
+**Plans:** 3 plans
+Plans:
+- [ ] 15-01-PLAN.md — Factory extension for create/update/delete + stdin JSON input
+- [ ] 15-02-PLAN.md — Status + archive/unarchive + journal entry validation + file upload
+- [ ] 15-03-PLAN.md — --dry-run support + parity verification
 **Brief**: [briefs/v2.0/PHASE-15-BRIEF.md](briefs/v2.0/PHASE-15-BRIEF.md)
 
 ### Phase 16: Distribution
@@ -139,5 +143,5 @@ Plans:
 | 12. Monorepo Foundation | 3/3 | Complete   | 2026-03-14 | — |
 | 13. CLI Foundation + Auth | v2.0 | 2/2 | Complete | 2026-03-14 |
 | 14. CLI Read Commands | v2.0 | 2/2 | Complete | 2026-03-14 |
-| 15. CLI Write Commands | v2.0 | 0/3 | Not started | — |
+| 15. CLI Write Commands | v2.0 | 0/3 | In Progress | — |
 | 16. Distribution | v2.0 | 0/1 | Not started | — |
