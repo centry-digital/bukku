@@ -30,17 +30,17 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 - [x] **CORE-01**: CLI entry point with nested subcommands (bukku <group> <resource> <action>)
 - [x] **CORE-02**: --help available at every command level with usage examples
 - [x] **CORE-03**: --version flag showing package version
-- [ ] **CORE-04**: Non-zero exit codes on all errors (API, auth, validation)
-- [ ] **CORE-05**: All errors and diagnostics go to stderr, only data to stdout
-- [ ] **CORE-06**: Structured error JSON to stderr when errors occur
+- [x] **CORE-04**: Non-zero exit codes on all errors (API, auth, validation)
+- [x] **CORE-05**: All errors and diagnostics go to stderr, only data to stdout
+- [x] **CORE-06**: Structured error JSON to stderr when errors occur
 
 ### CLI Output
 
-- [ ] **OUT-01**: JSON output to stdout by default for all commands
+- [x] **OUT-01**: JSON output to stdout by default for all commands
 - [ ] **OUT-02**: --format table flag for human-readable tabular output
 - [ ] **OUT-03**: Sensible per-resource table column definitions (id, date, contact, total, status etc.)
 - [ ] **OUT-04**: --dry-run flag on mutation commands showing request details without executing
-- [ ] **OUT-05**: Consistent flag naming across all subcommands (--format, --limit, --page)
+- [x] **OUT-05**: Consistent flag naming across all subcommands (--format, --limit, --page)
 
 ### CLI Commands
 
@@ -98,11 +98,11 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 | CORE-01 | Phase 13 | Complete |
 | CORE-02 | Phase 13 | Complete |
 | CORE-03 | Phase 13 | Complete |
-| CORE-04 | Phase 13 | Pending |
-| CORE-05 | Phase 13 | Pending |
-| CORE-06 | Phase 13 | Pending |
-| OUT-01 | Phase 13 | Pending |
-| OUT-05 | Phase 13 | Pending |
+| CORE-04 | Phase 13 | Complete (13-02) |
+| CORE-05 | Phase 13 | Complete (13-02) |
+| CORE-06 | Phase 13 | Complete (13-02) |
+| OUT-01 | Phase 13 | Complete (13-02) |
+| OUT-05 | Phase 13 | Complete (13-02) |
 | CMD-01 | Phase 14 | Pending |
 | CMD-02 | Phase 14 | Pending |
 | OUT-02 | Phase 14 | Pending |

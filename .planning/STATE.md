@@ -3,38 +3,38 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Monorepo + CLI
 status: in-progress
-stopped_at: Completed 13-01-PLAN.md (CLI entry point + auth + config)
-last_updated: "2026-03-14T08:47:35Z"
-last_activity: 2026-03-14 — Plan 13-01 executed (CLI entry point + auth + config)
+stopped_at: Completed 13-02-PLAN.md (output formatters + withAuth + tests)
+last_updated: "2026-03-14T08:55:26Z"
+last_activity: 2026-03-14 — Plan 13-02 executed (output formatters, withAuth wrapper, 25 tests)
 progress:
   total_phases: 5
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 5
-  completed_plans: 4
-  percent: 97
+  completed_plans: 5
+  percent: 100
 ---
 
 # Project State: Bukku
 
-**Last updated:** 2026-03-14T08:23Z
+**Last updated:** 2026-03-14T08:55Z
 
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Users can read and write accounting data in Bukku efficiently — through AI conversation (MCP) or direct commands (CLI) — instead of manual data entry in the web UI.
-**Current focus:** v2.0 Monorepo + CLI — Phase 13 (CLI Foundation + Auth) in progress
+**Current focus:** v2.0 Monorepo + CLI — Phase 13 complete, ready for Phase 14
 
 ## Current Position
 
-Phase: 13 (CLI Foundation + Auth) — In Progress
-Plan: 01 completed (1/2 plans)
-Status: Plan 13-01 complete, ready for Plan 13-02
-Last activity: 2026-03-14 — Plan 13-01 executed (CLI entry point + auth + config)
+Phase: 13 (CLI Foundation + Auth) — Complete
+Plan: 02 completed (2/2 plans)
+Status: Phase 13 complete, ready for Phase 14 (CLI Read Commands)
+Last activity: 2026-03-14 — Plan 13-02 executed (output formatters, withAuth wrapper, 25 tests)
 
 ```
-Progress: [█████████░] 94%
-Phase 12 #####  Phase 13 ##░░░  Phase 14 ░░░░░  Phase 15 ░░░░░  Phase 16 ░░░░░
+Progress: [██████████] 100%
+Phase 12 #####  Phase 13 #####  Phase 14 ░░░░░  Phase 15 ░░░░░  Phase 16 ░░░░░
 ```
 
 ## Performance Metrics
@@ -52,13 +52,14 @@ Phase 12 #####  Phase 13 ##░░░  Phase 14 ░░░░░  Phase 15 ░░�
 - Shipped: npm package @centry-digital/bukku-mcp with CI/CD
 
 **v2.0 Milestone (Phases 12-16):**
-- Total plans completed: 4
+- Total plans completed: 5
 - Started: 2026-03-14
 - Requirements: 34 total (7 + 13 + 4 + 7 + 3)
 - Plan 12-01: 4min, 2 tasks, 45 files
 - Plan 12-02: 4min, 2 tasks, 16 files
 - Plan 12-03: 3min, 1 task, 8 files
 - Plan 13-01: 2min, 2 tasks, 5 files
+- Plan 13-02: 5min, 2 tasks, 11 files
 
 ## Accumulated Context
 
@@ -79,6 +80,9 @@ See `.planning/PROJECT.md` Key Decisions table for full list with outcomes.
 - AuthMissingError as custom Error subclass with code/missingFields for typed error handling in withAuth wrapper
 - Config show resolves precedence independently per field, matching resolveAuth behavior
 - Exit code 4 for validation errors (invalid config keys)
+- tsx dev dependency for test execution -- Node --experimental-strip-types cannot resolve .js -> .ts imports
+- Integration tests run against built JS (packages/cli/build/) matching production execution
+- withAuth wrapper pattern: resolves auth, creates BukkuClient, catches typed errors with mapped exit codes
 
 ### Active TODOs
 
@@ -98,9 +102,9 @@ No blockers.
 
 ## Session Continuity
 
-**Last session:** 2026-03-14T08:47:35Z
-**Stopped at:** Completed 13-01-PLAN.md (CLI entry point + auth + config)
-**What's next:** Plan 13-02 — withAuth wrapper, entity command factory, output utilities
+**Last session:** 2026-03-14T08:55:26Z
+**Stopped at:** Completed 13-02-PLAN.md (output formatters + withAuth + tests)
+**What's next:** Phase 14 — CLI Read Commands (list/get operations with table output)
 
 ---
 *State tracking since: 2026-02-06*
