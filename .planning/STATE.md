@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Monorepo + CLI
 status: in-progress
-stopped_at: Completed 15-01-PLAN.md (CLI write command factory with create/update/delete)
-last_updated: "2026-03-14T09:23:02.760Z"
-last_activity: 2026-03-14 — Plan 15-01 executed (CLI write command factory with create/update/delete)
+stopped_at: Completed 15-03-PLAN.md (dry-run + parity verification)
+last_updated: "2026-03-14T09:35:54.396Z"
+last_activity: 2026-03-14 — Plan 15-03 executed (dry-run + parity verification)
 progress:
   total_phases: 5
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 10
-  completed_plans: 9
-  percent: 95
+  completed_plans: 10
+  percent: 97
 ---
 
 # Project State: Bukku
@@ -23,18 +23,18 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Users can read and write accounting data in Bukku efficiently — through AI conversation (MCP) or direct commands (CLI) — instead of manual data entry in the web UI.
-**Current focus:** v2.0 Monorepo + CLI — Phase 15 in progress (1/3 plans complete)
+**Current focus:** v2.0 Monorepo + CLI — Phase 15 complete (3/3 plans), Phase 16 next
 
 ## Current Position
 
-Phase: 15 (CLI Write Commands) — In Progress
-Plan: 02 completed (2/3 plans)
-Status: Plan 15-02 complete — custom CLI commands (status, archive, journal entry, file upload, location write)
-Last activity: 2026-03-14 — Plan 15-02 executed (custom CLI commands)
+Phase: 15 (CLI Write Commands) — Complete
+Plan: 03 completed (3/3 plans)
+Status: Phase 15 complete — all mutation commands with dry-run + 169/169 parity verification
+Last activity: 2026-03-14 — Plan 15-03 executed (dry-run + parity verification)
 
 ```
-Progress: [█████████░] 95%
-Phase 12 #####  Phase 13 #####  Phase 14 #####  Phase 15 ░░░░░  Phase 16 ░░░░░
+Progress: [██████████] 97%
+Phase 12 #####  Phase 13 #####  Phase 14 #####  Phase 15 #####  Phase 16 ░░░░░
 ```
 
 ## Performance Metrics
@@ -64,6 +64,7 @@ Phase 12 #####  Phase 13 #####  Phase 14 #####  Phase 15 ░░░░░  Phase 
 - Plan 14-02: 2min, 2 tasks, 4 files
 - Plan 15-01: 2min, 1 task, 2 files
 - Plan 15-02: 3min, 2 tasks, 6 files
+- Plan 15-03: 4min, 2 tasks, 9 files
 
 ## Accumulated Context
 
@@ -95,6 +96,8 @@ See `.planning/PROJECT.md` Key Decisions table for full list with outcomes.
 - Reused readJsonInput from 15-01 instead of inlining JSON parsing (15-01 already landed)
 - Status command uses requiredOption for --status flag to enforce value at Commander level
 - Custom commands find existing group/resource commands and add subcommands to them
+- Separate dry-run.ts output module for clean separation of concerns
+- Auth credentials exposed in CommandContext for dry-run token masking
 
 ### Active TODOs
 
@@ -114,9 +117,9 @@ No blockers.
 
 ## Session Continuity
 
-**Last session:** 2026-03-14T09:27:43Z
-**Stopped at:** Completed 15-02-PLAN.md (custom CLI commands: status, archive, journal entry, file upload, location write)
-**What's next:** Plan 15-03 or Phase 16 (CLI packaging)
+**Last session:** 2026-03-14T09:35:54.394Z
+**Stopped at:** Completed 15-03-PLAN.md (dry-run + parity verification)
+**What's next:** Phase 16 (CLI packaging)
 
 ---
 *State tracking since: 2026-02-06*

@@ -39,7 +39,7 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 - [x] **OUT-01**: JSON output to stdout by default for all commands
 - [x] **OUT-02**: --format table flag for human-readable tabular output
 - [x] **OUT-03**: Sensible per-resource table column definitions (id, date, contact, total, status etc.)
-- [ ] **OUT-04**: --dry-run flag on mutation commands showing request details without executing
+- [x] **OUT-04**: --dry-run flag on mutation commands showing request details without executing
 - [x] **OUT-05**: Consistent flag naming across all subcommands (--format, --limit, --page)
 
 ### CLI Commands
@@ -51,7 +51,7 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 - [x] **CMD-05**: All delete commands by resource ID
 - [x] **CMD-06**: All status update commands (approve, void, etc.)
 - [x] **CMD-07**: File upload command accepting file path
-- [ ] **CMD-08**: Full parity with all 169 MCP tool operations
+- [x] **CMD-08**: Full parity with all 169 MCP tool operations
 
 ### Distribution
 
@@ -112,8 +112,8 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 | CMD-05 | Phase 15 | Complete |
 | CMD-06 | Phase 15 | Complete |
 | CMD-07 | Phase 15 | Complete |
-| CMD-08 | Phase 15 | Pending |
-| OUT-04 | Phase 15 | Pending |
+| CMD-08 | Phase 15 | Complete |
+| OUT-04 | Phase 15 | Complete |
 | DIST-01 | Phase 16 | Pending |
 | DIST-02 | Phase 16 | Pending |
 | DIST-03 | Phase 16 | Pending |

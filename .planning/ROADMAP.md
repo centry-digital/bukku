@@ -44,7 +44,7 @@
 - [x] **Phase 12: Monorepo Foundation** — Restructure into npm workspaces with shared core; preserve MCP package with zero regression (completed 2026-03-14)
 - [x] **Phase 13: CLI Foundation + Auth** — Entry point, auth resolution chain, output contract, config subcommand (completed 2026-03-14)
 - [x] **Phase 14: CLI Read Commands** — All list and get operations across all 8 categories with table output (completed 2026-03-14)
-- [ ] **Phase 15: CLI Write Commands** — All create, update, delete, status, file upload, and --dry-run
+- [x] **Phase 15: CLI Write Commands** — All create, update, delete, status, file upload, and --dry-run (completed 2026-03-14)
 - [ ] **Phase 16: Distribution** — Publish @centry-digital/bukku-cli, npx support, README
 
 ## Phase Details
@@ -107,7 +107,7 @@ Plans:
   3. `bukku <category> <resource> <status-verb> <id>` (approve, void, etc.) executes the status transition and returns the updated resource
   4. `bukku files upload <path>` uploads the file and returns the file metadata as JSON
   5. Every mutation command supports `--dry-run` and prints the full request details (method, URL, body) to stdout without executing the API call
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 Plans:
 - [ ] 15-01-PLAN.md — Factory extension for create/update/delete + stdin JSON input
 - [ ] 15-02-PLAN.md — Status + archive/unarchive + journal entry validation + file upload
@@ -143,5 +143,5 @@ Plans:
 | 12. Monorepo Foundation | 3/3 | Complete   | 2026-03-14 | — |
 | 13. CLI Foundation + Auth | v2.0 | 2/2 | Complete | 2026-03-14 |
 | 14. CLI Read Commands | v2.0 | 2/2 | Complete | 2026-03-14 |
-| 15. CLI Write Commands | 2/3 | In Progress|  | — |
+| 15. CLI Write Commands | 3/3 | Complete   | 2026-03-14 | — |
 | 16. Distribution | v2.0 | 0/1 | Not started | — |
