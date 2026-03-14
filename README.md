@@ -70,8 +70,8 @@ If you no longer need API access, log into your Bukku account and revoke the tok
 ### Setup
 
 ```bash
-git clone https://github.com/centry-digital/bukku-mcp.git
-cd bukku-mcp
+git clone https://github.com/centry-digital/bukku.git
+cd bukku
 npm install
 npm run build
 npm test

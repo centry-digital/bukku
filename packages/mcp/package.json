@@ -19,11 +19,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/centry-digital/bukku-mcp.git"
+    "url": "https://github.com/centry-digital/bukku.git"
   },
-  "homepage": "https://github.com/centry-digital/bukku-mcp",
+  "homepage": "https://github.com/centry-digital/bukku",
   "bugs": {
-    "url": "https://github.com/centry-digital/bukku-mcp/issues"
+    "url": "https://github.com/centry-digital/bukku/issues"
   },
   "engines": {
     "node": ">=20.0.0"

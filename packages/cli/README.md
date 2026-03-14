@@ -259,7 +259,7 @@ Errors are written to stderr as structured JSON, so they don't interfere with pi
 ## Related
 
 - [@centry-digital/bukku-mcp](https://www.npmjs.com/package/@centry-digital/bukku-mcp) -- MCP server for connecting AI assistants (Claude, etc.) to Bukku
-- [GitHub repository](https://github.com/centry-digital/bukku-mcp)
+- [GitHub repository](https://github.com/centry-digital/bukku)
 
 ## License
 
