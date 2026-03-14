@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc --build && node esbuild.config.mjs",
     "test": "npm test --workspaces --if-present",
-    "clean": "tsc --build --clean"
+    "clean": "tsc --build --clean",
+    "verify:parity": "tsx scripts/verify-parity.ts"
   },
   "engines": {
     "node": ">=20.0.0"
