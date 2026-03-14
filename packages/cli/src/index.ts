@@ -6,6 +6,8 @@ import { configCommand } from './commands/config.js';
 import { registerEntityCommands } from './commands/factory.js';
 import { registerReferenceDataCommands } from './commands/custom/reference-data.js';
 import { registerSearchAccountsCommand } from './commands/custom/search-accounts.js';
+import { registerArchiveCommands } from './commands/custom/archive.js';
+import { registerLocationWriteCommands } from './commands/custom/location-write.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -32,6 +34,8 @@ registerEntityCommands(program);
 // Custom commands (reference data, search-accounts)
 registerReferenceDataCommands(program);
 registerSearchAccountsCommand(program);
+registerArchiveCommands(program);
+registerLocationWriteCommands(program);
 
 // Config command
 program.addCommand(configCommand);

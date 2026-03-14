@@ -297,6 +297,38 @@ function addDeleteCommand(resourceCmd: Command, config: CrudEntityConfig): void 
 }
 
 /**
+ * Add the `status` subcommand to a resource command.
+ * Used for entities that support status transitions (e.g., draft -> posted).
+ */
+function addStatusCommand(resourceCmd: Command, config: CrudEntityConfig): void {
+  const statusCmd = resourceCmd
+    .command('status <id>')
+    .description(`Update status of a ${config.description}`)
+    .requiredOption('--status <status>', 'New status value');
+
+  const wrappedHandler = withAuth(async ({ client, opts }) => {
+    const parsedId = opts._entityId as number;
+    const status = opts.status as string;
+    const data = await client.patch(`${config.apiBasePath}/${parsedId}`, { status });
+    outputJson(data);
+  });
+
+  statusCmd.action(function (this: Command, idArg: string, ...rest: unknown[]) {
+    const parsedId = parseInt(idArg, 10);
+
+    if (isNaN(parsedId) || parsedId <= 0) {
+      process.stderr.write(
+        JSON.stringify({ error: 'ID must be a positive integer', code: 'VALIDATION_ERROR' }) + '\n',
+      );
+      process.exit(4);
+    }
+
+    this.setOptionValue('_entityId', parsedId);
+    return wrappedHandler.call(this, idArg, ...rest);
+  });
+}
+
+/**
  * Register all entity CRUD commands on the Commander program.
  *
  * Iterates allEntityConfigs from core, creates group and resource subcommands,
@@ -346,6 +378,11 @@ export function registerEntityCommands(program: Command): void {
     // Add delete subcommand if supported
     if (config.operations.includes('delete')) {
       addDeleteCommand(resourceCmd, config);
+    }
+
+    // Add status subcommand if entity supports status updates
+    if (config.hasStatusUpdate) {
+      addStatusCommand(resourceCmd, config);
     }
   }
 }
