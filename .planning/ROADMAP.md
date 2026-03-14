@@ -41,7 +41,7 @@
 
 ### v2.0 Monorepo + CLI
 
-- [ ] **Phase 12: Monorepo Foundation** — Restructure into npm workspaces with shared core; preserve MCP package with zero regression
+- [x] **Phase 12: Monorepo Foundation** — Restructure into npm workspaces with shared core; preserve MCP package with zero regression (completed 2026-03-14)
 - [ ] **Phase 13: CLI Foundation + Auth** — Entry point, auth resolution chain, output contract, config subcommand
 - [ ] **Phase 14: CLI Read Commands** — All list and get operations across all 8 categories with table output
 - [ ] **Phase 15: CLI Write Commands** — All create, update, delete, status, file upload, and --dry-run
@@ -59,7 +59,7 @@
   3. `npx @centry-digital/bukku-mcp` executes the MCP server and responds to a tool call without error (zero regression smoke test)
   4. `npx depcheck` run inside packages/mcp and packages/cli reports no phantom dependencies
   5. GitHub Actions CI passes for all three packages, and the publish workflow is updated to use `--workspace packages/mcp`
-**Plans:** 3 plans
+**Plans:** 3/3 plans complete
 Plans:
 - [x] 12-01-PLAN.md — Workspace root + packages/core (move shared code, refactor logger, add cliGroup)
 - [x] 12-02-PLAN.md — packages/mcp + import rewiring (move MCP files, esbuild bundling)
@@ -130,7 +130,7 @@ Plans:
 | 9. Build & Distribution | v1.1 | 1/1 | ✓ Complete | 2026-02-09 |
 | 10. CI/CD Automation | v1.1 | 1/1 | ✓ Complete | 2026-02-09 |
 | 11. Documentation | v1.1 | 1/1 | ✓ Complete | 2026-02-10 |
-| 12. Monorepo Foundation | v2.0 | 2/3 | In progress | — |
+| 12. Monorepo Foundation | 3/3 | Complete   | 2026-03-14 | — |
 | 13. CLI Foundation + Auth | v2.0 | 0/2 | Not started | — |
 | 14. CLI Read Commands | v2.0 | 0/2 | Not started | — |
 | 15. CLI Write Commands | v2.0 | 0/3 | Not started | — |

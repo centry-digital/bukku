@@ -14,8 +14,8 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 - [x] **MONO-03**: MCP server relocated to packages/mcp with identical published behavior (zero regression)
 - [x] **MONO-04**: TypeScript project references with composite builds across packages
 - [x] **MONO-05**: Node.js minimum version bumped to 20
-- [ ] **MONO-06**: CI/CD updated for multi-package testing and publishing
-- [ ] **MONO-07**: npm pack tarball verified identical for @centry-digital/bukku-mcp before/after restructure
+- [x] **MONO-06**: CI/CD updated for multi-package testing and publishing
+- [x] **MONO-07**: npm pack tarball verified identical for @centry-digital/bukku-mcp before/after restructure
 
 ### CLI Auth
 
@@ -88,8 +88,8 @@ Requirements for monorepo restructure + CLI tool. Each maps to roadmap phases.
 | MONO-03 | Phase 12 | Complete |
 | MONO-04 | Phase 12 | Complete (12-01) |
 | MONO-05 | Phase 12 | Complete (12-01) |
-| MONO-06 | Phase 12 | Pending |
-| MONO-07 | Phase 12 | Pending |
+| MONO-06 | Phase 12 | Complete |
+| MONO-07 | Phase 12 | Complete |
 | AUTH-01 | Phase 13 | Pending |
 | AUTH-02 | Phase 13 | Pending |
 | AUTH-03 | Phase 13 | Pending |
