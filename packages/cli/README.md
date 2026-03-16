@@ -70,6 +70,29 @@ bukku config show
 
 This shows the resolved value for each field and where it came from (flag, environment variable, or config file).
 
+## Using with AI Tools
+
+The CLI works great as a tool for AI assistants. Since it outputs structured JSON by default and writes errors to stderr, AI tools can parse the output directly.
+
+### Claude Code
+
+First, configure your credentials:
+
+```bash
+bukku config set api_token your-token-here
+bukku config set company_subdomain your-subdomain
+```
+
+Then ask Claude Code to use the CLI. For example:
+
+- "Use `bukku` to list my unpaid invoices"
+- "Create a sales invoice for RM 5,000 to contact 123 using `bukku`"
+- "Show me last month's bank transactions with `bukku`"
+
+Claude Code can run `bukku` commands via its Bash tool, read the JSON output, and take follow-up actions.
+
+> **Tip:** For AI-assisted accounting with richer integration, see also [@centry-digital/bukku-mcp](https://www.npmjs.com/package/@centry-digital/bukku-mcp) — an MCP server that exposes Bukku as native AI tools.
+
 ## Usage Examples
 
 ### Sales
