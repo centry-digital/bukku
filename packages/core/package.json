@@ -7,7 +7,7 @@
   "types": "build/index.d.ts",
   "scripts": {
     "build": "tsc --build",
-    "test": "node --test --experimental-strip-types 'src/**/*.test.ts'"
+    "test": "find src -name '*.test.ts' | xargs node --test --experimental-strip-types"
   },
   "dependencies": {
     "zod": "^4.3.6"

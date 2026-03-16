@@ -10,7 +10,7 @@
   "files": ["build/", "LICENSE", "README.md"],
   "scripts": {
     "build": "tsc --build",
-    "test": "node --test --import tsx/esm 'src/**/*.test.ts'"
+    "test": "find src -name '*.test.ts' | xargs node --test --import tsx/esm"
   },
   "keywords": [
     "bukku", "accounting", "cli", "invoicing", "bookkeeping", "malaysia"
