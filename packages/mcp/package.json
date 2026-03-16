@@ -1,6 +1,6 @@
 {
   "name": "@centry-digital/bukku-mcp",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Bukku accounting API tools for Claude via Model Context Protocol",
   "type": "module",
   "main": "build/index.js",
