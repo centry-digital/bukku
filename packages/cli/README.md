@@ -256,6 +256,18 @@ Errors are written to stderr as structured JSON, so they don't interfere with pi
 3. Generate a new API token (or copy your existing one)
 4. Note your company subdomain from the URL (e.g. `mycompany` from `mycompany.bukku.my`)
 
+## Uninstalling
+
+```bash
+npm uninstall -g @centry-digital/bukku-cli
+```
+
+To also remove your saved configuration:
+
+```bash
+rm ~/.bukkurc
+```
+
 ## Related
 
 - [@centry-digital/bukku-mcp](https://www.npmjs.com/package/@centry-digital/bukku-mcp) -- MCP server for connecting AI assistants (Claude, etc.) to Bukku

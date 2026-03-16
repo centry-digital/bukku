@@ -124,6 +124,16 @@ Then use `bukku-mcp` as the command in your AI client config instead of `npx`.
 - Restart your AI client after editing the config
 - Check Node.js v20+ is installed: `node --version`
 
+## Uninstalling
+
+If you installed globally:
+
+```bash
+npm uninstall -g @centry-digital/bukku-mcp
+```
+
+Then remove the `bukku` entry from your AI client's MCP config file.
+
 ## Related
 
 - [GitHub repository](https://github.com/centry-digital/bukku)

@@ -1,6 +1,6 @@
 {
   "name": "@centry-digital/bukku-cli",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Bukku accounting CLI - manage invoices, contacts, and accounting from the command line",
   "type": "module",
   "main": "build/index.js",
