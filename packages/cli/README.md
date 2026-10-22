@@ -133,7 +133,7 @@ bukku sales quotes create --data '{
 bukku sales quotes list --format table
 ```
 
-Bukku has announced that quotes and orders will take payment terms as `term_items` (each entry with `payment_due` and either `term_id`, from `bukku ref-data terms`, or a custom `date`), but as of 22 October 2026 the live API still applies the top-level `term_id` and ignores `term_items`. Both are accepted; sending both in one body is refused with `VALIDATION_ERROR` before any request is made.
+> **Payment terms on quotes and orders: old vs new format.** Bukku has announced that quotes and orders will take payment terms as `term_items` (each entry with `payment_due` and either `term_id`, from `bukku ref-data terms`, or a custom `date`) instead of a top-level `term_id`. As of 22 October 2026, the live API still applies the old top-level `term_id` and **silently ignores `term_items`**, so use `term_id` for now. The CLI accepts either format; sending both in one body is refused with `VALIDATION_ERROR` before any request is made. See [the main README](../../README.md#payment-terms-on-quotes-and-orders-old-vs-new-format).
 
 ### Purchases
 

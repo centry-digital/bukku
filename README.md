@@ -29,6 +29,18 @@ npx @centry-digital/bukku-cli --help
 
 Both packages require a Bukku API token and company subdomain. See [Getting Your API Token](./packages/cli/README.md#getting-your-api-token).
 
+## Payment terms on quotes and orders: old vs new format
+
+Bukku's [API changelog](https://developers.bukku.my/changelog) announced that, from 21 October 2026, sales quotes and sales orders take payment terms in a new format, `term_items`, replacing the old top-level `term_id`. A live test on 22 October 2026 found that **Bukku has not switched yet**: it still applies the old format and silently ignores the new one, so a quote sent with only `term_items` is saved with no payment term.
+
+| Format | Example                                                 | Live Bukku API (22 Oct 2026)         | bukku CLI and MCP                           |
+| ------ | ------------------------------------------------------- | ------------------------------------ | ------------------------------------------- |
+| Old    | `"term_id": 3`                                          | Applied                              | Accepted                                    |
+| New    | `"term_items": [{"term_id": 3, "payment_due": "100%"}]` | Accepted, but terms silently dropped | Accepted                                    |
+| Both   | `term_id` and `term_items` in one request               | n/a                                  | Refused before sending (`VALIDATION_ERROR`) |
+
+Use the old format today. Both are accepted, so nothing breaks when Bukku switches over. Sales invoices are unaffected: they already use `term_items`. Contacts now need a `contact_code` on create and update, which the live API enforces.
+
 ## Uninstalling
 
 ### Step 1: Remove the MCP server configuration

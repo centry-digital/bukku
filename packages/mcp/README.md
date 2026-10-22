@@ -122,6 +122,10 @@ Then use `bukku-mcp` as the command in your AI client config instead of `npx`.
 
 - Your API token may be invalid or expired — regenerate at Control Panel > Integrations > API Access
 
+**Quote or order saved without its payment term**
+
+- As of 22 October 2026, Bukku still applies the old top-level `term_id` on quotes and orders and silently ignores the new `term_items`. Ask your assistant to use `term_id`. See [old vs new format](https://github.com/centry-digital/bukku#payment-terms-on-quotes-and-orders-old-vs-new-format).
+
 **Server doesn't appear in your AI client**
 
 - Verify JSON syntax is correct (no trailing commas)
