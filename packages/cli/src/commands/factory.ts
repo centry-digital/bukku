@@ -6,6 +6,7 @@ import { outputJson } from "../output/json.js";
 import { outputTable } from "../output/table.js";
 import { readJsonInput } from "../input/json.js";
 import { outputDryRun } from "../output/dry-run.js";
+import { outputError, ExitCode } from "../output/error.js";
 
 /**
  * Map entity name to CLI resource subcommand name.
@@ -243,18 +244,33 @@ function addGetCommand(resourceCmd: Command, config: CrudEntityConfig): void {
 }
 
 /**
+ * Run the entity's client-side write validation, if any, before a create or
+ * update (including a dry-run). Exits with VALIDATION_ERROR when refused.
+ */
+function checkWrite(config: CrudEntityConfig, body: unknown): void {
+  if (!config.validateWrite || body === null || typeof body !== "object" || Array.isArray(body)) {
+    return;
+  }
+  const validation = config.validateWrite(body as Record<string, unknown>);
+  if (!validation.valid) {
+    outputError({ error: validation.error!, code: "VALIDATION_ERROR" }, ExitCode.VALIDATION);
+  }
+}
+
+/**
  * Add the `create` subcommand to a resource command.
  */
 function addCreateCommand(resourceCmd: Command, config: CrudEntityConfig): void {
   const createCmd = resourceCmd
     .command("create")
-    .description(`Create a new ${config.description}`)
+    .description(`Create a new ${config.description}. ${config.businessRules?.write ?? ""}`.trim())
     .option("--data <json>", "JSON data (or pipe to stdin)")
     .option("--dry-run", "Show request details without executing", false);
 
   createCmd.action(
     withAuth(async ({ client, opts, auth }) => {
       const body = await readJsonInput(opts);
+      checkWrite(config, body);
       if (opts.dryRun) {
         outputDryRun({
           method: "POST",
@@ -277,13 +293,14 @@ function addCreateCommand(resourceCmd: Command, config: CrudEntityConfig): void 
 function addUpdateCommand(resourceCmd: Command, config: CrudEntityConfig): void {
   const updateCmd = resourceCmd
     .command("update <id>")
-    .description(`Update a ${config.description}`)
+    .description(`Update a ${config.description}. ${config.businessRules?.write ?? ""}`.trim())
     .option("--data <json>", "JSON data (or pipe to stdin)")
     .option("--dry-run", "Show request details without executing", false);
 
   const wrappedHandler = withAuth(async ({ client, opts, auth }) => {
     const parsedId = opts._entityId as number;
     const body = await readJsonInput(opts);
+    checkWrite(config, body);
     if (opts.dryRun) {
       outputDryRun({
         method: "PUT",

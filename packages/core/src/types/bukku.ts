@@ -9,6 +9,8 @@
  * - CRUD entity configuration for the factory pattern
  */
 
+import type { ValidationResult } from "../validation/double-entry.js";
+
 /**
  * Pagination metadata returned by Bukku list endpoints
  * Derived from resPaging schema in sales.yaml
@@ -104,7 +106,15 @@ export interface CrudEntityConfig {
     delete?: string;
     /** Valid status transitions and lifecycle rules (appended to update-status tool description) */
     statusTransitions?: string;
+    /** Rules for create/update bodies (appended to create and update tool descriptions) */
+    write?: string;
   };
+
+  /**
+   * Optional client-side check of a create or update body, run before the request
+   * (and before a CLI dry-run). Return { valid: false, error } to refuse it.
+   */
+  validateWrite?: (body: Record<string, unknown>) => ValidationResult;
 
   /** CLI command group (e.g., 'sales', 'purchases', 'banking') */
   cliGroup?: string;

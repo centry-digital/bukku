@@ -132,4 +132,70 @@ describe("CLI integration", () => {
       }
     });
   });
+
+  describe("write validation for Bukku API breaking changes", () => {
+    const auth = ["--api-token", "tok_test_123", "--company-subdomain", "demo"];
+
+    test("sales quote create with top-level term_id is refused before any request", async () => {
+      const result = await runCli(
+        ...auth,
+        "sales",
+        "quotes",
+        "create",
+        "--dry-run",
+        "--data",
+        '{"contact_id":1,"date":"2026-10-22","term_id":3}',
+      );
+      assert.strictEqual(result.exitCode, 4);
+      assert.strictEqual(JSON.parse(result.stderr).code, "VALIDATION_ERROR");
+      assert.match(result.stderr, /term_items/);
+    });
+
+    test("sales order update with term_items passes to the dry-run", async () => {
+      const body = { term_items: [{ term_id: 3, payment_due: "100%" }] };
+      const result = await runCli(
+        ...auth,
+        "sales",
+        "orders",
+        "update",
+        "12",
+        "--dry-run",
+        "--data",
+        JSON.stringify(body),
+      );
+      assert.strictEqual(result.exitCode, 0, result.stderr);
+      const parsed = JSON.parse(result.stdout);
+      assert.strictEqual(parsed.method, "PUT");
+      assert.deepStrictEqual(parsed.body, body);
+    });
+
+    test("contact create without contact_code is refused", async () => {
+      const result = await runCli(
+        ...auth,
+        "contacts",
+        "contacts",
+        "create",
+        "--dry-run",
+        "--data",
+        '{"legal_name":"Acme Sdn Bhd","types":["customer"]}',
+      );
+      assert.strictEqual(result.exitCode, 4);
+      assert.match(result.stderr, /contact_code is required/);
+    });
+
+    test("contact update with contact_code passes to the dry-run", async () => {
+      const result = await runCli(
+        ...auth,
+        "contacts",
+        "contacts",
+        "update",
+        "7",
+        "--dry-run",
+        "--data",
+        '{"contact_code":"C0007","legal_name":"Acme Sdn Bhd"}',
+      );
+      assert.strictEqual(result.exitCode, 0, result.stderr);
+      assert.strictEqual(JSON.parse(result.stdout).body.contact_code, "C0007");
+    });
+  });
 });

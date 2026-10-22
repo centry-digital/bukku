@@ -21,6 +21,19 @@ const log = createLogger("bukku-mcp");
  */
 
 /**
+ * Run the entity's client-side write validation, if any.
+ * Returns an MCP error result when the body is refused, otherwise undefined.
+ */
+function checkWrite(config: CrudEntityConfig, data: Record<string, unknown>) {
+  const validation = config.validateWrite?.(data);
+  if (!validation || validation.valid) return undefined;
+  return {
+    isError: true,
+    content: [{ type: "text" as const, text: validation.error! }],
+  };
+}
+
+/**
  * Register all CRUD tools for a single entity.
  *
  * @param server - MCP server instance
@@ -125,7 +138,8 @@ export function registerCrudTools(
   // Create tool: create-{entity}
   if (config.operations.includes("create")) {
     const createName = `create-${config.entity}`;
-    const createDescription = `Create a new ${config.description}`;
+    const createDescription =
+      `Create a new ${config.description}. ${config.businessRules?.write ?? ""}`.trim();
 
     server.tool(
       createName,
@@ -135,6 +149,8 @@ export function registerCrudTools(
       },
       async (params) => {
         try {
+          const invalid = checkWrite(config, params.data);
+          if (invalid) return invalid;
           const result = await client.post(config.apiBasePath, params.data);
           return {
             content: [
@@ -160,7 +176,8 @@ export function registerCrudTools(
   // Update tool: update-{entity}
   if (config.operations.includes("update")) {
     const updateName = `update-${config.entity}`;
-    const updateDescription = `Update an existing ${config.description}`;
+    const updateDescription =
+      `Update an existing ${config.description}. ${config.businessRules?.write ?? ""}`.trim();
 
     server.tool(
       updateName,
@@ -171,6 +188,8 @@ export function registerCrudTools(
       },
       async (params) => {
         try {
+          const invalid = checkWrite(config, params.data);
+          if (invalid) return invalid;
           const result = await client.put(`${config.apiBasePath}/${params.id}`, params.data);
           return {
             content: [
