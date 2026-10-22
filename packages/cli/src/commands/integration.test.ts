@@ -136,7 +136,7 @@ describe("CLI integration", () => {
   describe("write validation for Bukku API breaking changes", () => {
     const auth = ["--api-token", "tok_test_123", "--company-subdomain", "demo"];
 
-    test("sales quote create with a top-level term_id passes to the dry-run", async () => {
+    test("sales quote create with a top-level term_id is sent in both forms", async () => {
       const body = { contact_id: 1, date: "2026-10-22", term_id: 3 };
       const result = await runCli(
         ...auth,
@@ -148,7 +148,10 @@ describe("CLI integration", () => {
         JSON.stringify(body),
       );
       assert.strictEqual(result.exitCode, 0, result.stderr);
-      assert.deepStrictEqual(JSON.parse(result.stdout).body, body);
+      assert.deepStrictEqual(JSON.parse(result.stdout).body, {
+        ...body,
+        term_items: [{ term_id: 3, payment_due: "100%" }],
+      });
     });
 
     test("sales quote create with both term_id and term_items is refused before any request", async () => {
@@ -165,7 +168,7 @@ describe("CLI integration", () => {
       assert.strictEqual(JSON.parse(result.stderr).code, "VALIDATION_ERROR");
     });
 
-    test("sales order update with term_items passes to the dry-run", async () => {
+    test("sales order update with a single term item is sent in both forms", async () => {
       const body = { term_items: [{ term_id: 3, payment_due: "100%" }] };
       const result = await runCli(
         ...auth,
@@ -180,7 +183,7 @@ describe("CLI integration", () => {
       assert.strictEqual(result.exitCode, 0, result.stderr);
       const parsed = JSON.parse(result.stdout);
       assert.strictEqual(parsed.method, "PUT");
-      assert.deepStrictEqual(parsed.body, body);
+      assert.deepStrictEqual(parsed.body, { ...body, term_id: 3 });
     });
 
     test("contact create without contact_code is refused", async () => {

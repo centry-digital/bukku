@@ -1,5 +1,6 @@
 import type { CrudEntityConfig } from "../types/bukku.js";
 import { validateSalesTermItems } from "../validation/write-rules.js";
+import { prepareSalesTerms, sendSalesTerms } from "../validation/sales-terms.js";
 
 /**
  * Sales Order Entity Configuration
@@ -22,8 +23,10 @@ export const salesOrderConfig: CrudEntityConfig = {
     statusTransitions:
       "Valid transitions: draft -> pending_approval, draft -> ready, pending_approval -> ready, ready -> void. A void order is final and cannot be changed. There is no way to revert from ready, pending_approval, or void back to draft.",
     write:
-      "Payment terms: send a top-level term_id (an existing payment term: list-terms, or `bukku ref-data terms`), which is what Bukku applies today. Bukku has announced term_items as its replacement: each item needs payment_due plus either term_id or a custom date (YYYY-MM-DD); it is accepted here, but at present Bukku ignores it. Do not send both. Read stored terms from term_items in responses.",
+      "Payment terms: send either a top-level term_id (an existing payment term: list-terms, or `bukku ref-data terms`) or term_items (each item needs payment_due plus either term_id or a custom date YYYY-MM-DD), not both. Bukku is switching from term_id to term_items, so a single term for 100% is sent in both forms and sticks whichever Bukku honours; if Bukku refuses term_id the request is retried with term_items only. As of 22 October 2026 Bukku drops split or custom-date term_items silently, so the result carries a warnings field when the stored term_items differ from the request. Read stored terms from term_items.",
   },
   validateWrite: validateSalesTermItems,
+  prepareWrite: prepareSalesTerms,
+  sendWrite: sendSalesTerms,
   cliGroup: "sales",
 };

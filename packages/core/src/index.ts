@@ -22,6 +22,7 @@ export type { MCPErrorResponse } from "./errors/transform.js";
 export { validateDoubleEntry } from "./validation/double-entry.js";
 export type { JournalEntryLine, ValidationResult } from "./validation/double-entry.js";
 export { validateSalesTermItems, validateContactCode } from "./validation/write-rules.js";
+export { prepareSalesTerms, sendSalesTerms } from "./validation/sales-terms.js";
 
 // Cache
 export { ReferenceDataCache } from "./cache/reference-cache.js";

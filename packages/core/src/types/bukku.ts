@@ -116,6 +116,21 @@ export interface CrudEntityConfig {
    */
   validateWrite?: (body: Record<string, unknown>) => ValidationResult;
 
+  /**
+   * Optional rewrite of a create or update body after validation. The result is
+   * what is sent (and what a CLI dry-run shows).
+   */
+  prepareWrite?: (body: Record<string, unknown>) => Record<string, unknown>;
+
+  /**
+   * Optional wrapper around the create or update request, e.g. to retry or to
+   * check the stored record. `send` performs the request with the given body.
+   */
+  sendWrite?: (
+    send: (body: Record<string, unknown>) => Promise<unknown>,
+    body: Record<string, unknown>,
+  ) => Promise<unknown>;
+
   /** CLI command group (e.g., 'sales', 'purchases', 'banking') */
   cliGroup?: string;
 }

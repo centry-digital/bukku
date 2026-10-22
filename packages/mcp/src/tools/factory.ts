@@ -34,6 +34,18 @@ function checkWrite(config: CrudEntityConfig, data: Record<string, unknown>) {
 }
 
 /**
+ * Send a create or update body through the entity's write hooks, if any.
+ */
+function sendWrite(
+  config: CrudEntityConfig,
+  send: (body: Record<string, unknown>) => Promise<unknown>,
+  data: Record<string, unknown>,
+): Promise<unknown> {
+  const body = config.prepareWrite ? config.prepareWrite(data) : data;
+  return config.sendWrite ? config.sendWrite(send, body) : send(body);
+}
+
+/**
  * Register all CRUD tools for a single entity.
  *
  * @param server - MCP server instance
@@ -151,7 +163,11 @@ export function registerCrudTools(
         try {
           const invalid = checkWrite(config, params.data);
           if (invalid) return invalid;
-          const result = await client.post(config.apiBasePath, params.data);
+          const result = await sendWrite(
+            config,
+            (body) => client.post(config.apiBasePath, body),
+            params.data,
+          );
           return {
             content: [
               {
@@ -190,7 +206,11 @@ export function registerCrudTools(
         try {
           const invalid = checkWrite(config, params.data);
           if (invalid) return invalid;
-          const result = await client.put(`${config.apiBasePath}/${params.id}`, params.data);
+          const result = await sendWrite(
+            config,
+            (body) => client.put(`${config.apiBasePath}/${params.id}`, body),
+            params.data,
+          );
           return {
             content: [
               {

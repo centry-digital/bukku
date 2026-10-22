@@ -258,6 +258,30 @@ function checkWrite(config: CrudEntityConfig, body: unknown): void {
 }
 
 /**
+ * Apply the entity's prepareWrite hook to a validated body, if any.
+ */
+function prepareWrite(config: CrudEntityConfig, body: unknown): unknown {
+  if (!config.prepareWrite || body === null || typeof body !== "object" || Array.isArray(body)) {
+    return body;
+  }
+  return config.prepareWrite(body as Record<string, unknown>);
+}
+
+/**
+ * Send a prepared create or update body through the entity's sendWrite hook, if any.
+ */
+function sendWrite(
+  config: CrudEntityConfig,
+  send: (body: unknown) => Promise<unknown>,
+  body: unknown,
+): Promise<unknown> {
+  if (!config.sendWrite || body === null || typeof body !== "object" || Array.isArray(body)) {
+    return send(body);
+  }
+  return config.sendWrite(send, body as Record<string, unknown>);
+}
+
+/**
  * Add the `create` subcommand to a resource command.
  */
 function addCreateCommand(resourceCmd: Command, config: CrudEntityConfig): void {
@@ -269,8 +293,9 @@ function addCreateCommand(resourceCmd: Command, config: CrudEntityConfig): void 
 
   createCmd.action(
     withAuth(async ({ client, opts, auth }) => {
-      const body = await readJsonInput(opts);
-      checkWrite(config, body);
+      const input = await readJsonInput(opts);
+      checkWrite(config, input);
+      const body = prepareWrite(config, input);
       if (opts.dryRun) {
         outputDryRun({
           method: "POST",
@@ -281,7 +306,7 @@ function addCreateCommand(resourceCmd: Command, config: CrudEntityConfig): void 
         });
         return;
       }
-      const data = await client.post(config.apiBasePath, body);
+      const data = await sendWrite(config, (b) => client.post(config.apiBasePath, b), body);
       outputJson(data);
     }),
   );
@@ -299,8 +324,9 @@ function addUpdateCommand(resourceCmd: Command, config: CrudEntityConfig): void 
 
   const wrappedHandler = withAuth(async ({ client, opts, auth }) => {
     const parsedId = opts._entityId as number;
-    const body = await readJsonInput(opts);
-    checkWrite(config, body);
+    const input = await readJsonInput(opts);
+    checkWrite(config, input);
+    const body = prepareWrite(config, input);
     if (opts.dryRun) {
       outputDryRun({
         method: "PUT",
@@ -311,7 +337,11 @@ function addUpdateCommand(resourceCmd: Command, config: CrudEntityConfig): void 
       });
       return;
     }
-    const data = await client.put(`${config.apiBasePath}/${parsedId}`, body);
+    const data = await sendWrite(
+      config,
+      (b) => client.put(`${config.apiBasePath}/${parsedId}`, b),
+      body,
+    );
     outputJson(data);
   });
 
