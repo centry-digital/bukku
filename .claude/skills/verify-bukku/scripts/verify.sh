@@ -34,6 +34,15 @@ drive_env() {
   local -a env=(env -i "PATH=$PATH" "HOME=$SANDBOX/home" "TMPDIR=$SANDBOX/tmp")
   if [ "${VERIFY_LIVE:-0}" = "1" ]; then
     env+=("BUKKU_API_TOKEN=${BUKKU_API_TOKEN:-}" "BUKKU_COMPANY_SUBDOMAIN=${BUKKU_COMPANY_SUBDOMAIN:-}")
+    # Behind an HTTPS proxy (e.g. a cloud sandbox), Node's fetch only uses it
+    # with NODE_USE_ENV_PROXY=1, and needs the proxy's CA bundle.
+    local v
+    for v in HTTPS_PROXY https_proxy NO_PROXY no_proxy NODE_EXTRA_CA_CERTS NODE_USE_ENV_PROXY; do
+      [ -n "${!v:-}" ] && env+=("$v=${!v}")
+    done
+    if [ -n "${HTTPS_PROXY:-${https_proxy:-}}" ] && [ -z "${NODE_USE_ENV_PROXY:-}" ]; then
+      env+=("NODE_USE_ENV_PROXY=1")
+    fi
   fi
   printf '%s\0' "${env[@]}"
 }

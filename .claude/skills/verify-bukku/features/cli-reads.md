@@ -25,10 +25,11 @@ Preconditions:
 - **Get.** Take an `id` from the list and run `$V/scripts/verify.sh cli reads/invoice-get -- sales invoices get <id>`. Exit `0`; the record's `id` matches.
 - **Table.** Run `$V/scripts/verify.sh cli reads/invoices-table -- sales invoices list --limit 5 --format table`. Exit `0`; a text table with a header row.
 - **Reference data.** Run `$V/scripts/verify.sh cli reads/tax-codes -- ref-data tax-codes`. Exit `0`; a JSON list of tax codes.
-- **Bad token.** Run `BUKKU_API_TOKEN=invalid VERIFY_LIVE=1 $V/scripts/verify.sh cli reads/bad-token -- sales invoices list`. Non-zero exit and a JSON error on stderr that mentions the token.
+- **Bad token.** Run `BUKKU_API_TOKEN=invalid VERIFY_LIVE=1 $V/scripts/verify.sh cli reads/bad-token -- sales invoices list`. Exit `3` with `"code":"API_ERROR"` on stderr (Bukku answers "User is not authenticated"); it is not the auth exit code `2`.
 
 ## Gotchas
 
-- Not yet proven live: no test-company credentials were available when this map was written. The first live run should confirm the exact output shapes and the bad-token exit code, and correct this file.
+- First proven live on 22 October 2026 (run `20261022T114957Z-477`): list output is `{"paging":{…},"transactions":[…]}`, and a bad token exits `3`.
+- Behind an HTTPS proxy (a cloud sandbox), live drives need `HTTPS_PROXY` and the CA bundle; `verify.sh` passes them through in live mode and sets `NODE_USE_ENV_PROXY=1`, as Node's fetch ignores the proxy otherwise. The host `api.bukku.my` must also be allowed by the sandbox's network policy.
 - Use `bukku <group> --help` to find a resource's command name; they don't always match the API path (see `RESOURCE_NAME_MAP` in `packages/cli/src/commands/factory.ts`).
 - `--all` on a large company makes many requests; prefer `--limit` for proof.

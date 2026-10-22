@@ -24,7 +24,7 @@ $V/scripts/verify.sh launch
 - Ready when it prints `ready`. The run id is saved in `.verify/run/current`; every other command uses it (or `VERIFY_RUN_ID` if set).
 - There is no server to keep alive: each `cli` or `mcp` drive below is its own process. Runs don't share state, but only one run is "current" per checkout.
 
-**Live mode.** By default every drive runs with no Bukku credentials in its environment. For a live drive, export `BUKKU_API_TOKEN` and `BUKKU_COMPANY_SUBDOMAIN` for a **test company** (never a client's books) and set `VERIFY_LIVE=1`. Even then the harness refuses any CLI write that lacks `--dry-run` and any MCP tool other than `list-*`, `get-*` and `search-*`, unless `VERIFY_ALLOW_WRITES=1` is also set. Set that only when the repo owner has approved writes to that test company for this run.
+**Live mode.** By default every drive runs with no Bukku credentials in its environment. For a live drive, export `BUKKU_API_TOKEN` and `BUKKU_COMPANY_SUBDOMAIN` for a **test company** (never a client's books) and set `VERIFY_LIVE=1`. Even then the harness refuses any CLI write that lacks `--dry-run` and any MCP tool other than `list-*`, `get-*` and `search-*`, unless `VERIFY_ALLOW_WRITES=1` is also set. Set that only when the repo owner has approved writes to that test company for this run. In live mode any `HTTPS_PROXY`, `NO_PROXY` and `NODE_EXTRA_CA_CERTS` are passed through to drives (with `NODE_USE_ENV_PROXY=1`, which Node's fetch needs to use a proxy).
 
 ## Doctor
 
