@@ -23,13 +23,13 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@types/node": "^25.2.1",
-    "esbuild": "^0.25.0",
+    "@types/node": "^25.9.9",
+    "esbuild": "^0.28.2",
     "eslint": "^10.13.0",
     "globals": "^17.13.0",
     "lefthook": "^2.2.2",
     "prettier": "^3.9.10",
-    "tsx": "^4.21.0",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.72.0"
   }
