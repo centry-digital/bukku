@@ -16,7 +16,7 @@ GitHub occasionally renames menu items. If a label doesn't match exactly, look f
 
 1. **App installed.** [Organisation settings → GitHub Apps](https://github.com/organizations/centry-digital/settings/installations) should list **Claude** with access to `bukku`.
 2. **Secret.** [Settings → Secrets and variables → Actions](https://github.com/centry-digital/bukku/settings/secrets/actions) should have the repository secret `CLAUDE_CODE_OAUTH_TOKEN`. If it's missing or expired, run `claude setup-token` in Claude Code, then **New repository secret** with that name. Never add an `ANTHROPIC_API_KEY`.
-3. Workflows started by Dependabot or by a fork's pull request can't read this secret, so the Claude workflows will fail on those PRs until they are set to skip them. That change goes in its own PR (the Claude action won't run on a PR that edits its workflow files).
+3. Workflows started by Dependabot or by a fork's pull request can't read this secret, so the Claude review skips those PRs; CI still checks them.
 
 ## Part 2: Actions permissions
 
@@ -27,7 +27,7 @@ Go to [Settings → Actions → General](https://github.com/centry-digital/bukku
    - leave **Allow actions by Marketplace verified creators** unticked;
    - in **Allow specified actions and reusable workflows**, enter `anthropics/claude-code-action@*, oven-sh/setup-bun@*` (`setup-bun` is used inside the Claude action).
      gitleaks runs as a Docker image, so it needs no entry. If a later PR adds an action, it must add it here and to this document.
-2. **Require actions to be pinned to a full-length commit SHA:** turn on if offered. `ci.yml`, `pr-hygiene.yml` and `publish.yml` pin every action; the two Claude workflows still use tags until their own PR pins them, so turn this on after that PR merges.
+2. **Require actions to be pinned to a full-length commit SHA:** turn on if offered. Every workflow pins its actions to SHAs, and Dependabot keeps the pins up to date.
 3. **Fork pull request workflows from outside collaborators:** "Require approval for all external contributors". On a public repository this stops strangers running workflows without you looking first.
 4. **Workflow permissions:** "Read repository contents and packages permissions". Untick "Allow GitHub Actions to create and approve pull requests".
 
