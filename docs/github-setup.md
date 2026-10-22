@@ -84,7 +84,20 @@ Go to [Settings → Advanced Security](https://github.com/centry-digital/bukku/s
 
 `publish.yml` publishes both packages with npm trusted publishing (OIDC) when a GitHub release is published. On [npmjs.com](https://www.npmjs.com/), each package's **Settings → Trusted publishing** must name `centry-digital/bukku` and the workflow file `publish.yml`. Check this before the next release; no npm token secret is needed.
 
-## Part 7: Check it all
+## Part 7: Daily Bukku API monitor
+
+`api-monitor.yml` runs every morning at 09:00 Kuala Lumpur time (and on demand). It reads Bukku's [API changelog](https://developers.bukku.my/changelog) and API specs, and opens an issue labelled `api-monitor` when something changed. Claude then reads that issue and either explains on it why bukku needs no change, or opens a pull request that fixes bukku. That pull request goes through CI, `guarded-paths` and review like any other: you still merge it and cut the release. A closed issue titled "Bukku API monitor: saved snapshot" is the monitor's memory; leave it closed and unedited.
+
+It also runs a live check on your Bukku **test company** (approved 22 Oct 2026): it creates one draft quote, reads its payment terms back and deletes it, to spot the day Bukku really starts applying `term_items`. That check is skipped until you add the test company's details:
+
+1. Open [Settings → Secrets and variables → Actions](https://github.com/centry-digital/bukku/settings/secrets/actions).
+2. Click **New repository secret**. Name: `BUKKU_API_TOKEN`. Secret: the API token of the **test company** (in Bukku: Control Panel → Integrations → API Access). Never a client company's token. Click **Add secret**.
+3. Click **New repository secret** again. Name: `BUKKU_COMPANY_SUBDOMAIN`. Secret: the test company's subdomain (the part before `.bukku.my` in its web address). Click **Add secret**.
+4. Make sure the test company has at least one sales quote: the check copies its customer and income account for the draft.
+
+To run it straight away: [Actions → Bukku API monitor](https://github.com/centry-digital/bukku/actions/workflows/api-monitor.yml) → **Run workflow** → **Run workflow**. The first run only saves a snapshot to compare against. A red run means Bukku's site or API couldn't be read as expected; GitHub emails you, and the run's log says why. GitHub switches scheduled workflows off after 60 days without commits; it emails you first, and **Enable workflow** on the same page turns it back on.
+
+## Part 8: Check it all
 
 - [ ] Claude app installed and `CLAUDE_CODE_OAUTH_TOKEN` exists.
 - [ ] Actions allow-list: GitHub-made actions plus `anthropics/claude-code-action@*` and `oven-sh/setup-bun@*`; fork PRs need approval; workflow permissions read-only.
@@ -92,4 +105,5 @@ Go to [Settings → Advanced Security](https://github.com/centry-digital/bukku/s
 - [ ] `main protection` ruleset active, no bypass, conversation resolution on, the 9 required checks above, and no leftover rule requiring `CI`.
 - [ ] Dependabot, secret scanning with push protection, CodeQL and private vulnerability reporting on.
 - [ ] Trusted publishing set for both npm packages.
+- [ ] `BUKKU_API_TOKEN` and `BUKKU_COMPANY_SUBDOMAIN` secrets set for the test company, and the Bukku API monitor has run once.
 - [ ] A test PR can't merge while a check is red or a review thread is open.

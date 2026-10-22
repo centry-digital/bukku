@@ -6,7 +6,8 @@
   ],
   "scripts": {
     "build": "tsc --build && node esbuild.config.mjs",
-    "test": "npm test --workspaces --if-present",
+    "test": "npm test --workspaces --if-present && npm run test:scripts",
+    "test:scripts": "node --test --import tsx/esm scripts/**/*.test.ts",
     "lint": "eslint --max-warnings=0 .",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --build && tsc -p tsconfig.typecheck.json",
