@@ -30,8 +30,8 @@ Each feature file starts with an H1 title and one paragraph describing the user-
 
 - [CLI credentials and config](./cli-credentials.md) covers missing credentials, `config set`/`show`, precedence and token masking.
 - [CLI write dry-runs](./cli-dry-run.md) covers `--dry-run` on create commands for JSON from `--data` and stdin.
-- [Journal entry validation](./journal-entry-validation.md) covers the double-entry check on `accounting journal-entries create`.
-- [API write rules](./api-write-rules.md) covers the `term_items` check on sales quotes and orders and the required `contact_code` on contacts.
+- [Journal entry validation](./journal-entry-validation.md) covers the double-entry check on journal entry create and update (CLI and MCP).
+- [API write rules](./api-write-rules.md) covers payment terms on sales quotes and orders (top-level `term_id` or `term_items`, never both) and the required `contact_code` on contacts.
 - [CLI reads](./cli-reads.md) covers `list`, `get` and `ref-data` against a test company (**Live**).
 - [MCP server](./mcp-server.md) covers startup without credentials, and tool listing and read calls (**Live**).
 - [npm packaging](./packaging.md) covers what each published tarball contains, and installing and starting both packages from it.

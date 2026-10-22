@@ -25,6 +25,7 @@ Preconditions:
 - **Get.** Take an `id` from the list and run `$V/scripts/verify.sh cli reads/invoice-get -- sales invoices get <id>`. Exit `0`; the record's `id` matches.
 - **Table.** Run `$V/scripts/verify.sh cli reads/invoices-table -- sales invoices list --limit 5 --format table`. Exit `0`; a text table with a header row.
 - **Reference data.** Run `$V/scripts/verify.sh cli reads/tax-codes -- ref-data tax-codes`. Exit `0`; a JSON list of tax codes.
+- **Bad id (offline).** Run `$V/scripts/verify.sh cli reads/get-bad-id -- --api-token tok_verify_123 --company-subdomain demo sales invoices get abc`. Exit `4`; stderr has `"code":"VALIDATION_ERROR"`. This needs no live credentials.
 - **Bad token.** Run `BUKKU_API_TOKEN=invalid VERIFY_LIVE=1 $V/scripts/verify.sh cli reads/bad-token -- sales invoices list`. Exit `3` with `"code":"API_ERROR"` on stderr (Bukku answers "User is not authenticated"); it is not the auth exit code `2`.
 
 ## Gotchas

@@ -1,6 +1,6 @@
 # CLI write dry-runs
 
-Every CLI command that changes data accepts `--dry-run`, which prints the HTTP request it would send (method, full URL, masked auth header and JSON body) and exits without calling the API.
+Every CLI command that changes data accepts `--dry-run`, which prints the HTTP request it would send (method, full URL, masked `Authorization` and `Company-Subdomain` headers and JSON body) and exits without calling the API. The entity's write rules run first, so a body they refuse fails even with `--dry-run` (see [API write rules](./api-write-rules.md)).
 
 ## Sub-features
 
@@ -28,3 +28,4 @@ Preconditions:
 - `--data` takes a JSON string, not a file path. To use a file: `--data "$(cat file.json)"` or pipe it.
 - `list` and `get` have no `--dry-run` (they don't change data) and fail with `unknown option '--dry-run'`.
 - Dry-run still requires credentials to be set; it only masks them.
+- For sales quotes and orders the previewed body is not exactly what was passed: a top-level `term_id` gains matching `term_items`, and a single 100% `term_items` entry gains a top-level `term_id`. The live retry without `term_id` (if Bukku refuses it) is not shown in a dry-run.

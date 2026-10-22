@@ -21,9 +21,10 @@ Preconditions:
 - **No configuration.** Run `$V/scripts/verify.sh mcp mcp/no-config -- list`. Exit `2` from the client (connection closed); stderr contains `Configuration Error`, `BUKKU_API_TOKEN`, `BUKKU_COMPANY_SUBDOMAIN` and `Setup checklist`, and no `SyntaxError`.
 - **List tools (Live).** With live credentials, run `$V/scripts/verify.sh mcp mcp/list -- list`. Exit `0`; `count` matches the number in the server's `Bukku MCP server started (N tools registered)` line on stderr, and `names` includes `list-sales-invoices`.
 - **Read a tool (Live).** Run `$V/scripts/verify.sh mcp mcp/list-invoices -- call list-sales-invoices '{"page_size":5}'`. Exit `0`; the result's first `content` item is JSON text.
+- **Reference data (Live).** Run `$V/scripts/verify.sh mcp mcp/list-tax-codes -- call list-tax-codes '{}'`. Exit `0`; JSON text. The reference-data tools (`list-tax-codes`, `list-terms` and others) take no arguments.
 
 ## Gotchas
 
 - The server validates the token against the live API before registering tools, so `list` can't be proven offline. The `unit` CI check covers the tool registry offline instead (`packages/mcp/src/tools/registry.test.ts`).
-- Not yet proven live (no test-company credentials when this map was written).
+- First proven live on 22 October 2026 (run `20261022T114957Z-477`): `mcp/list` showed 169 tools, and `list-terms` returned JSON.
 - The harness refuses live MCP tools other than `list-*`, `get-*` and `search-*` unless `VERIFY_ALLOW_WRITES=1`.
