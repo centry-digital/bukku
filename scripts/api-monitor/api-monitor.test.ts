@@ -8,9 +8,10 @@ import {
   findBundleUrl,
   findSpecPaths,
   hasChanges,
+  sha256,
 } from "./snapshot.ts";
 import { formatChangeIssue, formatState, parseState } from "./report.ts";
-import { probeQuoteBody, termItemsHonoured } from "./term-items-probe.ts";
+import { firstTermId, probeQuoteBody, termItemsHonoured } from "./term-items-probe.ts";
 
 /** How a bundler embeds a JSON file: a single-quoted JS string inside JSON.parse. */
 function embed(value: unknown): string {
@@ -120,6 +121,18 @@ describe("state issue", () => {
     assert.deepStrictEqual(parseState(formatState(snapshot, "2026-10-22T01:00:00Z")), snapshot);
   });
 
+  it("fits a thousand spec files in one issue body", () => {
+    const specs = Object.fromEntries(
+      Array.from({ length: 1000 }, (_, i) => [
+        `sales/schemas/some-long-schema-name-${i}.yaml`,
+        sha256(String(i)).slice(0, 16),
+      ]),
+    );
+    const body = formatState({ entries: {}, specs }, "2026-10-22T01:00:00Z");
+    assert.ok(body.length < 65_536, `${body.length} characters`);
+    assert.deepStrictEqual(parseState(body)?.specs, specs);
+  });
+
   it("returns null for a body without a snapshot", () => {
     assert.strictEqual(parseState("edited by hand"), null);
   });
@@ -162,5 +175,12 @@ describe("term_items probe", () => {
     assert.ok(termItemsHonoured({ id: 1, term_items: [{ term_id: 7 }] }, 7));
     assert.ok(!termItemsHonoured({ id: 1, term_items: [{ term_id: null }] }, 7));
     assert.ok(!termItemsHonoured({ id: 1 }, 7));
+  });
+
+  it("finds the first payment term in either list shape", () => {
+    assert.strictEqual(firstTermId([{ id: 1, name: "COD" }, { id: 7 }]), 1);
+    assert.strictEqual(firstTermId({ items: [{ id: 6 }] }), 6);
+    assert.strictEqual(firstTermId([]), undefined);
+    assert.strictEqual(firstTermId(undefined), undefined);
   });
 });

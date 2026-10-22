@@ -33,6 +33,7 @@ async function gh<T>(method: string, path: string, body?: unknown): Promise<T> {
       ...(body ? { "Content-Type": "application/json" } : {}),
     },
     body: body ? JSON.stringify(body) : undefined,
+    signal: AbortSignal.timeout(30_000),
   });
   if (!res.ok) {
     const err = new Error(`GitHub ${method} ${path}: ${res.status} ${await res.text()}`);

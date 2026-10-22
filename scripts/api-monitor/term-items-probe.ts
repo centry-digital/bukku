@@ -36,6 +36,14 @@ export function termItemsHonoured(stored: Quote, termId: number): boolean {
   return stored.term_items?.[0]?.term_id === termId;
 }
 
+/** The id of the first payment term, whether Bukku lists them as an array or under `items`. */
+export function firstTermId(terms: unknown): number | undefined {
+  const list = Array.isArray(terms) ? terms : (terms as { items?: unknown } | undefined)?.items;
+  if (!Array.isArray(list)) return undefined;
+  const id = (list as { id?: unknown }[]).find((t) => typeof t?.id === "number")?.id;
+  return id as number | undefined;
+}
+
 /** The body of the probe's draft quote: payment terms only through term_items. */
 export function probeQuoteBody(template: Quote, termId: number, date: string) {
   const accountId = template.form_items?.find((i) => i.account_id)?.account_id;
@@ -67,6 +75,7 @@ async function bukku<T>(method: string, path: string, body?: unknown): Promise<T
       ...(body ? { "Content-Type": "application/json" } : {}),
     },
     body: body ? JSON.stringify(body) : undefined,
+    signal: AbortSignal.timeout(30_000),
   });
   const text = await res.text();
   // Status and path only: responses can hold company data and this log is public.
@@ -80,9 +89,13 @@ async function main(): Promise<void> {
     return;
   }
 
-  const terms = await bukku<{ terms?: { items?: { id: number }[] } }>("GET", "/terms");
-  const termId = terms.terms?.items?.[0]?.id;
-  if (!termId) throw new Error("The test company has no payment terms");
+  // The same lookup as `bukku ref-data terms`.
+  const lists = await bukku<Record<string, unknown>>("POST", "/v2/lists", {
+    lists: ["terms"],
+    params: [],
+  });
+  const termId = firstTermId(lists.terms);
+  if (!termId) throw new Error("No payment term found in the test company's reference data");
 
   const list = await bukku<{ transactions?: Quote[] }>("GET", "/sales/quotes?page_size=1");
   const first = list.transactions?.[0];

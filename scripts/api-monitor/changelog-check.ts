@@ -32,8 +32,15 @@ import {
   updateIssue,
 } from "./github.js";
 
+/** A guard against following $refs forever. */
+const MAX_SPECS = 3000;
+const FETCH_BATCH = 8;
+
 async function fetchText(url: string): Promise<{ status: number; text: string }> {
-  const res = await fetch(url, { headers: { "User-Agent": "bukku-api-monitor" } });
+  const res = await fetch(url, {
+    headers: { "User-Agent": "bukku-api-monitor" },
+    signal: AbortSignal.timeout(30_000),
+  });
   return { status: res.status, text: await res.text() };
 }
 
@@ -45,22 +52,31 @@ async function takeSnapshot(): Promise<{ snapshot: Snapshot; entries: ChangelogE
   const bundle = await fetchText(bundleUrl);
   if (bundle.status !== 200) throw new Error(`${bundleUrl} answered ${bundle.status}`);
 
+  console.log(`Bundle ${bundleUrl}: ${bundle.text.length} bytes`);
   const entries = extractChangelogEntries(bundle.text);
   if (entries.length === 0) {
     throw new Error("No changelog entries found in the bundle: the site's format has changed");
   }
 
+  // Breadth-first over the bundle's specs and their $refs, a few requests at a time.
   const specs: Record<string, string> = {};
-  const queue = findSpecPaths(bundle.text);
+  let queue = findSpecPaths(bundle.text);
   if (queue.length === 0) throw new Error("No API spec files referenced by the bundle");
   while (queue.length) {
-    const path = queue.shift()!;
-    if (path in specs) continue;
-    const spec = await fetchText(`${DOCS_BASE}/specs/${path}`);
-    // A static host may answer an unknown path with the app's HTML page.
-    const isYaml = spec.status === 200 && !/^\s*<(!doctype|html)/i.test(spec.text);
-    specs[path] = isYaml ? sha256(spec.text) : `unavailable (${spec.status})`;
-    if (isYaml) queue.push(...findSpecPaths(spec.text, path).filter((p) => !(p in specs)));
+    const batch = [...new Set(queue)].filter((p) => !(p in specs)).slice(0, FETCH_BATCH);
+    queue = queue.filter((p) => !batch.includes(p) && !(p in specs));
+    if (Object.keys(specs).length + batch.length > MAX_SPECS) {
+      throw new Error(`More than ${MAX_SPECS} spec files: check the $ref resolution`);
+    }
+    const fetched = await Promise.all(
+      batch.map(async (path) => ({ path, spec: await fetchText(`${DOCS_BASE}/specs/${path}`) })),
+    );
+    for (const { path, spec } of fetched) {
+      // A static host may answer an unknown path with the app's HTML page.
+      const isYaml = spec.status === 200 && !/^\s*<(!doctype|html)/i.test(spec.text);
+      specs[path] = isYaml ? sha256(spec.text).slice(0, 16) : `unavailable (${spec.status})`;
+      if (isYaml) queue.push(...findSpecPaths(spec.text, path).filter((p) => !(p in specs)));
+    }
   }
 
   const ids = Object.fromEntries(entries.map((e) => [e.id, e.label]));

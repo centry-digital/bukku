@@ -3,6 +3,7 @@
  * change issue that tells Claude (and the owner) what Bukku published.
  */
 
+import { gunzipSync, gzipSync } from "node:zlib";
 import type { ChangelogEntry, Snapshot, SnapshotDiff } from "./snapshot.js";
 import { DOCS_BASE } from "./snapshot.js";
 
@@ -12,26 +13,36 @@ export const CHANGE_MARKER = "<!-- api-monitor:changes -->";
 /** GitHub refuses issue bodies over 65,536 characters. */
 const MAX_BODY = 60_000;
 const MAX_ENTRY = 12_000;
+const MAX_STATE = 65_000;
 
+/**
+ * The snapshot is stored gzipped and base64-encoded: Bukku publishes hundreds of spec files, and
+ * their plain JSON is longer than an issue body may be.
+ */
 export function formatState(snapshot: Snapshot, checkedAt: string): string {
-  return [
+  const packed = gzipSync(JSON.stringify(snapshot)).toString("base64");
+  const body = [
     STATE_MARKER,
     "This issue is the memory of the daily Bukku API monitor (`.github/workflows/api-monitor.yml`).",
     "It stays closed. Don't edit it: each run compares Bukku's changelog and API specs with the",
     "snapshot below and opens a new `api-monitor` issue when something changed.",
     "",
-    `Last updated: ${checkedAt}`,
+    `Last updated: ${checkedAt}. ${Object.keys(snapshot.entries).length} changelog entries, ` +
+      `${Object.keys(snapshot.specs).length} spec files.`,
     "",
-    "```json",
-    JSON.stringify(snapshot, null, 2),
+    "```snapshot",
+    ...(packed.match(/.{1,100}/g) ?? []),
     "```",
   ].join("\n");
+  if (body.length > MAX_STATE) throw new Error(`Snapshot too large to store (${body.length})`);
+  return body;
 }
 
 export function parseState(body: string | null): Snapshot | null {
-  const match = body?.match(/```json\n([\s\S]*?)\n```/);
+  const match = body?.match(/```snapshot\n([\s\S]*?)\n```/);
   if (!match) return null;
-  const parsed = JSON.parse(match[1]) as Partial<Snapshot>;
+  const json = gunzipSync(Buffer.from(match[1].replace(/\s/g, ""), "base64")).toString();
+  const parsed = JSON.parse(json) as Partial<Snapshot>;
   return { entries: parsed.entries ?? {}, specs: parsed.specs ?? {} };
 }
 
