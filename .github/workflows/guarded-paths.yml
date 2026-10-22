@@ -1,0 +1,79 @@
+# Fails a pull request written by the Claude GitHub workflows ("@claude fix this") if it touches
+# the files that decide how the repository is checked, built, published or kept secret. Those
+# changes need a person to make them, so a merge on the owner's say-so can only ever change
+# product code and tests. Pull requests from people pass straight away.
+#
+# There is no override label on purpose: anything that can comment can be talked into adding one.
+# If a Claude fix really needs one of these files, a person makes that part of the change.
+name: Guarded paths
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  pull-requests: read
+  contents: read
+
+jobs:
+  guarded-paths:
+    name: guarded-paths
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check what a Claude-written pull request changes
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const BOTS = new Set(["claude[bot]", "github-actions[bot]"]);
+            const GUARDED = [
+              { re: /^\.github\//, why: "workflows, rulesets and repository settings" },
+              { re: /^\.claude\//, why: "Claude skills and settings" },
+              { re: /(^|\/)CLAUDE\.md$/, why: "Claude's rules" },
+              { re: /(^|\/)package(-lock)?\.json$/, why: "dependencies, scripts and publish settings" },
+              { re: /(^|\/)\.npmrc$/, why: "npm settings" },
+              { re: /^\.nvmrc$/, why: "the Node version" },
+              { re: /^esbuild\.config\.mjs$/, why: "the published bundles" },
+              { re: /(^|\/)tsconfig[^/]*\.json$/, why: "type-check settings" },
+              { re: /^eslint\.config\.js$/, why: "lint rules" },
+              { re: /^\.prettier(rc\.json|ignore)$/, why: "format rules" },
+              { re: /^lefthook\.yml$/, why: "the pre-commit hook" },
+              { re: /^\.gitleaks\.toml$/, why: "the secret scanner" },
+              { re: /^\.gitignore$/, why: "which files stay out of git" },
+              { re: /^scripts\/verify-parity\.ts$/, why: "the parity check" },
+            ];
+
+            const pr = context.payload.pull_request;
+            const { owner, repo } = context.repo;
+            const commits = await github.paginate(github.rest.pulls.listCommits, {
+              owner, repo, pull_number: pr.number, per_page: 100,
+            });
+            const byClaude =
+              BOTS.has(pr.user.login) ||
+              commits.some((c) => BOTS.has(c.author?.login) || BOTS.has(c.committer?.login));
+            if (!byClaude) {
+              core.info(`Written by ${pr.user.login}: nothing to guard.`);
+              return;
+            }
+
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner, repo, pull_number: pr.number, per_page: 100,
+            });
+            const hits = [];
+            for (const f of files) {
+              for (const path of [f.filename, f.previous_filename].filter(Boolean)) {
+                const rule = GUARDED.find((g) => g.re.test(path));
+                if (rule) hits.push(`- ${path} (${rule.why})`);
+              }
+            }
+            if (hits.length === 0) {
+              core.info(`Claude-written pull request: ${files.length} files changed, none guarded.`);
+              return;
+            }
+            core.setFailed(
+              [
+                "This pull request was written by Claude and changes files that only a person may change:",
+                ...hits,
+                "",
+                "Don't merge it as it is. Ask Claude to redo the fix without these files, or have a person make that part of the change in their own pull request.",
+              ].join("\n"),
+            );

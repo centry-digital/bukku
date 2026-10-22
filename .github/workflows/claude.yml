@@ -1,3 +1,7 @@
+# Answers "@claude" in issues, PR comments and reviews. Only people with write access to the
+# repository can trigger it (the action checks), which matters on this public repository.
+# "@claude fix this" on an issue makes it push a claude/ branch and open a pull request that
+# says "Fixes #N"; the PR then goes through CI, the Claude review and a human merge like any other.
 name: Claude Code
 
 on:
@@ -18,33 +22,26 @@ jobs:
       (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
       (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
-      contents: read
-      pull-requests: read
-      issues: read
+      contents: write # push its own claude/ branches; main is protected by the ruleset
+      pull-requests: write
+      issues: write
       id-token: write
-      actions: read # Required for Claude to read CI results on PRs
+      actions: read # lets Claude read CI results on pull requests
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
 
       - name: Run Claude Code
         id: claude
-        uses: anthropics/claude-code-action@v1
+        uses: anthropics/claude-code-action@58985842b834ed26087302ba27d07bc24ca8697a # v1.0.244
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-
-          # This is an optional setting that allows Claude to read CI results on PRs
           additional_permissions: |
             actions: read
-
-          # Optional: Give a custom prompt to Claude. If this is not specified, Claude will perform the instructions specified in the comment that tagged it.
-          # prompt: 'Update the pull request description to include a summary of changes.'
-
-          # Optional: Add claude_args to customize behavior and configuration
-          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
-          # or https://code.claude.com/docs/en/cli-reference for available options
-          # claude_args: '--allowed-tools Bash(gh pr *)'
-
+          claude_args: |
+            --append-system-prompt "Follow CLAUDE.md in this repository. Reply in plain British English. When asked to fix an issue: work on a new branch whose name starts with claude/, add a test that fails without the fix, run npm ci and npm run verify until it passes, open a pull request with gh pr create that fills in .github/pull_request_template.md (including Verification evidence) and says Fixes #<issue>, then comment the PR link on the issue. Never push to main and never close issues yourself: merging the PR closes them. Never change the files the guarded-paths check protects (.github/, .claude/, CLAUDE.md, package.json and package-lock.json files, build, lint, format and type-check settings, .gitleaks.toml): if a fix needs one, stop and say so on the issue."
+            --allowedTools "Edit,Write,Read,Glob,Grep,Bash(npm ci),Bash(npm run *),Bash(npm test*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git checkout -b claude/*),Bash(git switch -c claude/*),Bash(git add:*),Bash(git commit:*),Bash(git push origin claude/*),Bash(git push -u origin claude/*),Bash(gh pr create:*),Bash(gh pr view:*),Bash(gh issue view:*),Bash(gh issue comment:*),Bash(.claude/skills/verify-bukku/scripts/verify.sh *)"

@@ -34,3 +34,4 @@ Each feature file starts with an H1 title and one paragraph describing the user-
 - [API write rules](./api-write-rules.md) covers the `term_items` check on sales quotes and orders and the required `contact_code` on contacts.
 - [CLI reads](./cli-reads.md) covers `list`, `get` and `ref-data` against a test company (**Live**).
 - [MCP server](./mcp-server.md) covers startup without credentials, and tool listing and read calls (**Live**).
+- [npm packaging](./packaging.md) covers what each published tarball contains, and installing and starting both packages from it.

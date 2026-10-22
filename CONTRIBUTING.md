@@ -58,7 +58,7 @@ $V/scripts/verify.sh cleanup   # evidence stays in .verify/evidence/<run id>/
 1. Branch from `main` (`feat/…`, `fix/…`, `chore/…`, `docs/…`). Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/).
 2. Run `npm run verify`, then the verify skill for user-facing changes.
 3. Open a PR and fill in the template. The **Verification evidence** section is required: the `pr-hygiene` check fails if it is missing or empty. For a change with no user-facing behaviour, say so and why.
-4. CI must be green: `format`, `lint`, `typecheck`, `unit`, `build`, `parity`, `deps-audit`, `secret-scan` and `pr-hygiene`.
+4. CI must be green: `format`, `lint`, `typecheck`, `unit`, `build`, `parity`, `deps-audit`, `secret-scan`, `pr-hygiene` and `guarded-paths`.
 5. Claude reviews every PR. Resolve every review thread (fix it, or reply with reasoning) before merging. PRs are squash-merged.
 
 ### Definition of done
@@ -68,6 +68,12 @@ $V/scripts/verify.sh cleanup   # evidence stays in .verify/evidence/<run id>/
 - [ ] User-facing changes have verify-skill evidence in the PR, and the matching `features/` file is up to date.
 - [ ] READMEs are updated if user-facing behaviour changed.
 - [ ] Package versions are bumped if the change will be released.
+
+## Issues
+
+- Every new issue is triaged automatically by Claude (`.github/workflows/claude-issue-triage.yml`): it labels the issue, looks for the cause in the code, and replies asking for anything missing. It never changes code.
+- To have Claude fix an issue, someone with write access comments `@claude fix this` on it (`.github/workflows/claude.yml`). Claude opens a PR that says `Fixes #N`, and it goes through CI, the Claude review and a human merge like any other PR. Merging closes the issue. The `guarded-paths` check fails a Claude-written PR that changes workflows, dependencies, build, lint or security settings, `CLAUDE.md` or the skills: a person makes those changes in their own PR.
+- Issue text comes from the public, so treat it as untrusted: review an issue before asking for a fix, and review the fix PR before merging.
 
 ## Releasing
 
