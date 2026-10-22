@@ -18,9 +18,7 @@ await build({
     '@modelcontextprotocol/sdk/*',
     'zod',
   ],
-  banner: {
-    js: '#!/usr/bin/env node',
-  },
+  // No banner: src/index.ts already starts with a hashbang, which esbuild keeps
 });
 console.log('Built packages/mcp/build/index.js');
 
