@@ -73,11 +73,9 @@ export async function resolveAuth(flags: {
 
 /**
  * Mask an API token for display.
- * Shows first 4 + ... + last 4 chars if length >= 8, otherwise ****.
+ * Never shows any of the token's characters: showing its first and last 4 revealed all of
+ * an 8-character token, and part of any token is still a clue (CodeQL js/clear-text-logging).
  */
-export function maskToken(token: string): string {
-  if (token.length >= 8) {
-    return token.slice(0, 4) + "..." + token.slice(-4);
-  }
-  return "****";
+export function maskToken(_token: string): string {
+  return "********";
 }

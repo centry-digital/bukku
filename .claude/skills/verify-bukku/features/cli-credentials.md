@@ -23,7 +23,7 @@ Preconditions:
 
 - **Missing credentials.** Run `$V/scripts/verify.sh cli creds/missing -- sales invoices list`. Exit `2`; stderr JSON has `"code":"AUTH_MISSING"`.
 - **Set config.** Run `$V/scripts/verify.sh cli creds/set-token -- config set api_token tok_verify_123` and `$V/scripts/verify.sh cli creds/set-subdomain -- config set company_subdomain demo`. Each exits `0` with `"ok":true`. Then `ls -l .verify/run/$(cat .verify/run/current)/home/.bukkurc` shows `-rw-------`.
-- **Show config.** Run `$V/scripts/verify.sh cli creds/show -- config show`. Exit `0`; `api_token.value` is masked (`tok_..._123`: the first and last 4 characters) and `source` is `rc` for both keys.
+- **Show config.** Run `$V/scripts/verify.sh cli creds/show -- config show`. Exit `0`; `api_token.value` is `********` (no characters of the token are shown) and `source` is `rc` for both keys.
 - **Flag wins.** Run `$V/scripts/verify.sh cli creds/flag -- --api-token tok_flag_456 config show`. `api_token.source` is `flags`.
 
 ## Gotchas

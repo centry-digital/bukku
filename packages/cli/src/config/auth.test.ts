@@ -82,15 +82,15 @@ describe("resolveAuth", () => {
 });
 
 describe("maskToken", () => {
-  test("masks long token showing first 4 and last 4", () => {
-    assert.strictEqual(maskToken("bk_abcd1234efgh"), "bk_a...efgh");
+  test("never shows any characters of a long token", () => {
+    assert.strictEqual(maskToken("bk_abcd1234efgh"), "********");
   });
 
-  test("masks short token completely", () => {
-    assert.strictEqual(maskToken("short"), "****");
+  test("masks a short token the same way", () => {
+    assert.strictEqual(maskToken("short"), "********");
   });
 
-  test("masks 8-char token showing first 4 and last 4", () => {
-    assert.strictEqual(maskToken("12345678"), "1234...5678");
+  test("never reveals an 8-character token", () => {
+    assert.strictEqual(maskToken("12345678"), "********");
   });
 });
