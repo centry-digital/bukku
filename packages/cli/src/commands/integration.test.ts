@@ -136,7 +136,8 @@ describe("CLI integration", () => {
   describe("write validation for Bukku API breaking changes", () => {
     const auth = ["--api-token", "tok_test_123", "--company-subdomain", "demo"];
 
-    test("sales quote create with top-level term_id is refused before any request", async () => {
+    test("sales quote create with a top-level term_id passes to the dry-run", async () => {
+      const body = { contact_id: 1, date: "2026-10-22", term_id: 3 };
       const result = await runCli(
         ...auth,
         "sales",
@@ -144,11 +145,24 @@ describe("CLI integration", () => {
         "create",
         "--dry-run",
         "--data",
-        '{"contact_id":1,"date":"2026-10-22","term_id":3}',
+        JSON.stringify(body),
+      );
+      assert.strictEqual(result.exitCode, 0, result.stderr);
+      assert.deepStrictEqual(JSON.parse(result.stdout).body, body);
+    });
+
+    test("sales quote create with both term_id and term_items is refused before any request", async () => {
+      const result = await runCli(
+        ...auth,
+        "sales",
+        "quotes",
+        "create",
+        "--dry-run",
+        "--data",
+        '{"contact_id":1,"term_id":3,"term_items":[{"term_id":3,"payment_due":"100%"}]}',
       );
       assert.strictEqual(result.exitCode, 4);
       assert.strictEqual(JSON.parse(result.stderr).code, "VALIDATION_ERROR");
-      assert.match(result.stderr, /term_items/);
     });
 
     test("sales order update with term_items passes to the dry-run", async () => {

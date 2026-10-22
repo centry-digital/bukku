@@ -19,10 +19,17 @@ describe("validateSalesTermItems", () => {
     assert.strictEqual(result.valid, true);
   });
 
-  it("refuses the removed top-level term_id and points to term_items", () => {
-    const result = validateSalesTermItems({ term_id: 3 });
+  it("accepts a top-level term_id, which the live API still applies", () => {
+    assert.deepStrictEqual(validateSalesTermItems({ term_id: 3 }), { valid: true });
+  });
+
+  it("refuses a top-level term_id together with term_items", () => {
+    const result = validateSalesTermItems({
+      term_id: 3,
+      term_items: [{ term_id: 3, payment_due: "100%" }],
+    });
     assert.strictEqual(result.valid, false);
-    assert.match(result.error!, /term_items/);
+    assert.match(result.error!, /not both/);
   });
 
   it("refuses term_items that is not an array", () => {

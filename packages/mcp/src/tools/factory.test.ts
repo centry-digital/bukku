@@ -28,11 +28,13 @@ function collectTools(config: CrudEntityConfig) {
 }
 
 describe("CRUD factory write validation", () => {
-  test("create-sales-quote refuses a top-level term_id before calling the API", async () => {
+  test("create-sales-quote refuses term_id with term_items before calling the API", async () => {
     const tool = collectTools(salesQuoteConfig).get("create-sales-quote")!;
-    const result = await tool.handler({ data: { contact_id: 1, term_id: 3 } });
+    const result = await tool.handler({
+      data: { contact_id: 1, term_id: 3, term_items: [{ term_id: 3, payment_due: "100%" }] },
+    });
     assert.strictEqual(result.isError, true);
-    assert.match(result.content[0]!.text, /term_items/);
+    assert.match(result.content[0]!.text, /not both/);
   });
 
   test("update-contact refuses a body without contact_code", async () => {

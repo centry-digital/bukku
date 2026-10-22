@@ -22,7 +22,7 @@ export const salesQuoteConfig: CrudEntityConfig = {
     statusTransitions:
       "Valid transitions: draft -> pending_approval, draft -> ready, pending_approval -> ready, ready -> void. A void quote is final and cannot be changed. There is no way to revert from ready, pending_approval, or void back to draft.",
     write:
-      "Payment terms go in term_items, not a top-level term_id: each item needs payment_due plus either term_id (an existing payment term: list-terms, or `bukku ref-data terms`) or a custom date (YYYY-MM-DD); description is optional. Responses carry payment terms only in term_items (no term_id, term_name or due_date).",
+      "Payment terms: send a top-level term_id (an existing payment term: list-terms, or `bukku ref-data terms`), which is what Bukku applies today. Bukku has announced term_items as its replacement: each item needs payment_due plus either term_id or a custom date (YYYY-MM-DD); it is accepted here, but at present Bukku ignores it. Do not send both. Read stored terms from term_items in responses.",
   },
   validateWrite: validateSalesTermItems,
   cliGroup: "sales",

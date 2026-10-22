@@ -5,8 +5,11 @@
  * breaking way, so callers get an immediate, specific error instead of a raw
  * API validation error or a silently ignored field.
  *
- * - Sales quotes and orders: top-level `term_id` was removed; payment terms
- *   are sent as `term_items` (Bukku API, production 21 October 2026).
+ * - Sales quotes and orders: Bukku announced that payment terms move from a
+ *   top-level `term_id` to `term_items` (changelog: production 21 October
+ *   2026). A live check on 22 October 2026 found the API still storing the
+ *   top-level `term_id` and silently ignoring `term_items`, so both are
+ *   accepted, but not together.
  * - Contacts: `contact_code` is required on create and update (Bukku API,
  *   production 23 July 2026).
  */
@@ -16,20 +19,21 @@ import type { ValidationResult } from "./double-entry.js";
 /**
  * Validate payment terms on a sales quote or sales order body.
  *
- * Rejects the removed top-level `term_id`, and checks that each
+ * Accepts either a top-level `term_id` or `term_items`, but refuses both in
+ * one body (the API would honour only one of them). Checks that each
  * `term_items` entry has a `payment_due` and either a `term_id` or a `date`.
  * Bodies without payment terms pass (terms are optional).
  */
 export function validateSalesTermItems(body: Record<string, unknown>): ValidationResult {
-  if ("term_id" in body) {
+  const termItems = body.term_items;
+  if ("term_id" in body && termItems !== undefined) {
     return {
       valid: false,
       error:
-        'Top-level term_id is no longer accepted on sales quotes and orders. Send payment terms as term_items instead, each with a payment_due and either a term_id or a custom date, e.g. "term_items": [{"term_id": 1, "payment_due": "100%"}] or [{"date": "2026-11-30", "payment_due": "100%"}]. Use list-terms (CLI: ref-data terms) to find term IDs.',
+        'Send payment terms as either a top-level term_id or term_items, not both. Bukku currently applies the top-level term_id (e.g. "term_id": 1) and is moving to term_items (e.g. "term_items": [{"term_id": 1, "payment_due": "100%"}]). Use list-terms (CLI: ref-data terms) to find term IDs.',
     };
   }
 
-  const termItems = body.term_items;
   if (termItems === undefined) return { valid: true };
 
   if (!Array.isArray(termItems)) {

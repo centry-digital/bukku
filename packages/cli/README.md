@@ -117,7 +117,7 @@ bukku sales invoices create --data '{
   "term_items": [{"payment_due": "100%", "date": "2025-02-15"}]
 }'
 
-# Create a quote (quotes and orders take payment terms as term_items, not term_id)
+# Create a quote (Bukku currently applies a top-level term_id on quotes and orders)
 bukku sales quotes create --data '{
   "contact_id": 1,
   "date": "2025-01-15",
@@ -126,14 +126,14 @@ bukku sales quotes create --data '{
   "tax_mode": "exclusive",
   "status": "draft",
   "form_items": [{"account_id": 100, "description": "Consulting", "amount": 5000}],
-  "term_items": [{"term_id": 3, "payment_due": "100%"}]
+  "term_id": 3
 }'
 
 # List quotes in table format
 bukku sales quotes list --format table
 ```
 
-Each `term_items` entry needs `payment_due` and either `term_id` (an existing payment term, from `bukku ref-data terms`) or a custom `date`. Sending a top-level `term_id` to a quote or order is refused with `VALIDATION_ERROR` before any request is made, as the Bukku API no longer accepts it.
+Bukku has announced that quotes and orders will take payment terms as `term_items` (each entry with `payment_due` and either `term_id`, from `bukku ref-data terms`, or a custom `date`), but as of 22 October 2026 the live API still applies the top-level `term_id` and ignores `term_items`. Both are accepted; sending both in one body is refused with `VALIDATION_ERROR` before any request is made.
 
 ### Purchases
 

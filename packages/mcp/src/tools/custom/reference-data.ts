@@ -42,7 +42,7 @@ const REFERENCE_TYPES = [
     type: "terms",
     toolName: "list-terms",
     description:
-      "List all payment terms (e.g., Net 30, Due on Receipt). Use to find valid term_id values for term_items when creating invoices, quotes, orders or bills.",
+      "List all payment terms (e.g., Net 30, Due on Receipt). Use to find valid term_id values: a top-level term_id on quotes and orders, or inside term_items on invoices and bills.",
   },
   {
     type: "accounts",
