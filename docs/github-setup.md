@@ -17,7 +17,7 @@ GitHub occasionally renames menu items. If a label doesn't match exactly, look f
 1. **App installed.** [Organisation settings → GitHub Apps](https://github.com/organizations/centry-digital/settings/installations) should list **Claude** with access to `bukku`.
 2. **Secret.** [Settings → Secrets and variables → Actions](https://github.com/centry-digital/bukku/settings/secrets/actions) should have the repository secret `CLAUDE_CODE_OAUTH_TOKEN`. If it's missing or expired, run `claude setup-token` in Claude Code, then **New repository secret** with that name. Never add an `ANTHROPIC_API_KEY`.
 3. Workflows started by Dependabot or by a fork's pull request can't read this secret, so the Claude review skips those PRs; CI still checks them.
-4. **Issue triage** (`claude-issue-triage.yml`) runs on every new issue, from anyone, using the workflow's own short-lived token limited to reading code and writing issues; its replies come from `github-actions[bot]`. Fixes need a collaborator's `@claude fix this` (`claude.yml`), which can push `claude/` branches and open PRs but never merge: the `main protection` ruleset still applies.
+4. **Issue triage** (`claude-issue-triage.yml`) runs on every new issue, from anyone, using the workflow's own short-lived token limited to reading code and writing issues; its replies come from `github-actions[bot]`. Fixes need a collaborator's `@claude fix this` (`claude.yml`), which can push `claude/` branches and open PRs but never merge: the `main protection` ruleset still applies. Its PRs also have to pass `guarded-paths` (`guarded-paths.yml`), which fails if Claude changed workflows, dependencies, build, lint or security settings, `CLAUDE.md` or the skills, so a merge on your say-so can only change product code and tests. `guarded-paths` only appears in the check list after it has run once, so add it to the ruleset after its first run.
 
 ## Part 2: Actions permissions
 
@@ -53,17 +53,18 @@ Go to [Settings → Rules → Rulesets → New branch ruleset](https://github.co
    - **Require a pull request before merging**, with **Required approvals: 0** (you are the only human reviewer and can't approve your own PRs; raise to 1 when a second developer joins), **Dismiss stale approvals** on, **Require conversation resolution before merging** on (this is what enforces the Claude review), **Allowed merge methods:** Squash.
    - **Require status checks to pass**, with **Require branches to be up to date** off, and these checks added (names must match exactly):
 
-     | Required check | What it proves                                                                 |
-     | -------------- | ------------------------------------------------------------------------------ |
-     | `format`       | Prettier formatting is clean                                                   |
-     | `lint`         | ESLint passes with zero warnings                                               |
-     | `typecheck`    | Source, tests and scripts type-check                                           |
-     | `unit`         | All package tests pass, including runs of the built binaries                   |
-     | `build`        | Both packages build, publish without the internal `core` dependency, and start |
-     | `parity`       | Every MCP tool has a CLI command                                               |
-     | `deps-audit`   | No high or critical advisories in production dependencies                      |
-     | `secret-scan`  | gitleaks finds no committed secrets in the full history                        |
-     | `pr-hygiene`   | The PR description has a non-empty "Verification evidence" section             |
+     | Required check  | What it proves                                                                        |
+     | --------------- | ------------------------------------------------------------------------------------- |
+     | `format`        | Prettier formatting is clean                                                          |
+     | `lint`          | ESLint passes with zero warnings                                                      |
+     | `typecheck`     | Source, tests and scripts type-check                                                  |
+     | `unit`          | All package tests pass, including runs of the built binaries                          |
+     | `build`         | Both packages build, publish without the internal `core` dependency, and start        |
+     | `parity`        | Every MCP tool has a CLI command                                                      |
+     | `deps-audit`    | No high or critical advisories in production dependencies                             |
+     | `secret-scan`   | gitleaks finds no committed secrets in the full history                               |
+     | `pr-hygiene`    | The PR description has a non-empty "Verification evidence" section                    |
+     | `guarded-paths` | A Claude-written PR doesn't touch workflows, dependencies, build or security settings |
 
      Don't add `claude-review` or `claude`: subscription rate limits could block merges.
 5. Click **Create**. Then check it: a test PR's **Merge** button stays disabled until every check is green and every conversation is resolved.
