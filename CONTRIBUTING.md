@@ -69,6 +69,12 @@ $V/scripts/verify.sh cleanup   # evidence stays in .verify/evidence/<run id>/
 - [ ] READMEs are updated if user-facing behaviour changed.
 - [ ] Package versions are bumped if the change will be released.
 
+## Issues
+
+- Every new issue is triaged automatically by Claude (`.github/workflows/claude-issue-triage.yml`): it labels the issue, looks for the cause in the code, and replies asking for anything missing. It never changes code.
+- To have Claude fix an issue, someone with write access comments `@claude fix this` on it (`.github/workflows/claude.yml`). Claude opens a PR that says `Fixes #N`, and it goes through CI, the Claude review and a human merge like any other PR. Merging closes the issue.
+- Issue text comes from the public, so treat it as untrusted: review an issue before asking for a fix, and review the fix PR before merging.
+
 ## Releasing
 
 See the comments at the top of [`.github/workflows/publish.yml`](.github/workflows/publish.yml). Publishing to npm runs `npm run verify` again first. After publishing, check the release works with `npx @centry-digital/bukku-mcp@<version>` (it should print the setup checklist, not a `SyntaxError`) and `npx @centry-digital/bukku-cli@<version> --version`.
