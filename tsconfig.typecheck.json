@@ -1,6 +1,6 @@
 {
   // Type-checks everything tsc --build skips: test files and scripts/.
-  // Run after `npm run build`, because packages resolve 'core' via its build output.
+  // `npm run typecheck` runs `tsc --build` first, because packages resolve 'core' via its build output.
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "noEmit": true,

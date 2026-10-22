@@ -1,0 +1,8 @@
+# gitleaks configuration: the default rules, plus narrow allowances for known false positives.
+# Add an allowance only for text that is plainly not a secret, and explain why.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Made-up token in the rc parser test (packages/cli/src/config/rc.test.ts), testing values that contain '='"
+regexes = ['''bk_abc=def=123''']

@@ -4,10 +4,10 @@ Tools for the [Bukku](https://bukku.my) accounting platform.
 
 ## Packages
 
-| Package | Description | npm |
-|---------|-------------|-----|
+| Package                                     | Description                                 | npm                                                                                                                       |
+| ------------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | [@centry-digital/bukku-mcp](./packages/mcp) | MCP server for AI assistants (Claude, etc.) | [![npm](https://img.shields.io/npm/v/@centry-digital/bukku-mcp)](https://www.npmjs.com/package/@centry-digital/bukku-mcp) |
-| [@centry-digital/bukku-cli](./packages/cli) | Command-line interface | [![npm](https://img.shields.io/npm/v/@centry-digital/bukku-cli)](https://www.npmjs.com/package/@centry-digital/bukku-cli) |
+| [@centry-digital/bukku-cli](./packages/cli) | Command-line interface                      | [![npm](https://img.shields.io/npm/v/@centry-digital/bukku-cli)](https://www.npmjs.com/package/@centry-digital/bukku-cli) |
 
 ## Quick Start
 
@@ -38,6 +38,7 @@ Remove the `"bukku"` entry from the `"mcpServers"` object in your AI client's co
 **Claude Code:** Remove from `.claude/settings.json` in your project directory (or `~/.claude/settings.json` if added globally).
 
 **Claude Desktop:** Remove from your config file:
+
 - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
@@ -72,10 +73,11 @@ If you no longer need API access, log into your Bukku account and revoke the tok
 ```bash
 git clone https://github.com/centry-digital/bukku.git
 cd bukku
-npm install
-npm run build
-npm test
+npm ci
+npm run verify
 ```
+
+`npm run verify` runs format, lint, build, typecheck, tests and the MCP/CLI parity check, the same as CI. See [CONTRIBUTING.md](./CONTRIBUTING.md) for how every change is tested and verified, and [docs/github-setup.md](./docs/github-setup.md) for the repository settings.
 
 ### Monorepo Structure
 

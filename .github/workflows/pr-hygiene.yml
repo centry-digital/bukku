@@ -1,0 +1,37 @@
+# Fails a pull request whose description has no "Verification evidence" section, or leaves it
+# empty. Runs when the description is edited, so fixing the text re-runs the check.
+name: PR hygiene
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize, ready_for_review]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  pr-hygiene:
+    name: pr-hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the "Verification evidence" section
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            if (pr.user.login === "dependabot[bot]") {
+              core.info("Dependabot update: no verification evidence needed.");
+              return;
+            }
+            const body = (pr.body || "").replace(/<!--[\s\S]*?-->/g, "");
+            const match = body.match(/^#{2,3}\s*Verification evidence\s*$([\s\S]*?)(?=^#{1,3}\s|(?![\s\S]))/im);
+            if (!match) {
+              core.setFailed('The PR description needs a "## Verification evidence" section (see .github/pull_request_template.md).');
+              return;
+            }
+            const content = match[1].replace(/^\s*[-*]\s*$/gm, "").trim();
+            if (!content) {
+              core.setFailed('The "Verification evidence" section is empty. Add evidence from the verify-bukku skill, or say why none applies.');
+              return;
+            }
+            core.info("Verification evidence section present.");

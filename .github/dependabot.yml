@@ -1,0 +1,29 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Asia/Kuala_Lumpur
+    open-pull-requests-limit: 10
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+    commit-message:
+      prefix: chore(deps)
+    ignore:
+      # Node's types must match the Node version we run (.nvmrc, engines); otherwise the type
+      # checker accepts APIs that don't exist at runtime. Bump .nvmrc, engines and @types/node
+      # together when moving to a new Node LTS.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Asia/Kuala_Lumpur
+    commit-message:
+      prefix: chore(ci)

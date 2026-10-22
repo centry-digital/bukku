@@ -9,7 +9,7 @@
     "test": "npm test --workspaces --if-present",
     "lint": "eslint --max-warnings=0 .",
     "lint:fix": "eslint . --fix",
-    "typecheck": "tsc -p tsconfig.typecheck.json",
+    "typecheck": "tsc --build && tsc -p tsconfig.typecheck.json",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "verify:parity": "tsx scripts/verify-parity.ts",

@@ -1,65 +1,156 @@
+# Quality gates for every pull request and every push to main.
+# Each job is a separately named check so it can be marked as required in GitHub
+# (see docs/github-setup.md). Keep job ids and names identical and in sync with that guide.
+#
+# This repository is public, so every job runs on GitHub's machines (free for public
+# repositories). Never point it at Centry's self-hosted AWS runners: anyone could run code on
+# them through a pull request.
 name: CI
 
 on:
   pull_request:
-    branches:
-      - main
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push replaces the run still going on the same PR or on main.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  test:
-    name: CI
+  format:
+    name: format
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [22]
-      fail-fast: false
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run format:check
 
-      - name: Install dependencies
-        run: npm ci
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
 
-      - name: Build
-        run: npm run build
+  # Source (tsc --build) plus the test files and scripts/ that the build skips.
+  typecheck:
+    name: typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
 
-      - name: Test
-        run: npm test --workspaces --if-present
+  # The CLI integration and MCP startup tests run the bundled binaries, so build first.
+  unit:
+    name: unit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
 
-      - name: Verify MCP tarball
+  # Builds both packages, checks what npm would publish, and starts each binary once.
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Check the published packages don't depend on the internal core package
         run: |
-          cd packages/mcp
-          npm pack --dry-run 2>&1 | tee /tmp/pack-output.txt
-          # Verify no 'core' in dependencies
-          node -e "
-            const pkg = require('./package.json');
-            const deps = Object.keys(pkg.dependencies || {});
-            if (deps.some(d => d.includes('core'))) {
-              console.error('ERROR: core must not be in published dependencies');
-              process.exit(1);
-            }
-            console.log('MCP tarball dependencies OK:', deps.join(', '));
-          "
-
-      - name: Verify CLI tarball
+          for pkg in mcp cli; do
+            (cd "packages/$pkg" && npm pack --dry-run)
+            node -e "
+              const pkg = require('./packages/$pkg/package.json');
+              const deps = Object.keys(pkg.dependencies || {});
+              if (deps.some((d) => d.includes('core'))) {
+                console.error('::error::core must not be in the published dependencies of ' + pkg.name);
+                process.exit(1);
+              }
+              console.log(pkg.name + ' dependencies OK: ' + deps.join(', '));
+            "
+          done
+      - name: Start each binary
         run: |
-          cd packages/cli
-          npm pack --dry-run 2>&1 | tee /tmp/cli-pack-output.txt
-          node -e "
-            const pkg = require('./package.json');
-            const deps = Object.keys(pkg.dependencies || {});
-            if (deps.some(d => d.includes('core'))) {
-              console.error('ERROR: core must not be in published dependencies');
-              process.exit(1);
-            }
-            console.log('CLI tarball dependencies OK:', deps.join(', '));
-          "
+          node packages/cli/build/index.js --version
+          # Without credentials the MCP server must exit 1 with its setup checklist, not crash.
+          set +e
+          BUKKU_API_TOKEN= BUKKU_COMPANY_SUBDOMAIN= node packages/mcp/build/index.js 2> mcp-stderr.txt
+          code=$?
+          set -e
+          cat mcp-stderr.txt
+          if [ "$code" != 1 ] || ! grep -q "Setup checklist" mcp-stderr.txt; then
+            echo "::error::The MCP server did not start cleanly (exit $code)."
+            exit 1
+          fi
+
+  # Every MCP tool must have a CLI command (scripts/verify-parity.ts).
+  parity:
+    name: parity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run verify:parity
+
+  deps-audit:
+    name: deps-audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+      # Blocks on high or critical advisories in what ships (production dependencies).
+      # Development-only advisories are reported for information and tracked by Dependabot.
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
+      - name: Report development dependencies (non-blocking)
+        run: npm audit --audit-level=high || echo "::warning::npm audit reports advisories in development dependencies"
+
+  secret-scan:
+    name: secret-scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      # gitleaks runs from its official image, so no third-party action needs allow-listing.
+      - name: Scan the full git history with gitleaks
+        run: >
+          docker run --rm -v "$PWD:/repo" -w /repo
+          zricethezav/gitleaks:v8.28.0
+          git --redact --verbose --exit-code 1 /repo
