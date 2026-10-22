@@ -16,7 +16,7 @@ export type BukkuApiResponse<T> = T;
  */
 export interface ToolResult {
   content: Array<{
-    type: 'text';
+    type: "text";
     text: string;
   }>;
   isError?: boolean;

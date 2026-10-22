@@ -1,4 +1,4 @@
-import { outputError, ExitCode } from '../output/error.js';
+import { outputError, ExitCode } from "../output/error.js";
 
 /**
  * Read JSON input from --data flag or stdin pipe.
@@ -15,8 +15,8 @@ export async function readJsonInput(opts: Record<string, unknown>): Promise<unkn
     } catch (err) {
       outputError(
         {
-          error: 'Invalid JSON input: ' + (err instanceof SyntaxError ? err.message : String(err)),
-          code: 'VALIDATION_ERROR',
+          error: "Invalid JSON input: " + (err instanceof SyntaxError ? err.message : String(err)),
+          code: "VALIDATION_ERROR",
         },
         ExitCode.VALIDATION,
       );
@@ -28,14 +28,14 @@ export async function readJsonInput(opts: Record<string, unknown>): Promise<unkn
     for await (const chunk of process.stdin) {
       chunks.push(chunk as Buffer);
     }
-    const raw = Buffer.concat(chunks).toString('utf-8');
+    const raw = Buffer.concat(chunks).toString("utf-8");
     try {
       return JSON.parse(raw);
     } catch (err) {
       outputError(
         {
-          error: 'Invalid JSON input: ' + (err instanceof SyntaxError ? err.message : String(err)),
-          code: 'VALIDATION_ERROR',
+          error: "Invalid JSON input: " + (err instanceof SyntaxError ? err.message : String(err)),
+          code: "VALIDATION_ERROR",
         },
         ExitCode.VALIDATION,
       );
@@ -44,8 +44,8 @@ export async function readJsonInput(opts: Record<string, unknown>): Promise<unkn
 
   outputError(
     {
-      error: 'JSON input required. Use --data flag or pipe JSON to stdin',
-      code: 'VALIDATION_ERROR',
+      error: "JSON input required. Use --data flag or pipe JSON to stdin",
+      code: "VALIDATION_ERROR",
     },
     ExitCode.VALIDATION,
   );

@@ -1,9 +1,9 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import type { BukkuClient } from 'core';
-import { transformHttpError, transformNetworkError, createLogger, validateDoubleEntry } from 'core';
+import type { BukkuClient } from "core";
+import { transformHttpError, transformNetworkError, createLogger, validateDoubleEntry } from "core";
 
-const log = createLogger('bukku-mcp');
+const log = createLogger("bukku-mcp");
 
 /**
  * Custom Journal Entry Tools
@@ -23,16 +23,17 @@ const log = createLogger('bukku-mcp');
  * @param client - Authenticated Bukku API client
  * @returns Number of tools registered (always 2)
  */
-export function registerJournalEntryTools(
-  server: McpServer,
-  client: BukkuClient
-): number {
+export function registerJournalEntryTools(server: McpServer, client: BukkuClient): number {
   // Create journal entry with validation
   server.tool(
     "create-journal-entry",
     "Create a new journal entry. Use list-accounts to find valid account IDs for line items. Journal entries must have balanced debits and credits (total debits = total credits).",
     {
-      data: z.record(z.string(), z.unknown()).describe("Journal entry data including journal_items array with debit/credit amounts and account IDs"),
+      data: z
+        .record(z.string(), z.unknown())
+        .describe(
+          "Journal entry data including journal_items array with debit/credit amounts and account IDs",
+        ),
     },
     async (params) => {
       try {
@@ -72,7 +73,7 @@ export function registerJournalEntryTools(
         }
         return transformNetworkError(error, "create-journal-entry");
       }
-    }
+    },
   );
   log("Registered tool: create-journal-entry");
 
@@ -122,7 +123,7 @@ export function registerJournalEntryTools(
         }
         return transformNetworkError(error, "update-journal-entry");
       }
-    }
+    },
   );
   log("Registered tool: update-journal-entry");
 

@@ -1,9 +1,9 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import type { BukkuClient } from 'core';
-import { transformHttpError, transformNetworkError, createLogger } from 'core';
+import type { BukkuClient } from "core";
+import { transformHttpError, transformNetworkError, createLogger } from "core";
 
-const log = createLogger('bukku-mcp');
+const log = createLogger("bukku-mcp");
 
 /**
  * Custom Account Tools
@@ -24,19 +24,25 @@ const log = createLogger('bukku-mcp');
  * @param client - Authenticated Bukku API client
  * @returns Number of tools registered (always 3)
  */
-export function registerAccountCustomTools(
-  server: McpServer,
-  client: BukkuClient
-): number {
+export function registerAccountCustomTools(server: McpServer, client: BukkuClient): number {
   // Search accounts with filtering
   server.tool(
     "search-accounts",
     "Search and filter accounts from the chart of accounts. Supports filtering by category and archived status. For a quick cached account lookup (e.g., to find account IDs for journal entries), use list-accounts instead.",
     {
       search: z.string().optional().describe("Search by account name, code, or description"),
-      category: z.enum(["assets", "liabilities", "equity", "income", "expenses"]).optional().describe("Filter by account category"),
-      is_archived: z.boolean().optional().describe("Filter by archived status (default: false, showing only active accounts)"),
-      sort_by: z.enum(["code", "name", "balance"]).optional().describe("Sort field (default: code)"),
+      category: z
+        .enum(["assets", "liabilities", "equity", "income", "expenses"])
+        .optional()
+        .describe("Filter by account category"),
+      is_archived: z
+        .boolean()
+        .optional()
+        .describe("Filter by archived status (default: false, showing only active accounts)"),
+      sort_by: z
+        .enum(["code", "name", "balance"])
+        .optional()
+        .describe("Sort field (default: code)"),
       sort_dir: z.enum(["asc", "desc"]).optional().describe("Sort direction (default: asc)"),
       page: z.number().optional().describe("Page number for pagination"),
       page_size: z.number().optional().describe("Number of items per page"),
@@ -74,7 +80,7 @@ export function registerAccountCustomTools(
         }
         return transformNetworkError(error, "search-accounts");
       }
-    }
+    },
   );
   log("Registered tool: search-accounts");
 
@@ -105,7 +111,7 @@ export function registerAccountCustomTools(
         }
         return transformNetworkError(error, "archive-account");
       }
-    }
+    },
   );
   log("Registered tool: archive-account");
 
@@ -136,7 +142,7 @@ export function registerAccountCustomTools(
         }
         return transformNetworkError(error, "unarchive-account");
       }
-    }
+    },
   );
   log("Registered tool: unarchive-account");
 

@@ -1,9 +1,9 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import type { BukkuClient } from 'core';
-import { transformHttpError, transformNetworkError, createLogger } from 'core';
+import type { BukkuClient } from "core";
+import { transformHttpError, transformNetworkError, createLogger } from "core";
 
-const log = createLogger('bukku-mcp');
+const log = createLogger("bukku-mcp");
 
 /**
  * Custom File Upload Tool
@@ -20,10 +20,7 @@ const log = createLogger('bukku-mcp');
  * @param client - Authenticated Bukku API client
  * @returns Number of tools registered (always 1)
  */
-export function registerFileUploadTool(
-  server: McpServer,
-  client: BukkuClient
-): number {
+export function registerFileUploadTool(server: McpServer, client: BukkuClient): number {
   server.tool(
     "upload-file",
     "Upload a file to Bukku. Returns file object with id, url, and metadata. Use the returned file id in transaction file_ids arrays to attach files to sales invoices, purchase bills, and other documents.",
@@ -48,7 +45,7 @@ export function registerFileUploadTool(
         }
         return transformNetworkError(error, "upload-file");
       }
-    }
+    },
   );
   log("Registered tool: upload-file");
 

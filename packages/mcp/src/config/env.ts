@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { createLogger } from 'core';
+import { createLogger } from "core";
 
-const log = createLogger('bukku-mcp');
+const log = createLogger("bukku-mcp");
 
 /**
  * Environment variable schema.

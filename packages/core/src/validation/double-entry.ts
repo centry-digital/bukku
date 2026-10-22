@@ -12,7 +12,7 @@
 export interface JournalEntryLine {
   debit_amount?: number;
   credit_amount?: number;
-  [key: string]: unknown;  // Allow other fields to pass through
+  [key: string]: unknown; // Allow other fields to pass through
 }
 
 export interface ValidationResult {
@@ -48,7 +48,7 @@ export interface ValidationResult {
  */
 export function validateDoubleEntry(
   lines: JournalEntryLine[],
-  minLines: number = 2
+  minLines: number = 2,
 ): ValidationResult {
   // Check minimum line count
   if (lines.length < minLines) {

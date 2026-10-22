@@ -1,4 +1,4 @@
-import { outputJson } from './json.js';
+import { outputJson } from "./json.js";
 
 export interface DryRunOutput {
   dry_run: true;
@@ -21,15 +21,14 @@ export function outputDryRun(opts: {
   subdomain: string;
   body?: unknown;
 }): void {
-  const maskedToken =
-    opts.token.length > 6 ? opts.token.slice(0, 3) + '****' : '****';
+  const maskedToken = opts.token.length > 6 ? opts.token.slice(0, 3) + "****" : "****";
   const output: DryRunOutput = {
     dry_run: true,
     method: opts.method,
     url: `https://api.bukku.my${opts.path}`,
     headers: {
       Authorization: `Bearer ${maskedToken}`,
-      'Company-Subdomain': opts.subdomain,
+      "Company-Subdomain": opts.subdomain,
     },
   };
   if (opts.body !== undefined) {

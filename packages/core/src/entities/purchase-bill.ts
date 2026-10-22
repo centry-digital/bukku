@@ -17,8 +17,10 @@ export const purchaseBillConfig: CrudEntityConfig = {
   hasStatusUpdate: true,
   listFilters: ["contact_id", "payment_status", "payment_mode"],
   businessRules: {
-    delete: "Only draft and void bills can be deleted. Ready or pending approval bills cannot be deleted — use update-purchase-bill-status to void a ready bill instead.",
-    statusTransitions: "Valid transitions: draft -> pending_approval, draft -> ready, pending_approval -> ready, ready -> void. A void bill is final and cannot be changed. There is no way to revert from ready, pending_approval, or void back to draft.",
+    delete:
+      "Only draft and void bills can be deleted. Ready or pending approval bills cannot be deleted — use update-purchase-bill-status to void a ready bill instead.",
+    statusTransitions:
+      "Valid transitions: draft -> pending_approval, draft -> ready, pending_approval -> ready, ready -> void. A void bill is final and cannot be changed. There is no way to revert from ready, pending_approval, or void back to draft.",
   },
   cliGroup: "purchases",
 };

@@ -1,9 +1,9 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import type { BukkuClient } from 'core';
-import { transformHttpError, transformNetworkError, createLogger } from 'core';
+import type { BukkuClient } from "core";
+import { transformHttpError, transformNetworkError, createLogger } from "core";
 
-const log = createLogger('bukku-mcp');
+const log = createLogger("bukku-mcp");
 
 /**
  * Custom Product Archive/Unarchive Tools
@@ -20,10 +20,7 @@ const log = createLogger('bukku-mcp');
  * @param client - Authenticated Bukku API client
  * @returns Number of tools registered (always 4)
  */
-export function registerProductArchiveTools(
-  server: McpServer,
-  client: BukkuClient
-): number {
+export function registerProductArchiveTools(server: McpServer, client: BukkuClient): number {
   // Archive product
   server.tool(
     "archive-product",
@@ -51,7 +48,7 @@ export function registerProductArchiveTools(
         }
         return transformNetworkError(error, "archive-product");
       }
-    }
+    },
   );
   log("Registered tool: archive-product");
 
@@ -82,7 +79,7 @@ export function registerProductArchiveTools(
         }
         return transformNetworkError(error, "unarchive-product");
       }
-    }
+    },
   );
   log("Registered tool: unarchive-product");
 
@@ -113,7 +110,7 @@ export function registerProductArchiveTools(
         }
         return transformNetworkError(error, "archive-product-bundle");
       }
-    }
+    },
   );
   log("Registered tool: archive-product-bundle");
 
@@ -144,7 +141,7 @@ export function registerProductArchiveTools(
         }
         return transformNetworkError(error, "unarchive-product-bundle");
       }
-    }
+    },
   );
   log("Registered tool: unarchive-product-bundle");
 

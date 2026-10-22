@@ -1,9 +1,9 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import type { BukkuClient, CrudEntityConfig } from 'core';
-import { transformHttpError, transformNetworkError, createLogger } from 'core';
+import type { BukkuClient, CrudEntityConfig } from "core";
+import { transformHttpError, transformNetworkError, createLogger } from "core";
 
-const log = createLogger('bukku-mcp');
+const log = createLogger("bukku-mcp");
 
 /**
  * CRUD Factory Pattern
@@ -31,7 +31,7 @@ const log = createLogger('bukku-mcp');
 export function registerCrudTools(
   server: McpServer,
   client: BukkuClient,
-  config: CrudEntityConfig
+  config: CrudEntityConfig,
 ): number {
   let toolCount = 0;
 
@@ -59,32 +59,30 @@ export function registerCrudTools(
       }
     }
 
-    server.tool(
-      listName,
-      listDescription,
-      listSchema,
-      async (params) => {
-        try {
-          const result = await client.get(config.apiBasePath, params as Record<string, string | number | undefined>);
-          return {
-            content: [
-              {
-                type: "text" as const,
-                text: JSON.stringify(result, null, 2),
-              },
-            ],
-          };
-        } catch (error) {
-          // Handle HTTP errors
-          if (error instanceof Response) {
-            const body = await error.json().catch(() => null);
-            return transformHttpError(error.status, body, listName);
-          }
-          // Handle network errors
-          return transformNetworkError(error, listName);
+    server.tool(listName, listDescription, listSchema, async (params) => {
+      try {
+        const result = await client.get(
+          config.apiBasePath,
+          params as Record<string, string | number | undefined>,
+        );
+        return {
+          content: [
+            {
+              type: "text" as const,
+              text: JSON.stringify(result, null, 2),
+            },
+          ],
+        };
+      } catch (error) {
+        // Handle HTTP errors
+        if (error instanceof Response) {
+          const body = await error.json().catch(() => null);
+          return transformHttpError(error.status, body, listName);
         }
+        // Handle network errors
+        return transformNetworkError(error, listName);
       }
-    );
+    });
     toolCount++;
     log(`Registered tool: ${listName}`);
   }
@@ -118,7 +116,7 @@ export function registerCrudTools(
           }
           return transformNetworkError(error, getName);
         }
-      }
+      },
     );
     toolCount++;
     log(`Registered tool: ${getName}`);
@@ -153,7 +151,7 @@ export function registerCrudTools(
           }
           return transformNetworkError(error, createName);
         }
-      }
+      },
     );
     toolCount++;
     log(`Registered tool: ${createName}`);
@@ -189,7 +187,7 @@ export function registerCrudTools(
           }
           return transformNetworkError(error, updateName);
         }
-      }
+      },
     );
     toolCount++;
     log(`Registered tool: ${updateName}`);
@@ -198,7 +196,8 @@ export function registerCrudTools(
   // Delete tool: delete-{entity}
   if (config.operations.includes("delete")) {
     const deleteName = `delete-${config.entity}`;
-    const deleteDescription = `Delete a ${config.description}. ${config.businessRules?.delete ?? ''}`.trim();
+    const deleteDescription =
+      `Delete a ${config.description}. ${config.businessRules?.delete ?? ""}`.trim();
 
     server.tool(
       deleteName,
@@ -224,7 +223,7 @@ export function registerCrudTools(
           }
           return transformNetworkError(error, deleteName);
         }
-      }
+      },
     );
     toolCount++;
     log(`Registered tool: ${deleteName}`);
@@ -233,7 +232,8 @@ export function registerCrudTools(
   // Status update tool: update-{entity}-status
   if (config.hasStatusUpdate) {
     const statusName = `update-${config.entity}-status`;
-    const statusDescription = `Update the status of a ${config.description}. ${config.businessRules?.statusTransitions ?? ''}`.trim();
+    const statusDescription =
+      `Update the status of a ${config.description}. ${config.businessRules?.statusTransitions ?? ""}`.trim();
 
     server.tool(
       statusName,
@@ -262,7 +262,7 @@ export function registerCrudTools(
           }
           return transformNetworkError(error, statusName);
         }
-      }
+      },
     );
     toolCount++;
     log(`Registered tool: ${statusName}`);

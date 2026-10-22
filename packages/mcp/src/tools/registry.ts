@@ -1,21 +1,38 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { BukkuClient } from 'core';
+import type { BukkuClient } from "core";
 import { registerCrudTools } from "./factory.js";
 
 // All entity configs from core
 import {
-  salesQuoteConfig, salesOrderConfig, deliveryOrderConfig,
-  salesInvoiceConfig, salesCreditNoteConfig, salesPaymentConfig, salesRefundConfig,
-  purchaseOrderConfig, goodsReceivedNoteConfig, purchaseBillConfig,
-  purchaseCreditNoteConfig, purchasePaymentConfig, purchaseRefundConfig,
-  bankMoneyInConfig, bankMoneyOutConfig, bankTransferConfig,
-  contactConfig, contactGroupConfig,
-  productConfig, productBundleConfig, productGroupConfig,
-  journalEntryConfig, accountConfig,
+  salesQuoteConfig,
+  salesOrderConfig,
+  deliveryOrderConfig,
+  salesInvoiceConfig,
+  salesCreditNoteConfig,
+  salesPaymentConfig,
+  salesRefundConfig,
+  purchaseOrderConfig,
+  goodsReceivedNoteConfig,
+  purchaseBillConfig,
+  purchaseCreditNoteConfig,
+  purchasePaymentConfig,
+  purchaseRefundConfig,
+  bankMoneyInConfig,
+  bankMoneyOutConfig,
+  bankTransferConfig,
+  contactConfig,
+  contactGroupConfig,
+  productConfig,
+  productBundleConfig,
+  productGroupConfig,
+  journalEntryConfig,
+  accountConfig,
   fileConfig,
-  locationConfig, tagConfig, tagGroupConfig,
+  locationConfig,
+  tagConfig,
+  tagGroupConfig,
   ReferenceDataCache,
-} from 'core';
+} from "core";
 
 // Custom tools (local within mcp)
 import { registerContactArchiveTools } from "./custom/contact-archive.js";

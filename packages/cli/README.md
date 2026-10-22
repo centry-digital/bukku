@@ -8,17 +8,17 @@ A command-line interface for [Bukku](https://bukku.my), a Malaysian accounting p
 
 The CLI exposes **169 commands** across 9 categories, covering the full Bukku API:
 
-| Category | Commands | What you can do |
-|----------|----------|-----------------|
-| **Sales** | 42 | Quotes, orders, delivery orders, invoices, credit notes, payments, refunds |
-| **Purchases** | 36 | Purchase orders, bills, credit notes, goods received notes, payments, refunds |
-| **Banking** | 18 | Money in, money out, bank transfers |
-| **Contacts** | 12 | Customers, suppliers, contact groups |
-| **Products** | 18 | Products, bundles, product groups |
-| **Accounting** | 13 | Chart of accounts, journal entries |
-| **Files** | 3 | Upload and manage file attachments |
-| **Control Panel** | 21 | Locations, tags, tag groups |
-| **Reference Data** | 10 | Tax codes, currencies, payment methods, terms, and more |
+| Category           | Commands | What you can do                                                               |
+| ------------------ | -------- | ----------------------------------------------------------------------------- |
+| **Sales**          | 42       | Quotes, orders, delivery orders, invoices, credit notes, payments, refunds    |
+| **Purchases**      | 36       | Purchase orders, bills, credit notes, goods received notes, payments, refunds |
+| **Banking**        | 18       | Money in, money out, bank transfers                                           |
+| **Contacts**       | 12       | Customers, suppliers, contact groups                                          |
+| **Products**       | 18       | Products, bundles, product groups                                             |
+| **Accounting**     | 13       | Chart of accounts, journal entries                                            |
+| **Files**          | 3        | Upload and manage file attachments                                            |
+| **Control Panel**  | 21       | Locations, tags, tag groups                                                   |
+| **Reference Data** | 10       | Tax codes, currencies, payment methods, terms, and more                       |
 
 Every list/get/create/update/delete operation available in the Bukku web UI is available from the command line.
 
@@ -264,13 +264,13 @@ Errors are written to stderr as structured JSON, so they don't interfere with pi
 
 ## Exit Codes
 
-| Code | Meaning |
-|------|---------|
-| 0 | Success |
-| 1 | General error |
-| 2 | Authentication error (missing or invalid credentials) |
-| 3 | API error (Bukku returned an error) |
-| 4 | Validation error (invalid input or config) |
+| Code | Meaning                                               |
+| ---- | ----------------------------------------------------- |
+| 0    | Success                                               |
+| 1    | General error                                         |
+| 2    | Authentication error (missing or invalid credentials) |
+| 3    | API error (Bukku returned an error)                   |
+| 4    | Validation error (invalid input or config)            |
 
 ## Getting Your API Token
 

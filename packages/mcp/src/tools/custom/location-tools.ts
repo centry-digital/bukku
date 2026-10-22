@@ -1,9 +1,9 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import type { BukkuClient } from 'core';
-import { transformHttpError, transformNetworkError, createLogger } from 'core';
+import type { BukkuClient } from "core";
+import { transformHttpError, transformNetworkError, createLogger } from "core";
 
-const log = createLogger('bukku-mcp');
+const log = createLogger("bukku-mcp");
 
 /**
  * Custom Location Tools for Get, Update, and Delete Operations
@@ -23,10 +23,7 @@ const log = createLogger('bukku-mcp');
  * @param client - Authenticated Bukku API client
  * @returns Number of tools registered (always 3)
  */
-export function registerLocationTools(
-  server: McpServer,
-  client: BukkuClient
-): number {
+export function registerLocationTools(server: McpServer, client: BukkuClient): number {
   // Get location
   server.tool(
     "get-location",
@@ -52,7 +49,7 @@ export function registerLocationTools(
         }
         return transformNetworkError(error, "get-location");
       }
-    }
+    },
   );
   log("Registered tool: get-location");
 
@@ -82,7 +79,7 @@ export function registerLocationTools(
         }
         return transformNetworkError(error, "update-location");
       }
-    }
+    },
   );
   log("Registered tool: update-location");
 
@@ -111,7 +108,7 @@ export function registerLocationTools(
         }
         return transformNetworkError(error, "delete-location");
       }
-    }
+    },
   );
   log("Registered tool: delete-location");
 

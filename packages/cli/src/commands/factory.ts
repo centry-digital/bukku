@@ -1,58 +1,58 @@
-import type { Command } from 'commander';
-import { allEntityConfigs } from 'core';
-import type { CrudEntityConfig, BukkuPaging } from 'core';
-import { withAuth } from './wrapper.js';
-import { outputJson } from '../output/json.js';
-import { outputTable } from '../output/table.js';
-import { readJsonInput } from '../input/json.js';
-import { outputDryRun } from '../output/dry-run.js';
+import type { Command } from "commander";
+import { allEntityConfigs } from "core";
+import type { CrudEntityConfig, BukkuPaging } from "core";
+import { withAuth } from "./wrapper.js";
+import { outputJson } from "../output/json.js";
+import { outputTable } from "../output/table.js";
+import { readJsonInput } from "../input/json.js";
+import { outputDryRun } from "../output/dry-run.js";
 
 /**
  * Map entity name to CLI resource subcommand name.
  * Explicit mapping is more maintainable than prefix-stripping heuristics.
  */
 const RESOURCE_NAME_MAP: Record<string, string> = {
-  'sales-invoice': 'invoices',
-  'sales-quote': 'quotes',
-  'sales-order': 'orders',
-  'sales-credit-note': 'credit-notes',
-  'sales-payment': 'payments',
-  'sales-refund': 'refunds',
-  'delivery-order': 'delivery-orders',
-  'purchase-bill': 'bills',
-  'purchase-order': 'orders',
-  'purchase-credit-note': 'credit-notes',
-  'purchase-payment': 'payments',
-  'purchase-refund': 'refunds',
-  'goods-received-note': 'goods-received-notes',
-  'bank-money-in': 'money-in',
-  'bank-money-out': 'money-out',
-  'bank-transfer': 'transfers',
-  'contact': 'contacts',
-  'contact-group': 'groups',
-  'product': 'products',
-  'product-bundle': 'bundles',
-  'product-group': 'groups',
-  'journal-entry': 'journal-entries',
-  'account': 'accounts',
-  'file': 'files',
-  'location': 'locations',
-  'tag': 'tags',
-  'tag-group': 'tag-groups',
+  "sales-invoice": "invoices",
+  "sales-quote": "quotes",
+  "sales-order": "orders",
+  "sales-credit-note": "credit-notes",
+  "sales-payment": "payments",
+  "sales-refund": "refunds",
+  "delivery-order": "delivery-orders",
+  "purchase-bill": "bills",
+  "purchase-order": "orders",
+  "purchase-credit-note": "credit-notes",
+  "purchase-payment": "payments",
+  "purchase-refund": "refunds",
+  "goods-received-note": "goods-received-notes",
+  "bank-money-in": "money-in",
+  "bank-money-out": "money-out",
+  "bank-transfer": "transfers",
+  contact: "contacts",
+  "contact-group": "groups",
+  product: "products",
+  "product-bundle": "bundles",
+  "product-group": "groups",
+  "journal-entry": "journal-entries",
+  account: "accounts",
+  file: "files",
+  location: "locations",
+  tag: "tags",
+  "tag-group": "tag-groups",
 };
 
 /**
  * Group descriptions for top-level CLI command groups.
  */
 const GROUP_DESCRIPTIONS: Record<string, string> = {
-  sales: 'Sales invoices, quotes, orders, credit notes, payments, refunds',
-  purchases: 'Purchase bills, orders, credit notes, payments, refunds',
-  banking: 'Bank transactions and transfers',
-  contacts: 'Customers, suppliers, and contacts',
-  products: 'Products, bundles, and product groups',
-  accounting: 'Chart of accounts and journal entries',
-  files: 'File uploads and attachments',
-  'control-panel': 'Locations, tags, and tag groups',
+  sales: "Sales invoices, quotes, orders, credit notes, payments, refunds",
+  purchases: "Purchase bills, orders, credit notes, payments, refunds",
+  banking: "Bank transactions and transfers",
+  contacts: "Customers, suppliers, and contacts",
+  products: "Products, bundles, and product groups",
+  accounting: "Chart of accounts and journal entries",
+  files: "File uploads and attachments",
+  "control-panel": "Locations, tags, and tag groups",
 };
 
 /**
@@ -60,13 +60,25 @@ const GROUP_DESCRIPTIONS: Record<string, string> = {
  * Handles common cases: "entry" -> "entries", "note" -> "notes".
  */
 function pluralize(desc: string): string {
-  if (desc.endsWith('y') && !desc.endsWith('ay') && !desc.endsWith('ey') && !desc.endsWith('oy') && !desc.endsWith('uy')) {
-    return desc.slice(0, -1) + 'ies';
+  if (
+    desc.endsWith("y") &&
+    !desc.endsWith("ay") &&
+    !desc.endsWith("ey") &&
+    !desc.endsWith("oy") &&
+    !desc.endsWith("uy")
+  ) {
+    return desc.slice(0, -1) + "ies";
   }
-  if (desc.endsWith('s') || desc.endsWith('x') || desc.endsWith('z') || desc.endsWith('ch') || desc.endsWith('sh')) {
-    return desc + 'es';
+  if (
+    desc.endsWith("s") ||
+    desc.endsWith("x") ||
+    desc.endsWith("z") ||
+    desc.endsWith("ch") ||
+    desc.endsWith("sh")
+  ) {
+    return desc + "es";
   }
-  return desc + 's';
+  return desc + "s";
 }
 
 /**
@@ -74,36 +86,34 @@ function pluralize(desc: string): string {
  * e.g., "contact_id" -> "contact-id"
  */
 function toFlagName(param: string): string {
-  return param.replace(/_/g, '-');
+  return param.replace(/_/g, "-");
 }
 
 /**
  * Add the `list` subcommand to a resource command.
  */
 function addListCommand(resourceCmd: Command, config: CrudEntityConfig): void {
-  const listCmd = resourceCmd
-    .command('list')
-    .description(`List ${pluralize(config.description)}`);
+  const listCmd = resourceCmd.command("list").description(`List ${pluralize(config.description)}`);
 
   // Standard options
   listCmd
-    .option('--limit <n>', 'Maximum items per page', undefined)
-    .option('--page <n>', 'Page number', undefined)
-    .option('--search <text>', 'Search text', undefined)
-    .option('--date-from <date>', 'Filter from date (YYYY-MM-DD)', undefined)
-    .option('--date-to <date>', 'Filter to date (YYYY-MM-DD)', undefined)
-    .option('--status <status>', 'Filter by status', undefined)
-    .option('--sort-by <field>', 'Sort by field', undefined)
-    .option('--sort-dir <dir>', 'Sort direction (asc, desc)', undefined)
-    .option('--all', 'Fetch all pages', false)
-    .option('--format <format>', 'Output format (json, table)', 'json');
+    .option("--limit <n>", "Maximum items per page", undefined)
+    .option("--page <n>", "Page number", undefined)
+    .option("--search <text>", "Search text", undefined)
+    .option("--date-from <date>", "Filter from date (YYYY-MM-DD)", undefined)
+    .option("--date-to <date>", "Filter to date (YYYY-MM-DD)", undefined)
+    .option("--status <status>", "Filter by status", undefined)
+    .option("--sort-by <field>", "Sort by field", undefined)
+    .option("--sort-dir <dir>", "Sort direction (asc, desc)", undefined)
+    .option("--all", "Fetch all pages", false)
+    .option("--format <format>", "Output format (json, table)", "json");
 
   // Entity-specific filter options
   if (config.listFilters) {
     for (const filter of config.listFilters) {
       const flagName = toFlagName(filter);
       // Skip filters that duplicate standard options
-      if (['search', 'status'].includes(filter)) continue;
+      if (["search", "status"].includes(filter)) continue;
       listCmd.option(`--${flagName} <value>`, `Filter by ${filter}`, undefined);
     }
   }
@@ -125,10 +135,11 @@ function addListCommand(resourceCmd: Command, config: CrudEntityConfig): void {
       // Entity-specific filters
       if (config.listFilters) {
         for (const filter of config.listFilters) {
-          if (['search', 'status'].includes(filter)) continue;
+          if (["search", "status"].includes(filter)) continue;
           // Commander camelCases the flag: "contact-id" -> "contactId"
-          const camelKey = toFlagName(filter)
-            .replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
+          const camelKey = toFlagName(filter).replace(/-([a-z])/g, (_, c: string) =>
+            c.toUpperCase(),
+          );
           if (opts[camelKey] != null) {
             params[filter] = opts[camelKey] as string;
           }
@@ -143,9 +154,12 @@ function addListCommand(resourceCmd: Command, config: CrudEntityConfig): void {
         params.page_size = pageSize;
         params.page = 1;
 
-        const firstResponse = await client.get(config.apiBasePath, params) as Record<string, unknown>;
+        const firstResponse = (await client.get(config.apiBasePath, params)) as Record<
+          string,
+          unknown
+        >;
         const paging = firstResponse.paging as BukkuPaging;
-        const allItems = [...(firstResponse[config.pluralKey] as unknown[] || [])];
+        const allItems = [...((firstResponse[config.pluralKey] as unknown[]) || [])];
 
         const totalPages = Math.ceil(paging.total / paging.per_page);
 
@@ -156,12 +170,15 @@ function addListCommand(resourceCmd: Command, config: CrudEntityConfig): void {
         for (let page = 2; page <= totalPages; page++) {
           process.stderr.write(`Fetching page ${page}/${totalPages}...\n`);
           params.page = page;
-          const response = await client.get(config.apiBasePath, params) as Record<string, unknown>;
-          const items = response[config.pluralKey] as unknown[] || [];
+          const response = (await client.get(config.apiBasePath, params)) as Record<
+            string,
+            unknown
+          >;
+          const items = (response[config.pluralKey] as unknown[]) || [];
           allItems.push(...items);
         }
 
-        if (format === 'table') {
+        if (format === "table") {
           outputTable(allItems, [config.entity]);
         } else {
           outputJson(allItems);
@@ -169,9 +186,9 @@ function addListCommand(resourceCmd: Command, config: CrudEntityConfig): void {
       } else {
         const data = await client.get(config.apiBasePath, params);
 
-        if (format === 'table') {
+        if (format === "table") {
           const response = data as Record<string, unknown>;
-          const items = response[config.pluralKey] as unknown[] || [];
+          const items = (response[config.pluralKey] as unknown[]) || [];
           outputTable(items, [config.entity]);
         } else {
           outputJson(data);
@@ -186,10 +203,10 @@ function addListCommand(resourceCmd: Command, config: CrudEntityConfig): void {
  */
 function addGetCommand(resourceCmd: Command, config: CrudEntityConfig): void {
   const getCmd = resourceCmd
-    .command('get <id>')
+    .command("get <id>")
     .description(`Get a single ${config.description} by ID`);
 
-  getCmd.option('--format <format>', 'Output format (json, table)', 'json');
+  getCmd.option("--format <format>", "Output format (json, table)", "json");
 
   // Commander passes (id, options, command) to action.
   // withAuth ignores positional args, so we wrap with a thin function
@@ -200,7 +217,7 @@ function addGetCommand(resourceCmd: Command, config: CrudEntityConfig): void {
     const data = await client.get(`${config.apiBasePath}/${parsedId}`);
     const format = opts.format as string;
 
-    if (format === 'table') {
+    if (format === "table") {
       const response = data as Record<string, unknown>;
       const item = response[config.singularKey] as unknown;
       outputTable(item ? [item] : [], [config.entity]);
@@ -214,13 +231,13 @@ function addGetCommand(resourceCmd: Command, config: CrudEntityConfig): void {
 
     if (isNaN(parsedId) || parsedId <= 0) {
       process.stderr.write(
-        JSON.stringify({ error: 'ID must be a positive integer', code: 'VALIDATION_ERROR' }) + '\n',
+        JSON.stringify({ error: "ID must be a positive integer", code: "VALIDATION_ERROR" }) + "\n",
       );
       process.exit(4);
     }
 
     // Stash parsed id into the command's opts so withAuth handler can access it
-    this.setOptionValue('_entityId', parsedId);
+    this.setOptionValue("_entityId", parsedId);
     return wrappedHandler.call(this, idArg, ...rest);
   });
 }
@@ -230,16 +247,22 @@ function addGetCommand(resourceCmd: Command, config: CrudEntityConfig): void {
  */
 function addCreateCommand(resourceCmd: Command, config: CrudEntityConfig): void {
   const createCmd = resourceCmd
-    .command('create')
+    .command("create")
     .description(`Create a new ${config.description}`)
-    .option('--data <json>', 'JSON data (or pipe to stdin)')
-    .option('--dry-run', 'Show request details without executing', false);
+    .option("--data <json>", "JSON data (or pipe to stdin)")
+    .option("--dry-run", "Show request details without executing", false);
 
   createCmd.action(
     withAuth(async ({ client, opts, auth }) => {
       const body = await readJsonInput(opts);
       if (opts.dryRun) {
-        outputDryRun({ method: 'POST', path: config.apiBasePath, token: auth.apiToken, subdomain: auth.companySubdomain, body });
+        outputDryRun({
+          method: "POST",
+          path: config.apiBasePath,
+          token: auth.apiToken,
+          subdomain: auth.companySubdomain,
+          body,
+        });
         return;
       }
       const data = await client.post(config.apiBasePath, body);
@@ -253,16 +276,22 @@ function addCreateCommand(resourceCmd: Command, config: CrudEntityConfig): void 
  */
 function addUpdateCommand(resourceCmd: Command, config: CrudEntityConfig): void {
   const updateCmd = resourceCmd
-    .command('update <id>')
+    .command("update <id>")
     .description(`Update a ${config.description}`)
-    .option('--data <json>', 'JSON data (or pipe to stdin)')
-    .option('--dry-run', 'Show request details without executing', false);
+    .option("--data <json>", "JSON data (or pipe to stdin)")
+    .option("--dry-run", "Show request details without executing", false);
 
   const wrappedHandler = withAuth(async ({ client, opts, auth }) => {
     const parsedId = opts._entityId as number;
     const body = await readJsonInput(opts);
     if (opts.dryRun) {
-      outputDryRun({ method: 'PUT', path: `${config.apiBasePath}/${parsedId}`, token: auth.apiToken, subdomain: auth.companySubdomain, body });
+      outputDryRun({
+        method: "PUT",
+        path: `${config.apiBasePath}/${parsedId}`,
+        token: auth.apiToken,
+        subdomain: auth.companySubdomain,
+        body,
+      });
       return;
     }
     const data = await client.put(`${config.apiBasePath}/${parsedId}`, body);
@@ -274,12 +303,12 @@ function addUpdateCommand(resourceCmd: Command, config: CrudEntityConfig): void 
 
     if (isNaN(parsedId) || parsedId <= 0) {
       process.stderr.write(
-        JSON.stringify({ error: 'ID must be a positive integer', code: 'VALIDATION_ERROR' }) + '\n',
+        JSON.stringify({ error: "ID must be a positive integer", code: "VALIDATION_ERROR" }) + "\n",
       );
       process.exit(4);
     }
 
-    this.setOptionValue('_entityId', parsedId);
+    this.setOptionValue("_entityId", parsedId);
     return wrappedHandler.call(this, idArg, ...rest);
   });
 }
@@ -289,14 +318,19 @@ function addUpdateCommand(resourceCmd: Command, config: CrudEntityConfig): void 
  */
 function addDeleteCommand(resourceCmd: Command, config: CrudEntityConfig): void {
   const deleteCmd = resourceCmd
-    .command('delete <id>')
+    .command("delete <id>")
     .description(`Delete a ${config.description}`)
-    .option('--dry-run', 'Show request details without executing', false);
+    .option("--dry-run", "Show request details without executing", false);
 
   const wrappedHandler = withAuth(async ({ client, opts, auth }) => {
     const parsedId = opts._entityId as number;
     if (opts.dryRun) {
-      outputDryRun({ method: 'DELETE', path: `${config.apiBasePath}/${parsedId}`, token: auth.apiToken, subdomain: auth.companySubdomain });
+      outputDryRun({
+        method: "DELETE",
+        path: `${config.apiBasePath}/${parsedId}`,
+        token: auth.apiToken,
+        subdomain: auth.companySubdomain,
+      });
       return;
     }
     await client.delete(`${config.apiBasePath}/${parsedId}`);
@@ -308,12 +342,12 @@ function addDeleteCommand(resourceCmd: Command, config: CrudEntityConfig): void 
 
     if (isNaN(parsedId) || parsedId <= 0) {
       process.stderr.write(
-        JSON.stringify({ error: 'ID must be a positive integer', code: 'VALIDATION_ERROR' }) + '\n',
+        JSON.stringify({ error: "ID must be a positive integer", code: "VALIDATION_ERROR" }) + "\n",
       );
       process.exit(4);
     }
 
-    this.setOptionValue('_entityId', parsedId);
+    this.setOptionValue("_entityId", parsedId);
     return wrappedHandler.call(this, idArg, ...rest);
   });
 }
@@ -324,16 +358,22 @@ function addDeleteCommand(resourceCmd: Command, config: CrudEntityConfig): void 
  */
 function addStatusCommand(resourceCmd: Command, config: CrudEntityConfig): void {
   const statusCmd = resourceCmd
-    .command('status <id>')
+    .command("status <id>")
     .description(`Update status of a ${config.description}`)
-    .requiredOption('--status <status>', 'New status value')
-    .option('--dry-run', 'Show request details without executing', false);
+    .requiredOption("--status <status>", "New status value")
+    .option("--dry-run", "Show request details without executing", false);
 
   const wrappedHandler = withAuth(async ({ client, opts, auth }) => {
     const parsedId = opts._entityId as number;
     const status = opts.status as string;
     if (opts.dryRun) {
-      outputDryRun({ method: 'PATCH', path: `${config.apiBasePath}/${parsedId}`, token: auth.apiToken, subdomain: auth.companySubdomain, body: { status } });
+      outputDryRun({
+        method: "PATCH",
+        path: `${config.apiBasePath}/${parsedId}`,
+        token: auth.apiToken,
+        subdomain: auth.companySubdomain,
+        body: { status },
+      });
       return;
     }
     const data = await client.patch(`${config.apiBasePath}/${parsedId}`, { status });
@@ -345,12 +385,12 @@ function addStatusCommand(resourceCmd: Command, config: CrudEntityConfig): void 
 
     if (isNaN(parsedId) || parsedId <= 0) {
       process.stderr.write(
-        JSON.stringify({ error: 'ID must be a positive integer', code: 'VALIDATION_ERROR' }) + '\n',
+        JSON.stringify({ error: "ID must be a positive integer", code: "VALIDATION_ERROR" }) + "\n",
       );
       process.exit(4);
     }
 
-    this.setOptionValue('_entityId', parsedId);
+    this.setOptionValue("_entityId", parsedId);
     return wrappedHandler.call(this, idArg, ...rest);
   });
 }
@@ -372,9 +412,7 @@ export function registerEntityCommands(program: Command): void {
     // Find or create the group command
     let groupCmd = program.commands.find((c) => c.name() === groupName);
     if (!groupCmd) {
-      groupCmd = program
-        .command(groupName)
-        .description(GROUP_DESCRIPTIONS[groupName] || groupName);
+      groupCmd = program.command(groupName).description(GROUP_DESCRIPTIONS[groupName] || groupName);
     }
 
     // Create resource subcommand under the group
@@ -383,27 +421,27 @@ export function registerEntityCommands(program: Command): void {
       .description(`Manage ${pluralize(config.description)}`);
 
     // Add list subcommand if supported
-    if (config.operations.includes('list')) {
+    if (config.operations.includes("list")) {
       addListCommand(resourceCmd, config);
     }
 
     // Add get subcommand if supported
-    if (config.operations.includes('get')) {
+    if (config.operations.includes("get")) {
       addGetCommand(resourceCmd, config);
     }
 
     // Add create subcommand if supported
-    if (config.operations.includes('create')) {
+    if (config.operations.includes("create")) {
       addCreateCommand(resourceCmd, config);
     }
 
     // Add update subcommand if supported
-    if (config.operations.includes('update')) {
+    if (config.operations.includes("update")) {
       addUpdateCommand(resourceCmd, config);
     }
 
     // Add delete subcommand if supported
-    if (config.operations.includes('delete')) {
+    if (config.operations.includes("delete")) {
       addDeleteCommand(resourceCmd, config);
     }
 

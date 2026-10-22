@@ -17,10 +17,10 @@ import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { validateEnv } from "./config/env.js";
-import { BukkuClient, createLogger } from 'core';
+import { BukkuClient, createLogger } from "core";
 import { registerAllTools } from "./tools/registry.js";
 
-const log = createLogger('bukku-mcp');
+const log = createLogger("bukku-mcp");
 
 // Read package.json version dynamically
 const packageJsonPath = new URL("../package.json", import.meta.url);

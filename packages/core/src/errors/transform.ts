@@ -5,14 +5,14 @@
 
 export interface MCPErrorResponse {
   isError: true;
-  content: Array<{ type: 'text'; text: string }>;
+  content: Array<{ type: "text"; text: string }>;
   [key: string]: unknown;
 }
 
 export function transformHttpError(
   status: number | null,
   body: unknown,
-  operation: string
+  operation: string,
 ): MCPErrorResponse {
   // Handle authentication errors (401)
   if (status === 401) {
@@ -20,7 +20,7 @@ export function transformHttpError(
       isError: true,
       content: [
         {
-          type: 'text',
+          type: "text",
           text: `Bukku authentication failed for "${operation}". The BUKKU_API_TOKEN environment variable is either missing or invalid. Please check your token and restart the server with the correct credentials.`,
         },
       ],
@@ -33,7 +33,7 @@ export function transformHttpError(
       isError: true,
       content: [
         {
-          type: 'text',
+          type: "text",
           text: `You don't have permission to "${operation}". Please check your Bukku account permissions and ensure you have access to this resource.`,
         },
       ],
@@ -46,7 +46,7 @@ export function transformHttpError(
       isError: true,
       content: [
         {
-          type: 'text',
+          type: "text",
           text: `I couldn't find that item when trying to "${operation}". Try listing the available items first to see what's accessible.`,
         },
       ],
@@ -58,29 +58,29 @@ export function transformHttpError(
     const parsedBody = body as Record<string, unknown>;
     const errors = parsedBody?.errors as Record<string, string[]> | undefined;
 
-    if (errors && typeof errors === 'object') {
+    if (errors && typeof errors === "object") {
       // Multiple validation errors - show all at once
       const errorMessages = Object.entries(errors)
-        .map(([field, messages]) => `  - ${field}: ${messages.join(', ')}`)
-        .join('\n');
+        .map(([field, messages]) => `  - ${field}: ${messages.join(", ")}`)
+        .join("\n");
 
       return {
         isError: true,
         content: [
           {
-            type: 'text',
+            type: "text",
             text: `Validation failed for "${operation}":\n${errorMessages}\n\nPlease fix these issues and try again.`,
           },
         ],
       };
     } else {
       // Single error message
-      const message = parsedBody?.message || 'Invalid request';
+      const message = parsedBody?.message || "Invalid request";
       return {
         isError: true,
         content: [
           {
-            type: 'text',
+            type: "text",
             text: `${message} when trying to "${operation}". Please check your input and try again.`,
           },
         ],
@@ -94,7 +94,7 @@ export function transformHttpError(
       isError: true,
       content: [
         {
-          type: 'text',
+          type: "text",
           text: `Bukku is temporarily unavailable while trying to "${operation}". Please try again in a few moments.`,
         },
       ],
@@ -106,13 +106,13 @@ export function transformHttpError(
     // Include response body for debugging server errors
     // Often these contain validation errors that should have been 400s
     const parsedBody = body as Record<string, unknown>;
-    const bodyText = body ? `\n\nServer response: ${JSON.stringify(parsedBody, null, 2)}` : '';
+    const bodyText = body ? `\n\nServer response: ${JSON.stringify(parsedBody, null, 2)}` : "";
 
     return {
       isError: true,
       content: [
         {
-          type: 'text',
+          type: "text",
           text: `An unexpected error occurred on Bukku's servers while trying to "${operation}". Please try again, and if the issue persists, contact Bukku support.${bodyText}`,
         },
       ],
@@ -124,31 +124,28 @@ export function transformHttpError(
     isError: true,
     content: [
       {
-        type: 'text',
+        type: "text",
         text: `An error occurred while trying to "${operation}". Please check your request and try again.`,
       },
     ],
   };
 }
 
-export function transformNetworkError(
-  error: unknown,
-  operation: string
-): MCPErrorResponse {
+export function transformNetworkError(error: unknown, operation: string): MCPErrorResponse {
   // Check if it's a network-related error
   const errorMessage = error instanceof Error ? error.message : String(error);
 
   if (
-    errorMessage.includes('fetch') ||
-    errorMessage.includes('connect') ||
-    errorMessage.includes('network') ||
+    errorMessage.includes("fetch") ||
+    errorMessage.includes("connect") ||
+    errorMessage.includes("network") ||
     error instanceof TypeError
   ) {
     return {
       isError: true,
       content: [
         {
-          type: 'text',
+          type: "text",
           text: `Couldn't connect to Bukku while trying to "${operation}". Please check your internet connection and ensure the Bukku API is accessible.`,
         },
       ],
@@ -160,7 +157,7 @@ export function transformNetworkError(
     isError: true,
     content: [
       {
-        type: 'text',
+        type: "text",
         text: `An unexpected error occurred while trying to "${operation}": ${errorMessage}. Please try again.`,
       },
     ],

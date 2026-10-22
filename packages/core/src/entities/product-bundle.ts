@@ -27,8 +27,7 @@ export const productBundleConfig: CrudEntityConfig = {
   hasStatusUpdate: false,
   listFilters: [],
   businessRules: {
-    delete:
-      "Only bundles that are not used in any transactions can be deleted.",
+    delete: "Only bundles that are not used in any transactions can be deleted.",
   },
   cliGroup: "products",
 };

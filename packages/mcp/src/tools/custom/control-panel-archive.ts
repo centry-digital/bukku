@@ -1,9 +1,9 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import type { BukkuClient } from 'core';
-import { transformHttpError, transformNetworkError, createLogger } from 'core';
+import type { BukkuClient } from "core";
+import { transformHttpError, transformNetworkError, createLogger } from "core";
 
-const log = createLogger('bukku-mcp');
+const log = createLogger("bukku-mcp");
 
 /**
  * Custom Control Panel Archive/Unarchive Tools
@@ -20,10 +20,7 @@ const log = createLogger('bukku-mcp');
  * @param client - Authenticated Bukku API client
  * @returns Number of tools registered (always 2)
  */
-export function registerControlPanelArchiveTools(
-  server: McpServer,
-  client: BukkuClient
-): number {
+export function registerControlPanelArchiveTools(server: McpServer, client: BukkuClient): number {
   // Archive location
   server.tool(
     "archive-location",
@@ -51,7 +48,7 @@ export function registerControlPanelArchiveTools(
         }
         return transformNetworkError(error, "archive-location");
       }
-    }
+    },
   );
   log("Registered tool: archive-location");
 
@@ -82,7 +79,7 @@ export function registerControlPanelArchiveTools(
         }
         return transformNetworkError(error, "unarchive-location");
       }
-    }
+    },
   );
   log("Registered tool: unarchive-location");
 

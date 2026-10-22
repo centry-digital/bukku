@@ -57,17 +57,17 @@ export interface BukkuListParams {
   page?: number;
   page_size?: number;
   sort_by?: string;
-  sort_dir?: 'asc' | 'desc';
+  sort_dir?: "asc" | "desc";
   search?: string;
-  date_from?: string;  // YYYY-MM-DD
-  date_to?: string;    // YYYY-MM-DD
+  date_from?: string; // YYYY-MM-DD
+  date_to?: string; // YYYY-MM-DD
   status?: string;
 }
 
 /**
  * CRUD operations supported by the factory pattern
  */
-export type CrudOperation = 'list' | 'get' | 'create' | 'update' | 'delete';
+export type CrudOperation = "list" | "get" | "create" | "update" | "delete";
 
 /**
  * Entity configuration for the CRUD factory pattern

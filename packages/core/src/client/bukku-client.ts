@@ -1,8 +1,8 @@
-import { createLogger } from '../utils/logger.js';
+import { createLogger } from "../utils/logger.js";
 import { readFile } from "node:fs/promises";
 import { basename, extname } from "node:path";
 
-const log = createLogger('bukku');
+const log = createLogger("bukku");
 
 /**
  * Configuration for BukkuClient.

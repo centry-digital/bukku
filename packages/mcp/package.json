@@ -7,14 +7,24 @@
   "bin": {
     "bukku-mcp": "build/index.js"
   },
-  "files": ["build/", "LICENSE", "README.md"],
+  "files": [
+    "build/",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc --build",
     "test": "find src -name '*.test.ts' | xargs node --test --import tsx/esm"
   },
   "keywords": [
-    "mcp", "bukku", "accounting", "claude",
-    "anthropic", "api", "bookkeeping", "invoicing"
+    "mcp",
+    "bukku",
+    "accounting",
+    "claude",
+    "anthropic",
+    "api",
+    "bookkeeping",
+    "invoicing"
   ],
   "author": "Centry Digital",
   "license": "MIT",

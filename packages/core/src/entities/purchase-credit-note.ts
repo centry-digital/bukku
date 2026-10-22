@@ -16,8 +16,10 @@ export const purchaseCreditNoteConfig: CrudEntityConfig = {
   hasStatusUpdate: true,
   listFilters: ["contact_id", "payment_status"],
   businessRules: {
-    delete: "Only draft and void credit notes can be deleted. Ready or pending approval credit notes cannot be deleted — use update-purchase-credit-note-status to void a ready credit note instead.",
-    statusTransitions: "Valid transitions: draft -> pending_approval, draft -> ready, pending_approval -> ready, ready -> void. A void credit note is final and cannot be changed. There is no way to revert from ready, pending_approval, or void back to draft.",
+    delete:
+      "Only draft and void credit notes can be deleted. Ready or pending approval credit notes cannot be deleted — use update-purchase-credit-note-status to void a ready credit note instead.",
+    statusTransitions:
+      "Valid transitions: draft -> pending_approval, draft -> ready, pending_approval -> ready, ready -> void. A void credit note is final and cannot be changed. There is no way to revert from ready, pending_approval, or void back to draft.",
   },
   cliGroup: "purchases",
 };

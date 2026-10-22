@@ -17,17 +17,17 @@ With this MCP server connected, you can ask your AI things like:
 
 The server exposes **169 tools** covering the full Bukku API:
 
-| Category | Tools | What you can do |
-|----------|-------|-----------------|
-| **Sales** | 42 | Quotes, orders, delivery orders, invoices, credit notes, payments, refunds |
-| **Purchases** | 36 | Purchase orders, bills, credit notes, goods received notes, payments, refunds |
-| **Banking** | 18 | Money in, money out, bank transfers |
-| **Contacts** | 12 | Customers, suppliers, contact groups |
-| **Products** | 18 | Products, product bundles, product groups |
-| **Accounting** | 13 | Journal entries, chart of accounts |
-| **Files** | 3 | Upload and manage file attachments |
-| **Organisation** | 17 | Locations, tags, tag groups |
-| **Reference Data** | 10 | Tax codes, currencies, payment methods, terms, and more |
+| Category           | Tools | What you can do                                                               |
+| ------------------ | ----- | ----------------------------------------------------------------------------- |
+| **Sales**          | 42    | Quotes, orders, delivery orders, invoices, credit notes, payments, refunds    |
+| **Purchases**      | 36    | Purchase orders, bills, credit notes, goods received notes, payments, refunds |
+| **Banking**        | 18    | Money in, money out, bank transfers                                           |
+| **Contacts**       | 12    | Customers, suppliers, contact groups                                          |
+| **Products**       | 18    | Products, product bundles, product groups                                     |
+| **Accounting**     | 13    | Journal entries, chart of accounts                                            |
+| **Files**          | 3     | Upload and manage file attachments                                            |
+| **Organisation**   | 17    | Locations, tags, tag groups                                                   |
+| **Reference Data** | 10    | Tax codes, currencies, payment methods, terms, and more                       |
 
 ## Quick Start
 
@@ -47,6 +47,7 @@ The server exposes **169 tools** covering the full Bukku API:
 ### Step 2: Add to your AI client
 
 **Claude Desktop** — open your config file:
+
 - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
@@ -106,20 +107,23 @@ Then use `bukku-mcp` as the command in your AI client config instead of `npx`.
 
 ## Configuration
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `BUKKU_API_TOKEN` | Yes | Your Bukku API token from Control Panel > Integrations > API Access |
-| `BUKKU_COMPANY_SUBDOMAIN` | Yes | Your company subdomain (e.g. `mycompany` from `mycompany.bukku.my`) |
+| Variable                  | Required | Description                                                         |
+| ------------------------- | -------- | ------------------------------------------------------------------- |
+| `BUKKU_API_TOKEN`         | Yes      | Your Bukku API token from Control Panel > Integrations > API Access |
+| `BUKKU_COMPANY_SUBDOMAIN` | Yes      | Your company subdomain (e.g. `mycompany` from `mycompany.bukku.my`) |
 
 ## Troubleshooting
 
 **"Configuration Error" on startup**
+
 - Check that both `BUKKU_API_TOKEN` and `BUKKU_COMPANY_SUBDOMAIN` are set in your client config
 
 **"Token validation failed"**
+
 - Your API token may be invalid or expired — regenerate at Control Panel > Integrations > API Access
 
 **Server doesn't appear in your AI client**
+
 - Verify JSON syntax is correct (no trailing commas)
 - Restart your AI client after editing the config
 - Check Node.js v20+ is installed: `node --version`

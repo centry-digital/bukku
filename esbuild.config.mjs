@@ -1,35 +1,31 @@
-import { build } from 'esbuild';
+import { build } from "esbuild";
 
 const shared = {
   bundle: true,
-  platform: 'node',
-  format: 'esm',
-  target: 'node20',
+  platform: "node",
+  format: "esm",
+  target: "node20",
   sourcemap: false,
 };
 
 // Bundle packages/mcp
 await build({
   ...shared,
-  entryPoints: ['packages/mcp/src/index.ts'],
-  outfile: 'packages/mcp/build/index.js',
-  external: [
-    '@modelcontextprotocol/sdk',
-    '@modelcontextprotocol/sdk/*',
-    'zod',
-  ],
+  entryPoints: ["packages/mcp/src/index.ts"],
+  outfile: "packages/mcp/build/index.js",
+  external: ["@modelcontextprotocol/sdk", "@modelcontextprotocol/sdk/*", "zod"],
   // No banner: src/index.ts already starts with a hashbang, which esbuild keeps
 });
-console.log('Built packages/mcp/build/index.js');
+console.log("Built packages/mcp/build/index.js");
 
 // Bundle packages/cli
 await build({
   ...shared,
-  entryPoints: ['packages/cli/src/index.ts'],
-  outfile: 'packages/cli/build/index.js',
-  external: ['commander'],
+  entryPoints: ["packages/cli/src/index.ts"],
+  outfile: "packages/cli/build/index.js",
+  external: ["commander"],
   banner: {
-    js: '#!/usr/bin/env node',
+    js: "#!/usr/bin/env node",
   },
 });
-console.log('Built packages/cli/build/index.js');
+console.log("Built packages/cli/build/index.js");

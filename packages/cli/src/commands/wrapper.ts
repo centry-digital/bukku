@@ -1,7 +1,7 @@
-import type { Command } from 'commander';
-import { BukkuClient } from 'core';
-import { resolveAuth, AuthMissingError } from '../config/auth.js';
-import { outputError, ExitCode } from '../output/error.js';
+import type { Command } from "commander";
+import { BukkuClient } from "core";
+import { resolveAuth, AuthMissingError } from "../config/auth.js";
+import { outputError, ExitCode } from "../output/error.js";
 
 /**
  * Context passed to commands wrapped by withAuth.
@@ -40,8 +40,8 @@ export function withAuth(
         outputError(
           {
             error:
-              'Authentication required. Set credentials via --api-token flag, BUKKU_API_TOKEN env var, or bukku config set',
-            code: 'AUTH_MISSING',
+              "Authentication required. Set credentials via --api-token flag, BUKKU_API_TOKEN env var, or bukku config set",
+            code: "AUTH_MISSING",
             details: null,
           },
           ExitCode.AUTH,
@@ -67,17 +67,17 @@ export function withAuth(
         }
         outputError(
           {
-            error: (body['message'] as string) || 'API error',
-            code: 'API_ERROR',
-            details: body['errors'] || null,
+            error: (body["message"] as string) || "API error",
+            code: "API_ERROR",
+            details: body["errors"] || null,
           },
           ExitCode.API,
         );
       }
       outputError(
         {
-          error: err instanceof Error ? err.message : 'Unknown error',
-          code: 'GENERAL_ERROR',
+          error: err instanceof Error ? err.message : "Unknown error",
+          code: "GENERAL_ERROR",
         },
         ExitCode.GENERAL,
       );

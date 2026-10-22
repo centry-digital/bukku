@@ -16,8 +16,10 @@ export const purchasePaymentConfig: CrudEntityConfig = {
   hasStatusUpdate: true,
   listFilters: ["contact_id", "email_status", "payment_status", "account_id"],
   businessRules: {
-    delete: "Only draft and void payments can be deleted. Ready or pending approval payments cannot be deleted — use update-purchase-payment-status to void a ready payment instead.",
-    statusTransitions: "Valid transitions: draft -> pending_approval, draft -> ready, pending_approval -> ready, ready -> void. A void payment is final and cannot be changed. There is no way to revert from ready, pending_approval, or void back to draft.",
+    delete:
+      "Only draft and void payments can be deleted. Ready or pending approval payments cannot be deleted — use update-purchase-payment-status to void a ready payment instead.",
+    statusTransitions:
+      "Valid transitions: draft -> pending_approval, draft -> ready, pending_approval -> ready, ready -> void. A void payment is final and cannot be changed. There is no way to revert from ready, pending_approval, or void back to draft.",
   },
   cliGroup: "purchases",
 };

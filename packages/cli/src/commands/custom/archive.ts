@@ -1,8 +1,8 @@
-import type { Command } from 'commander';
-import { withAuth } from '../wrapper.js';
-import { outputJson } from '../../output/json.js';
-import { outputDryRun } from '../../output/dry-run.js';
-import { outputError, ExitCode } from '../../output/error.js';
+import type { Command } from "commander";
+import { withAuth } from "../wrapper.js";
+import { outputJson } from "../../output/json.js";
+import { outputDryRun } from "../../output/dry-run.js";
+import { outputError, ExitCode } from "../../output/error.js";
 
 /**
  * Archive/unarchive configs for entities that support is_archived toggling.
@@ -10,11 +10,16 @@ import { outputError, ExitCode } from '../../output/error.js';
  * Note: locations use singular /location/{id} path (API inconsistency).
  */
 const ARCHIVE_CONFIGS = [
-  { group: 'contacts', resource: 'contacts', apiPath: '/contacts', description: 'contact' },
-  { group: 'products', resource: 'products', apiPath: '/products', description: 'product' },
-  { group: 'products', resource: 'bundles', apiPath: '/products/bundles', description: 'product bundle' },
-  { group: 'accounting', resource: 'accounts', apiPath: '/accounts', description: 'account' },
-  { group: 'control-panel', resource: 'locations', apiPath: '/location', description: 'location' },
+  { group: "contacts", resource: "contacts", apiPath: "/contacts", description: "contact" },
+  { group: "products", resource: "products", apiPath: "/products", description: "product" },
+  {
+    group: "products",
+    resource: "bundles",
+    apiPath: "/products/bundles",
+    description: "product bundle",
+  },
+  { group: "accounting", resource: "accounts", apiPath: "/accounts", description: "account" },
+  { group: "control-panel", resource: "locations", apiPath: "/location", description: "location" },
 ] as const;
 
 /**
@@ -24,7 +29,7 @@ function parseId(idArg: string): number {
   const parsed = parseInt(idArg, 10);
   if (isNaN(parsed) || parsed <= 0) {
     outputError(
-      { error: 'ID must be a positive integer', code: 'VALIDATION_ERROR' },
+      { error: "ID must be a positive integer", code: "VALIDATION_ERROR" },
       ExitCode.VALIDATION,
     );
   }
@@ -51,7 +56,13 @@ export function registerArchiveCommands(program: Command): void {
     const archiveHandler = withAuth(async ({ client, opts, auth }) => {
       const id = opts._entityId as number;
       if (opts.dryRun) {
-        outputDryRun({ method: 'PATCH', path: `${config.apiPath}/${id}`, token: auth.apiToken, subdomain: auth.companySubdomain, body: { is_archived: true } });
+        outputDryRun({
+          method: "PATCH",
+          path: `${config.apiPath}/${id}`,
+          token: auth.apiToken,
+          subdomain: auth.companySubdomain,
+          body: { is_archived: true },
+        });
         return;
       }
       const data = await client.patch(`${config.apiPath}/${id}`, { is_archived: true });
@@ -59,12 +70,12 @@ export function registerArchiveCommands(program: Command): void {
     });
 
     resourceCmd
-      .command('archive <id>')
+      .command("archive <id>")
       .description(`Archive a ${config.description}`)
-      .option('--dry-run', 'Show request details without executing', false)
+      .option("--dry-run", "Show request details without executing", false)
       .action(function (this: Command, idArg: string, ...rest: unknown[]) {
         const id = parseId(idArg);
-        this.setOptionValue('_entityId', id);
+        this.setOptionValue("_entityId", id);
         return archiveHandler.call(this, idArg, ...rest);
       });
 
@@ -72,7 +83,13 @@ export function registerArchiveCommands(program: Command): void {
     const unarchiveHandler = withAuth(async ({ client, opts, auth }) => {
       const id = opts._entityId as number;
       if (opts.dryRun) {
-        outputDryRun({ method: 'PATCH', path: `${config.apiPath}/${id}`, token: auth.apiToken, subdomain: auth.companySubdomain, body: { is_archived: false } });
+        outputDryRun({
+          method: "PATCH",
+          path: `${config.apiPath}/${id}`,
+          token: auth.apiToken,
+          subdomain: auth.companySubdomain,
+          body: { is_archived: false },
+        });
         return;
       }
       const data = await client.patch(`${config.apiPath}/${id}`, { is_archived: false });
@@ -80,12 +97,12 @@ export function registerArchiveCommands(program: Command): void {
     });
 
     resourceCmd
-      .command('unarchive <id>')
+      .command("unarchive <id>")
       .description(`Unarchive a ${config.description}`)
-      .option('--dry-run', 'Show request details without executing', false)
+      .option("--dry-run", "Show request details without executing", false)
       .action(function (this: Command, idArg: string, ...rest: unknown[]) {
         const id = parseId(idArg);
-        this.setOptionValue('_entityId', id);
+        this.setOptionValue("_entityId", id);
         return unarchiveHandler.call(this, idArg, ...rest);
       });
   }
