@@ -1,0 +1,10 @@
+# Pre-commit checks on staged files. Install happens automatically on `npm install`.
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: "*.{js,mjs,cjs,ts,json,md,yml,yaml}"
+      run: npx prettier --check --ignore-unknown {staged_files}
+    lint:
+      glob: "*.{js,mjs,cjs,ts}"
+      run: npx eslint --max-warnings=0 {staged_files}

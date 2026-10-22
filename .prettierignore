@@ -1,0 +1,16 @@
+# Generated or vendored
+package-lock.json
+node_modules
+build
+packages/*/build
+.verify
+.planning
+
+# Skills installed from elsewhere: keep as written
+.claude/skills/create-verification-skill
+.claude/skills/maintain-verification-skill
+
+# The Claude action refuses to run when these differ from main, so formatting-only edits would
+# silently switch off the review on that PR. Change them only on purpose, in a PR of their own.
+.github/workflows/claude-code-review.yml
+.github/workflows/claude.yml

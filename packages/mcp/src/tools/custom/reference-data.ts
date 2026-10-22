@@ -9,7 +9,7 @@
  * There are NO separate CRUD endpoints for these entity types.
  */
 
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { BukkuClient } from 'core';
 import type { ReferenceDataCache } from 'core';
 import { transformHttpError, transformNetworkError, createLogger } from 'core';

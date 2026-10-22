@@ -1,4 +1,4 @@
-import { describe, test, afterEach, mock } from 'node:test';
+import { describe, test, afterEach } from 'node:test';
 import assert from 'node:assert';
 import { outputJson } from './json.js';
 import { mapExitCode, ExitCode } from './error.js';

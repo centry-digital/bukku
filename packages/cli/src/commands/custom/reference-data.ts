@@ -6,7 +6,7 @@
  * These are short-lived CLI commands, so no caching is needed.
  */
 
-import { Command } from 'commander';
+import type { Command } from 'commander';
 import { withAuth } from '../wrapper.js';
 import { outputJson } from '../../output/json.js';
 import { outputTable } from '../../output/table.js';

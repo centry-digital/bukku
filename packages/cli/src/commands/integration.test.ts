@@ -112,7 +112,7 @@ describe('CLI integration', () => {
       tempHome = await mkdtemp(join(tmpdir(), 'bukku-cli-test-'));
 
       try {
-        const { stdout, stderr } = await execFile(
+        const { stdout } = await execFile(
           'node',
           [CLI_ENTRY, 'config', 'set', 'api_token', 'test_token_123'],
           {

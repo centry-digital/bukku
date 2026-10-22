@@ -2,6 +2,7 @@ node_modules/
 build/
 packages/*/build/
 *.js.map
+*.tsbuildinfo
 
 # Environment & secrets
 .env
@@ -13,6 +14,8 @@ packages/*/build/
 *.swo
 
 # Local tooling
-.claude/
+.claude/*
+!.claude/skills/
+.verify/
 .planning/
 .playwright-mcp/

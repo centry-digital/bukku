@@ -1,4 +1,4 @@
-import { Command } from 'commander';
+import type { Command } from 'commander';
 import { allEntityConfigs } from 'core';
 import type { CrudEntityConfig, BukkuPaging } from 'core';
 import { withAuth } from './wrapper.js';
@@ -67,14 +67,6 @@ function pluralize(desc: string): string {
     return desc + 'es';
   }
   return desc + 's';
-}
-
-/**
- * Convert a flag name with hyphens to underscore parameter name.
- * e.g., "contact-id" -> "contact_id"
- */
-function toParamName(flag: string): string {
-  return flag.replace(/-/g, '_');
 }
 
 /**
