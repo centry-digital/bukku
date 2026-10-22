@@ -31,6 +31,6 @@ Preconditions:
 
 - Global flags go **before** the subcommand (`bukku --api-token … config show`).
 - `config set` only accepts `api_token` and `company_subdomain`.
-- The env-over-rc step can't be driven offline: drives run with an empty environment and only pass `BUKKU_*` through with `VERIFY_LIVE=1`. `packages/cli/src/config/auth.test.ts` covers env vars without flags, but not env vars over the rc file, so report this step as unreachable offline.
+- The env-over-rc step can't be driven offline: drives run with an empty environment and only pass `BUKKU_*` through with `VERIFY_LIVE=1`. `packages/cli/src/config/auth-precedence.test.ts` covers it in the `unit` check; report the live step as unreachable offline.
 - Mode 600 is set only when `config set` creates `~/.bukkurc`. An existing file keeps its mode, and `config set` warns on stderr if it isn't `0600`.
 - Never run these against the real `HOME`: the harness's sandbox exists so the user's own `~/.bukkurc` is never read or overwritten.

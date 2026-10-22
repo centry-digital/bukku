@@ -27,4 +27,4 @@ Preconditions:
 - Validation runs before the dry-run preview, so `--dry-run` is safe for both cases.
 - Amounts are in ringgit (MYR) as decimal numbers, not sen.
 - The check only runs when `journal_items` is an array; anything else goes to Bukku as sent.
-- The MCP tools refuse with `isError: true` and the same message as plain text, without a `code`. They need live credentials to start and have no test of their own; offline, rely on the shared validator's tests (`packages/core/src/validation/double-entry.test.ts`).
+- The MCP tools refuse with `isError: true` and the same message as plain text, without a `code`. They need live credentials to start, so offline the MCP path is covered by `packages/mcp/src/tools/custom/journal-entry-tools.test.ts`.
