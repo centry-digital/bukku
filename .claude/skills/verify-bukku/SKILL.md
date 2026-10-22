@@ -40,10 +40,12 @@ Read-only. Checks Node, that both bundles exist and are newer than every source 
 $V/scripts/verify.sh cli <label> -- <bukku args...>        # stdin is passed through
 $V/scripts/verify.sh mcp <label> -- list                   # tool names and count
 $V/scripts/verify.sh mcp <label> -- call <tool> '<json>'   # one tool call
+$V/scripts/verify.sh install                               # pack and install the npm tarballs
 ```
 
 - `<label>` names the evidence files, e.g. `journal-entry/unbalanced`. Use `<feature-id>/<step>`.
 - `cli` runs `node packages/cli/build/index.js <args>`; `mcp` spawns `node packages/mcp/build/index.js` through `scripts/mcp-call.mjs`, a minimal MCP SDK client (exit 2 if the server never connected, 1 if the tool returned an error).
+- `install` packs both published packages and installs the tarballs into the sandbox. Then `VERIFY_INSTALLED=1` makes `cli`, `mcp` and `doctor` drive the installed packages instead of the repo build (see `features/packaging.md`).
 - Pass JSON bodies to write commands with `--data '<json>'` (a JSON string, not a file path) or on stdin.
 - Results are JSON on stdout; errors are JSON on **stderr** (`{"error","code","details"}`). Assert on stable handles: exit codes (0 ok, 1 general, 2 auth, 3 API, 4 validation; `packages/cli/src/output/error.ts`), the JSON `code` field (`AUTH_MISSING`, `VALIDATION_ERROR`, …), command names and MCP tool names. Not on free-text messages.
 
@@ -76,6 +78,7 @@ Deletes this run's sandbox (`.verify/run/<run id>/`, including any `.bukkurc` wr
 | `scripts/verify.sh doctor`                                | Read-only health check of build and sandbox             |
 | `scripts/verify.sh cli <label> -- …`                      | Run the CLI in the sandbox and record it                |
 | `scripts/verify.sh mcp <label> -- list \| call …`         | Run the MCP server through `mcp-call.mjs` and record it |
+| `scripts/verify.sh install`                               | Pack and install the npm tarballs into the sandbox      |
 | `scripts/verify.sh cleanup`                               | Remove the sandbox, keep evidence                       |
 | `scripts/mcp-call.mjs <entry> list \| call <tool> [json]` | Minimal MCP stdio client (used by `verify.sh mcp`)      |
 

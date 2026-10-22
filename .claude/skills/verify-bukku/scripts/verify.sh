@@ -19,6 +19,13 @@ load_run() {
   RUN_DIR="$EVIDENCE_ROOT/$RUN_ID"
   SANDBOX="$RUN_ROOT/$RUN_ID"
   [ -d "$RUN_DIR" ] || die "evidence dir $RUN_DIR missing"
+  # VERIFY_INSTALLED=1 drives the packages as npm users get them (after 'install'), not the repo build.
+  if [ "${VERIFY_INSTALLED:-0}" = "1" ]; then
+    local pkgs="$SANDBOX/install/node_modules/@centry-digital"
+    CLI_ENTRY="$pkgs/bukku-cli/build/index.js"
+    MCP_ENTRY="$pkgs/bukku-mcp/build/index.js"
+    [ -f "$CLI_ENTRY" ] && [ -f "$MCP_ENTRY" ] || die "no installed packages; run '$0 install' first"
+  fi
 }
 
 # Environment for every drive: a sandbox HOME so ~/.bukkurc is never the user's.
@@ -115,6 +122,28 @@ cmd_mcp() {
   record "$label" node "$MCP_CALL" "$MCP_ENTRY" "$@"
 }
 
+# Packs both published packages and installs the tarballs into the sandbox, recording what each
+# tarball contains. Runs npm with the normal environment (it needs the registry and any proxy),
+# but installs only into the sandbox.
+cmd_install() {
+  load_run
+  local packed="$SANDBOX/packed" install="$SANDBOX/install" out="$RUN_DIR/install"
+  rm -rf "$packed" "$install"
+  mkdir -p "$packed" "$install" "$out"
+  (cd "$REPO_ROOT" && npm pack --workspace packages/mcp --workspace packages/cli \
+    --pack-destination "$packed" --json > "$out/pack.json" 2> "$out/pack.stderr") \
+    || die "npm pack failed; see $out/pack.stderr"
+  node -e '
+    for (const t of JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")))
+      console.log(t.name + "@" + t.version + ": " + t.files.map((f) => f.path).sort().join(" "));
+  ' "$out/pack.json" | tee "$out/contents.txt"
+  (cd "$install" && npm init -y > /dev/null && npm install --no-audit --no-fund "$packed"/*.tgz \
+    > "$out/npm-install.stdout" 2> "$out/npm-install.stderr") \
+    || die "npm install of the tarballs failed; see $out/npm-install.stderr"
+  echo "[verify] install evidence=$out/{pack.json,contents.txt,npm-install.*}" >&2
+  echo "installed; drive them with VERIFY_INSTALLED=1"
+}
+
 cmd_cleanup() {
   load_run
   rm -rf "$SANDBOX"
@@ -128,6 +157,7 @@ case "${1:-}" in
   doctor) cmd_doctor ;;
   cli) shift; [ $# -ge 1 ] || die "usage: cli <label> -- <bukku args>"; cmd_cli "$@" ;;
   mcp) shift; [ $# -ge 1 ] || die "usage: mcp <label> -- list | call <tool> [json-args]"; cmd_mcp "$@" ;;
+  install) cmd_install ;;
   cleanup) cmd_cleanup ;;
-  *) die "usage: $0 launch | doctor | cli <label> -- <args> | mcp <label> -- <args> | cleanup" ;;
+  *) die "usage: $0 launch | doctor | cli <label> -- <args> | mcp <label> -- <args> | install | cleanup" ;;
 esac

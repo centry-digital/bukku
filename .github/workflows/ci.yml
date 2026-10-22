@@ -113,6 +113,36 @@ jobs:
             exit 1
           fi
 
+      # Catches files left out of (or wrongly added to) the npm tarballs, which the repo checkout hides.
+      - name: Check each packed tarball's contents, then install and start it
+        run: |
+          expected="LICENSE README.md build/index.js package.json"
+          for pkg in mcp cli; do
+            files=$(cd "packages/$pkg" && npm pack --dry-run --json | node -e "
+              let s = ''; process.stdin.on('data', (d) => (s += d)).on('end', () =>
+                console.log(JSON.parse(s)[0].files.map((f) => f.path).sort().join(' ')));")
+            if [ "$files" != "$expected" ]; then
+              echo "::error::packages/$pkg would publish: $files (expected: $expected)"
+              exit 1
+            fi
+            cmp -s LICENSE "packages/$pkg/LICENSE" || { echo "::error::packages/$pkg/LICENSE differs from LICENSE"; exit 1; }
+          done
+          mkdir -p "$RUNNER_TEMP/packed" "$RUNNER_TEMP/install"
+          npm pack --workspace packages/mcp --workspace packages/cli --pack-destination "$RUNNER_TEMP/packed"
+          cd "$RUNNER_TEMP/install"
+          npm init -y > /dev/null
+          npm install --no-audit --no-fund "$RUNNER_TEMP"/packed/*.tgz
+          npx --no-install bukku --version
+          set +e
+          BUKKU_API_TOKEN= BUKKU_COMPANY_SUBDOMAIN= npx --no-install bukku-mcp 2> mcp-stderr.txt
+          code=$?
+          set -e
+          if [ "$code" != 1 ] || ! grep -q "Setup checklist" mcp-stderr.txt; then
+            cat mcp-stderr.txt
+            echo "::error::The installed MCP server did not start cleanly (exit $code)."
+            exit 1
+          fi
+
   # Every MCP tool must have a CLI command (scripts/verify-parity.ts).
   parity:
     name: parity
