@@ -72,8 +72,18 @@ export function findByMarker(issues: Issue[], marker: string): Issue | undefined
   return issues.find((i) => i.body?.includes(marker));
 }
 
-export async function createIssue(title: string, body: string): Promise<Issue> {
-  return gh<Issue>("POST", "/issues", { title, body, labels: [LABEL] });
+/**
+ * Opens an `api-monitor` issue. With `notify`, it is assigned to the people in MONITOR_ASSIGNEES
+ * (comma-separated logins), so GitHub tells them: an issue opened by a bot notifies no one else.
+ */
+export async function createIssue(title: string, body: string, notify = true): Promise<Issue> {
+  const assignees = notify
+    ? (process.env.MONITOR_ASSIGNEES ?? "")
+        .split(",")
+        .map((a) => a.trim())
+        .filter(Boolean)
+    : [];
+  return gh<Issue>("POST", "/issues", { title, body, labels: [LABEL], assignees });
 }
 
 export async function updateIssue(
