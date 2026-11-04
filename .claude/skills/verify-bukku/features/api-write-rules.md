@@ -42,8 +42,8 @@ Preconditions:
 - Sales invoices already used `term_items` and are not checked here.
 - Any `term_id` key counts as the top-level form, so `"term_id": null` with `term_items` is refused too.
 - A single `term_items` entry only gains a top-level `term_id` when it is exactly `{term_id, payment_due: "100%"}`: with a `date` or `description`, or another percentage, it is sent unchanged.
-- The MCP `list-terms` description tells the AI that `term_id` is top-level on quotes and orders, and inside `term_items` on invoices and bills.
-- Bukku's changelog says quotes and orders drop `term_id` for `term_items` from 21 October 2026, but a live run on 22 October 2026 found the API still applying `term_id` and silently ignoring `term_items` (the record keeps a single `100%` item with no term). Live, check stored terms in the result or with a `get`, not the write's exit code. When Bukku switches, rerun the live step: the single-term quote should still stick, and split terms should stop warning.
+- The MCP `list-terms` description tells the AI to use `term_id` values inside `term_items` on quotes, orders, invoices and bills.
+- Bukku's changelog says quotes and orders drop `term_id` for `term_items` from 21 October 2026. A live run on 22 October 2026 found the API still applying `term_id` and silently ignoring `term_items`; from 23 October 2026 the daily API monitor (`scripts/api-monitor/term-items-probe.ts`) found a quote sent with only `term_items` keeping its term. Live, check stored terms in the result or with a `get`, not the write's exit code. Rerun the live step to confirm split terms on orders no longer warn, and whether Bukku now refuses a top-level `term_id` (then `terms-retry` becomes live).
 - `contact_code` is required on update as well as create. Existing contacts were given a code by Bukku, so `get` the contact and send its code back if it is not changing.
 - Live responses for quotes and orders still carry a top-level `term_id` (and `term_name`, `due_date`), but read terms from `term_items`, which Bukku fills in from `term_id`.
 - A quote or order update needs the `number` field, or Bukku answers 422.

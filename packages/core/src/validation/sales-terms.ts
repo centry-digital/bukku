@@ -4,8 +4,8 @@
  * Bukku announced that quotes and orders move from a top-level `term_id` to
  * `term_items` (changelog: production 21 October 2026). A live check on
  * 22 October 2026 found the API still applying `term_id` and silently
- * dropping `term_items`, even when both are sent. The switch may happen
- * without notice, so writes are made to work either way:
+ * dropping `term_items`; from 23 October 2026 the daily API monitor found it
+ * applying `term_items`. Writes are made to work either way:
  *
  * 1. `prepareSalesTerms` sends both forms when they mean the same thing (one
  *    existing term for 100%), so whichever one Bukku honours, the term sticks.
@@ -120,7 +120,7 @@ export async function sendSalesTerms(
   return {
     ...result,
     warnings: [
-      `Bukku saved this record with ${mismatch}, so the requested payment terms did not stick. As of 22 October 2026 Bukku applies only a single top-level term_id on quotes and orders and drops split or custom-date term_items. Check term_items above and update the record if needed.`,
+      `Bukku saved this record with ${mismatch}, so the requested payment terms did not stick. Check term_items above and update the record if needed.`,
     ],
   };
 }

@@ -7,9 +7,8 @@
  *
  * - Sales quotes and orders: Bukku announced that payment terms move from a
  *   top-level `term_id` to `term_items` (changelog: production 21 October
- *   2026). A live check on 22 October 2026 found the API still storing the
- *   top-level `term_id` and silently ignoring `term_items`, so both are
- *   accepted, but not together.
+ *   2026), applied live since 23 October 2026. The older top-level
+ *   `term_id` is still accepted, but not together with `term_items`.
  * - Contacts: `contact_code` is required on create and update (Bukku API,
  *   production 23 July 2026).
  */
