@@ -51,6 +51,7 @@ jobs:
         run: npx tsx scripts/api-monitor/changelog-check.ts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MONITOR_ASSIGNEES: yl-chow # the owner gets a GitHub notification for each issue
 
   term-items:
     name: term-items (live)
@@ -73,6 +74,7 @@ jobs:
         run: npx tsx scripts/api-monitor/term-items-probe.ts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MONITOR_ASSIGNEES: yl-chow # the owner gets a GitHub notification for each issue
           BUKKU_API_TOKEN: ${{ secrets.BUKKU_API_TOKEN }}
           BUKKU_COMPANY_SUBDOMAIN: ${{ secrets.BUKKU_COMPANY_SUBDOMAIN }}
 
