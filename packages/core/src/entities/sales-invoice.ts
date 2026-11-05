@@ -15,6 +15,7 @@ export const salesInvoiceConfig: CrudEntityConfig = {
   operations: ["list", "get", "create", "update", "delete"],
   hasStatusUpdate: true,
   listFilters: ["contact_id", "email_status", "transfer_status", "payment_status"],
+  listTagFilter: true,
   businessRules: {
     delete:
       "Only draft and void invoices can be deleted. Ready or pending approval invoices cannot be deleted — use update-sales-invoice-status to void a ready invoice instead.",

@@ -100,6 +100,13 @@ export interface CrudEntityConfig {
   /** Additional list filter parameters beyond the common ones */
   listFilters?: string[];
 
+  /**
+   * Whether the list endpoint accepts Bukku's `tag_ids[]` filter (only transactions that carry
+   * all the given tags are returned). Adds `tag_ids` to the MCP list tool and `--tag-ids` to the
+   * CLI list command.
+   */
+  listTagFilter?: boolean;
+
   /** Optional business-rule context surfaced in tool descriptions to guide LLM behavior */
   businessRules?: {
     /** Constraints on when delete is allowed and what to do instead (appended to delete tool description) */

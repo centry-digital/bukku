@@ -1,6 +1,6 @@
 import type { Command } from "commander";
 import { allEntityConfigs } from "core";
-import type { CrudEntityConfig, BukkuPaging } from "core";
+import type { CrudEntityConfig, BukkuPaging, QueryParams } from "core";
 import { withAuth } from "./wrapper.js";
 import { outputJson } from "../output/json.js";
 import { outputTable } from "../output/table.js";
@@ -91,6 +91,16 @@ function toFlagName(param: string): string {
 }
 
 /**
+ * Parse a comma-separated list of IDs, e.g. "3,5" for --tag-ids.
+ * Returns null when any entry is not a positive whole number.
+ */
+export function parseIdList(value: string): number[] | null {
+  const parts = value.split(",").map((p) => p.trim());
+  if (parts.some((p) => !/^[1-9]\d*$/.test(p))) return null;
+  return parts.map(Number);
+}
+
+/**
  * Add the `list` subcommand to a resource command.
  */
 function addListCommand(resourceCmd: Command, config: CrudEntityConfig): void {
@@ -118,11 +128,18 @@ function addListCommand(resourceCmd: Command, config: CrudEntityConfig): void {
       listCmd.option(`--${flagName} <value>`, `Filter by ${filter}`, undefined);
     }
   }
+  if (config.listTagFilter) {
+    listCmd.option(
+      "--tag-ids <ids>",
+      "Filter by tag IDs, comma-separated (e.g. 3,5): only transactions with all of these tags",
+      undefined,
+    );
+  }
 
   listCmd.action(
     withAuth(async ({ client, opts }) => {
       // Build query params
-      const params: Record<string, string | number | undefined> = {};
+      const params: QueryParams = {};
 
       if (opts.limit != null) params.page_size = Number(opts.limit);
       if (opts.page != null) params.page = Number(opts.page);
@@ -145,6 +162,20 @@ function addListCommand(resourceCmd: Command, config: CrudEntityConfig): void {
             params[filter] = opts[camelKey] as string;
           }
         }
+      }
+
+      if (config.listTagFilter && opts.tagIds != null) {
+        const tagIds = parseIdList(opts.tagIds as string);
+        if (!tagIds) {
+          outputError(
+            {
+              error: "--tag-ids must be comma-separated tag IDs, e.g. 3,5",
+              code: "VALIDATION_ERROR",
+            },
+            ExitCode.VALIDATION,
+          );
+        }
+        params.tag_ids = tagIds;
       }
 
       const format = opts.format as string;

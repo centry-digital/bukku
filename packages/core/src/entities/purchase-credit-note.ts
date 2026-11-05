@@ -15,6 +15,7 @@ export const purchaseCreditNoteConfig: CrudEntityConfig = {
   operations: ["list", "get", "create", "update", "delete"],
   hasStatusUpdate: true,
   listFilters: ["contact_id", "payment_status"],
+  listTagFilter: true,
   businessRules: {
     delete:
       "Only draft and void credit notes can be deleted. Ready or pending approval credit notes cannot be deleted — use update-purchase-credit-note-status to void a ready credit note instead.",

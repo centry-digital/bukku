@@ -17,6 +17,7 @@ export const salesQuoteConfig: CrudEntityConfig = {
   operations: ["list", "get", "create", "update", "delete"],
   hasStatusUpdate: true,
   listFilters: ["contact_id", "email_status", "transfer_status"],
+  listTagFilter: true,
   businessRules: {
     delete:
       "Only draft and void quotes can be deleted. Ready or pending approval quotes cannot be deleted — use update-sales-quote-status to void a ready quote instead.",

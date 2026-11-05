@@ -15,6 +15,7 @@ export const goodsReceivedNoteConfig: CrudEntityConfig = {
   operations: ["list", "get", "create", "update", "delete"],
   hasStatusUpdate: true,
   listFilters: ["contact_id", "email_status", "transfer_status"],
+  listTagFilter: true,
   businessRules: {
     delete:
       "Only draft and void goods received notes can be deleted. Ready or pending approval goods received notes cannot be deleted — use update-goods-received-note-status to void a ready goods received note instead.",

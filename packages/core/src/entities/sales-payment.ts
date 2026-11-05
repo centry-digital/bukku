@@ -15,6 +15,7 @@ export const salesPaymentConfig: CrudEntityConfig = {
   operations: ["list", "get", "create", "update", "delete"],
   hasStatusUpdate: true,
   listFilters: ["contact_id", "payment_mode"],
+  listTagFilter: true,
   businessRules: {
     delete:
       "Only draft and void payments can be deleted. Ready or pending approval payments cannot be deleted — use update-sales-payment-status to void a ready payment instead.",

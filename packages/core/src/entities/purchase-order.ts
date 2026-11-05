@@ -15,6 +15,7 @@ export const purchaseOrderConfig: CrudEntityConfig = {
   operations: ["list", "get", "create", "update", "delete"],
   hasStatusUpdate: true,
   listFilters: ["contact_id", "email_status", "transfer_status"],
+  listTagFilter: true,
   businessRules: {
     delete:
       "Only draft and void purchase orders can be deleted. Ready or pending approval purchase orders cannot be deleted — use update-purchase-order-status to void a ready purchase order instead.",

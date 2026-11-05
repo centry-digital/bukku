@@ -1,7 +1,7 @@
-import { describe, test } from "node:test";
+import { describe, test, afterEach } from "node:test";
 import assert from "node:assert";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { BukkuClient, contactConfig, salesQuoteConfig } from "core";
+import { BukkuClient, allEntityConfigs, contactConfig, salesQuoteConfig } from "core";
 import type { CrudEntityConfig } from "core";
 import { registerCrudTools } from "./factory.js";
 
@@ -16,10 +16,14 @@ type Handler = (params: Record<string, unknown>) => Promise<ToolResult>;
 function collectTools(config: CrudEntityConfig) {
   const server = new McpServer({ name: "bukku-test", version: "0.0.0" });
   const client = new BukkuClient({ apiToken: "test-token", companySubdomain: "test" });
-  const tools = new Map<string, { description: string; handler: Handler }>();
+  const tools = new Map<
+    string,
+    { description: string; schema: Record<string, unknown>; handler: Handler }
+  >();
   (server as unknown as { tool: (...args: unknown[]) => void }).tool = (...args: unknown[]) => {
     tools.set(args[0] as string, {
       description: args[1] as string,
+      schema: args[2] as Record<string, unknown>,
       handler: args[3] as Handler,
     });
   };
@@ -49,5 +53,53 @@ describe("CRUD factory write validation", () => {
     assert.match(quoteTools.get("create-sales-quote")!.description, /term_items/);
     assert.match(quoteTools.get("update-sales-quote")!.description, /term_items/);
     assert.match(collectTools(contactConfig).get("create-contact")!.description, /contact_code/);
+  });
+});
+
+describe("CRUD factory tag filter", () => {
+  const realFetch = globalThis.fetch;
+  afterEach(() => {
+    globalThis.fetch = realFetch;
+  });
+
+  test("list-sales-quotes sends tag_ids as repeated tag_ids[] parameters", async () => {
+    const urls: string[] = [];
+    globalThis.fetch = (async (input: string | URL | Request) => {
+      urls.push(String(input));
+      return new Response("{}", { status: 200 });
+    }) as typeof fetch;
+    const tool = collectTools(salesQuoteConfig).get("list-sales-quotes")!;
+    const result = await tool.handler({ tag_ids: [3, 5], page: 1 });
+    assert.notStrictEqual(result.isError, true);
+    const url = new URL(urls[0]!);
+    assert.strictEqual(url.pathname, "/sales/quotes");
+    assert.deepStrictEqual(url.searchParams.getAll("tag_ids[]"), ["3", "5"]);
+    assert.strictEqual(url.searchParams.get("page"), "1");
+  });
+
+  test("tag_ids is offered on the 13 sales and purchase transaction lists only", () => {
+    const withTags = allEntityConfigs
+      .filter((c) => "tag_ids" in (collectTools(c).get(`list-${c.entity}s`)?.schema ?? {}))
+      .map((c) => c.entity)
+      .sort();
+    assert.deepStrictEqual(withTags, [
+      "delivery-order",
+      "goods-received-note",
+      "purchase-bill",
+      "purchase-credit-note",
+      "purchase-order",
+      "purchase-payment",
+      "purchase-refund",
+      "sales-credit-note",
+      "sales-invoice",
+      "sales-order",
+      "sales-payment",
+      "sales-quote",
+      "sales-refund",
+    ]);
+    assert.strictEqual(
+      "tag_ids" in collectTools(contactConfig).get("list-contacts")!.schema,
+      false,
+    );
   });
 });
