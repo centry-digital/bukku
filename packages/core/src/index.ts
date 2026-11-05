@@ -1,6 +1,6 @@
 // Client
 export { BukkuClient } from "./client/bukku-client.js";
-export type { BukkuClientConfig } from "./client/bukku-client.js";
+export type { BukkuClientConfig, QueryParams } from "./client/bukku-client.js";
 
 // Types
 export type {

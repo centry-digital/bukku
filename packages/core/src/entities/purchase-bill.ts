@@ -16,6 +16,7 @@ export const purchaseBillConfig: CrudEntityConfig = {
   operations: ["list", "get", "create", "update", "delete"],
   hasStatusUpdate: true,
   listFilters: ["contact_id", "payment_status", "payment_mode"],
+  listTagFilter: true,
   businessRules: {
     delete:
       "Only draft and void bills can be deleted. Ready or pending approval bills cannot be deleted — use update-purchase-bill-status to void a ready bill instead.",

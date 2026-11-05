@@ -115,8 +115,17 @@ function entryLabel(content: Record<string, unknown>): string {
   const pick = (...keys: string[]) =>
     keys.map((k) => content[k]).find((v) => typeof v === "string" && v.trim()) as
       string | undefined;
-  const date = pick("date", "released_at", "releaseDate", "published", "version");
-  const title = pick("title", "name", "summary", "description");
+  const date = pick("production", "date", "released_at", "releaseDate", "published", "version");
+  // Bukku's entries group several changes under `updates`, each with its own title.
+  const updates = Array.isArray(content.updates)
+    ? (content.updates as { title?: unknown }[])
+        .map((u) => u?.title)
+        .filter((t): t is string => typeof t === "string" && t.trim() !== "")
+    : [];
+  const more = updates.length > 1 ? ` (+${updates.length - 1} more)` : "";
+  const title = updates.length
+    ? `${updates[0]}${more}`
+    : pick("title", "name", "summary", "description");
   return [date, title].filter(Boolean).join(": ") || "(untitled entry)";
 }
 

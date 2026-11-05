@@ -31,20 +31,20 @@ Both packages require a Bukku API token and company subdomain. See [Getting Your
 
 ## Payment terms on quotes and orders: old vs new format
 
-Bukku's [API changelog](https://developers.bukku.my/changelog) announced that, from 21 October 2026, sales quotes and sales orders take payment terms in a new format, `term_items`, replacing the old top-level `term_id`. A live test on 22 October 2026 found that **Bukku has not switched yet**: it still applies the old format and silently ignores the new one, so a quote sent with only `term_items` is saved with no payment term.
+From 21 October 2026, Bukku's [API changelog](https://developers.bukku.my/changelog) moved sales quotes and sales orders to a new payment-terms format, `term_items`, replacing the old top-level `term_id`. A live test on 22 October 2026 found Bukku still applying the old format, but since 23 October 2026 the daily [API monitor](docs/github-setup.md#part-7-daily-bukku-api-monitor) has confirmed that **Bukku now applies `term_items`** on quotes. Use `term_items`.
 
-| Format | Example                                                 | Live Bukku API (22 Oct 2026)            | bukku CLI and MCP                           |
-| ------ | ------------------------------------------------------- | --------------------------------------- | ------------------------------------------- |
-| Old    | `"term_id": 3`                                          | Applied                                 | Accepted, sent in both forms                |
-| New    | `"term_items": [{"term_id": 3, "payment_due": "100%"}]` | Accepted, but terms silently dropped    | Accepted, sent in both forms                |
-| Split  | `"term_items"` with several items or a custom `date`    | Accepted, but terms silently dropped    | Accepted, with a warning in the result      |
-| Both   | `term_id` and `term_items` in one request               | Applies `term_id`, ignores `term_items` | Refused before sending (`VALIDATION_ERROR`) |
+| Format | Example                                                 | bukku CLI and MCP                           |
+| ------ | ------------------------------------------------------- | ------------------------------------------- |
+| New    | `"term_items": [{"term_id": 3, "payment_due": "100%"}]` | Recommended; also sent as `term_id`         |
+| Split  | `"term_items"` with several items or a custom `date`    | Accepted, sent as given                     |
+| Old    | `"term_id": 3`                                          | Still accepted, sent in both forms          |
+| Both   | `term_id` and `term_items` in one request               | Refused before sending (`VALIDATION_ERROR`) |
 
-Because Bukku may switch without notice, the CLI and MCP server make payment terms stick either way:
+So that payment terms stick whichever format Bukku honours, the CLI and MCP server:
 
-1. **Both forms.** A single term for 100%, given in either format, is sent as both a top-level `term_id` and `term_items`. Today Bukku applies `term_id`; after the switch it should apply `term_items`.
+1. **Both forms.** A single term for 100%, given in either format, is sent as both a top-level `term_id` and `term_items`. This keeps older integrations working while Bukku phases `term_id` out.
 2. **Retry.** If Bukku refuses `term_id` (a validation error on that field), the request is sent again with `term_items` only.
-3. **Check.** After a create or update, the stored `term_items` are compared with the request. If they differ, for example because split terms were dropped, the result carries a `warnings` field. Sales invoices are unaffected: they already use `term_items`. Contacts now need a `contact_code` on create and update, which the live API enforces.
+3. **Check.** After a create or update, the stored `term_items` are compared with the request. If they differ, the result carries a `warnings` field. Sales invoices are unaffected: they already use `term_items`. Contacts now need a `contact_code` on create and update, which the live API enforces.
 
 ## Uninstalling
 

@@ -124,7 +124,7 @@ Then use `bukku-mcp` as the command in your AI client config instead of `npx`.
 
 **Quote or order saved without its payment term**
 
-- As of 22 October 2026, Bukku still applies the old top-level `term_id` on quotes and orders and silently ignores the new `term_items`. Ask your assistant to use `term_id`. See [old vs new format](https://github.com/centry-digital/bukku#payment-terms-on-quotes-and-orders-old-vs-new-format).
+- Since 23 October 2026, Bukku applies the new `term_items` on quotes and orders. Ask your assistant to use `term_items`, and check for a `warnings` field in the result, which means the stored terms differ from what was sent. See [old vs new format](https://github.com/centry-digital/bukku#payment-terms-on-quotes-and-orders-old-vs-new-format).
 
 **Server doesn't appear in your AI client**
 

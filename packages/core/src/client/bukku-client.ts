@@ -8,6 +8,15 @@ const log = createLogger("bukku");
  * Configuration for BukkuClient.
  * Decoupled from MCP-specific environment config.
  */
+/**
+ * Query parameters for a GET request. An array value is sent as repeated `key[]=value`
+ * pairs (e.g. tag_ids: [3, 5] becomes `tag_ids[]=3&tag_ids[]=5`).
+ */
+export type QueryParams = Record<
+  string,
+  string | number | readonly (string | number)[] | undefined
+>;
+
 export interface BukkuClientConfig {
   apiToken: string;
   companySubdomain: string;
@@ -70,12 +79,14 @@ export class BukkuClient {
   /**
    * Build URL with query parameters.
    */
-  private buildUrl(path: string, params?: Record<string, string | number | undefined>): string {
+  private buildUrl(path: string, params?: QueryParams): string {
     const url = new URL(path, this.baseUrl);
 
     if (params) {
       for (const [key, value] of Object.entries(params)) {
-        if (value !== undefined) {
+        if (Array.isArray(value)) {
+          for (const item of value) url.searchParams.append(`${key}[]`, String(item));
+        } else if (value !== undefined) {
           url.searchParams.append(key, String(value));
         }
       }
@@ -87,7 +98,7 @@ export class BukkuClient {
   /**
    * GET request with optional query parameters.
    */
-  async get(path: string, params?: Record<string, string | number | undefined>): Promise<unknown> {
+  async get(path: string, params?: QueryParams): Promise<unknown> {
     const url = this.buildUrl(path, params);
     const response = await fetch(url, {
       method: "GET",

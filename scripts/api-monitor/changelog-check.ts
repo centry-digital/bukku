@@ -103,7 +103,7 @@ async function main(): Promise<void> {
     const body = formatState(snapshot, now);
     const issue = stateIssue
       ? await updateIssue(stateIssue.number, { body, state: "closed" })
-      : await createIssue("Bukku API monitor: saved snapshot (keep closed)", body);
+      : await createIssue("Bukku API monitor: saved snapshot (keep closed)", body, false);
     if (!stateIssue) await updateIssue(issue.number, { state: "closed" });
     console.log(`First run: saved today's snapshot in #${issue.number}. Nothing to compare yet.`);
     return;

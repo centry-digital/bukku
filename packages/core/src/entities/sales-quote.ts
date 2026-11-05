@@ -17,13 +17,14 @@ export const salesQuoteConfig: CrudEntityConfig = {
   operations: ["list", "get", "create", "update", "delete"],
   hasStatusUpdate: true,
   listFilters: ["contact_id", "email_status", "transfer_status"],
+  listTagFilter: true,
   businessRules: {
     delete:
       "Only draft and void quotes can be deleted. Ready or pending approval quotes cannot be deleted — use update-sales-quote-status to void a ready quote instead.",
     statusTransitions:
       "Valid transitions: draft -> pending_approval, draft -> ready, pending_approval -> ready, ready -> void. A void quote is final and cannot be changed. There is no way to revert from ready, pending_approval, or void back to draft.",
     write:
-      "Payment terms: send either a top-level term_id (an existing payment term: list-terms, or `bukku ref-data terms`) or term_items (each item needs payment_due plus either term_id or a custom date YYYY-MM-DD), not both. Bukku is switching from term_id to term_items, so a single term for 100% is sent in both forms and sticks whichever Bukku honours; if Bukku refuses term_id the request is retried with term_items only. As of 22 October 2026 Bukku drops split or custom-date term_items silently, so the result carries a warnings field when the stored term_items differ from the request. Read stored terms from term_items.",
+      "Payment terms: send term_items, Bukku's current format: each item needs payment_due plus either term_id (an existing payment term: list-terms, or `bukku ref-data terms`) or a custom date YYYY-MM-DD. A top-level term_id is still accepted as an older alternative, but never together with term_items. A single term for 100% is also sent as a top-level term_id for compatibility; if Bukku refuses term_id the request is retried with term_items only. If the stored term_items differ from the request, the result carries a warnings field. Read stored terms from term_items.",
   },
   validateWrite: validateSalesTermItems,
   prepareWrite: prepareSalesTerms,

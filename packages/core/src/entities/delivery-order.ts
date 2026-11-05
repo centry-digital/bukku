@@ -15,6 +15,7 @@ export const deliveryOrderConfig: CrudEntityConfig = {
   operations: ["list", "get", "create", "update", "delete"],
   hasStatusUpdate: true,
   listFilters: ["contact_id", "email_status", "transfer_status"],
+  listTagFilter: true,
   businessRules: {
     delete:
       "Only draft and void delivery orders can be deleted. Ready or pending approval delivery orders cannot be deleted — use update-delivery-order-status to void a ready delivery order instead.",

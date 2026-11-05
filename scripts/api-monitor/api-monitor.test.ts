@@ -61,6 +61,22 @@ describe("extractChangelogEntries", () => {
     });
   });
 
+  it("labels Bukku's entries by production date and update titles", () => {
+    const [entry] = extractChangelogEntries(
+      embed({
+        $schema: "../changelog.schema.json",
+        staging: "2026-10-01",
+        production: "2026-10-21",
+        updates: [
+          { title: "Term Items support" },
+          { title: "Product Barcode" },
+          { title: "Tag Filter" },
+        ],
+      }),
+    );
+    assert.strictEqual(entry.label, "2026-10-21: Term Items support (+2 more)");
+  });
+
   it("gives an entry the same id whatever its key order, and a new id when edited", () => {
     const [a] = extractChangelogEntries(embed(ENTRY));
     const [b] = extractChangelogEntries(embed(Object.fromEntries(Object.entries(ENTRY).reverse())));
