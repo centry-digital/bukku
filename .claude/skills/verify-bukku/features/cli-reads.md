@@ -9,10 +9,11 @@
 - `read-table` prints `--format table`.
 - `read-get` fetches one record by id.
 - `read-ref-data` lists reference data such as `ref-data tax-codes`.
+- `read-tag-filter` lists only sales and purchase transactions that carry all the given tags (`--tag-ids 3,5`, sent to Bukku as `tag_ids[]=3&tag_ids[]=5`; MCP list tools take `tag_ids: [3, 5]`).
 
 ## How to get to it (user POV)
 
-- `bukku sales invoices list`, `bukku sales invoices get <id>`, `bukku sales invoices list --format table`, `bukku ref-data tax-codes`.
+- `bukku sales invoices list`, `bukku sales invoices get <id>`, `bukku sales invoices list --format table`, `bukku ref-data tax-codes`, `bukku sales quotes list --tag-ids 3,5`.
 
 ## Driving it with verify.sh
 
@@ -26,6 +27,9 @@ Preconditions:
 - **Table.** Run `$V/scripts/verify.sh cli reads/invoices-table -- sales invoices list --limit 5 --format table`. Exit `0`; a text table with a header row.
 - **Reference data.** Run `$V/scripts/verify.sh cli reads/tax-codes -- ref-data tax-codes`. Exit `0`; a JSON list of tax codes.
 - **Bad id (offline).** Run `$V/scripts/verify.sh cli reads/get-bad-id -- --api-token tok_verify_123 --company-subdomain demo sales invoices get abc`. Exit `4`; stderr has `"code":"VALIDATION_ERROR"`. This needs no live credentials.
+- **Tag filter flag (offline).** Run `$V/scripts/verify.sh cli reads/tag-filter-help -- sales quotes list --help`. Exit `0`; stdout lists `--tag-ids <ids>`. `contacts contacts list --help` does not.
+- **Bad tag ids (offline).** Run `$V/scripts/verify.sh cli reads/tag-filter-bad -- --api-token tok_verify_123 --company-subdomain demo sales quotes list --tag-ids 3,x`. Exit `4`; stderr has `"code":"VALIDATION_ERROR"`, and no request is sent.
+- **Tag filter (live).** Take a tag `id` from `control-panel tags list` and run `$V/scripts/verify.sh cli reads/tag-filter -- sales invoices list --tag-ids <id> --limit 5`. Exit `0`; every returned invoice carries that tag (check with `get`). Bukku returns only transactions with **all** the given tags.
 - **Bad token.** Run `BUKKU_API_TOKEN=invalid VERIFY_LIVE=1 $V/scripts/verify.sh cli reads/bad-token -- sales invoices list`. Exit `3` with `"code":"API_ERROR"` on stderr (Bukku answers "User is not authenticated"); it is not the auth exit code `2`.
 
 ## Gotchas
@@ -34,3 +38,4 @@ Preconditions:
 - Behind an HTTPS proxy (a cloud sandbox), live drives need `HTTPS_PROXY` and the CA bundle; `verify.sh` passes them through in live mode and sets `NODE_USE_ENV_PROXY=1`, as Node's fetch ignores the proxy otherwise. The host `api.bukku.my` must also be allowed by the sandbox's network policy.
 - Use `bukku <group> --help` to find a resource's command name; they don't always match the API path (see `RESOURCE_NAME_MAP` in `packages/cli/src/commands/factory.ts`).
 - `--all` on a large company makes many requests; prefer `--limit` for proof.
+- The tag filter (`tag_ids[]`) was added from Bukku's changelog of 21 October 2026 and has only been driven offline so far (unit tests prove the query string); prove it live on the next live run.

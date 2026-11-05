@@ -1,6 +1,6 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import type { BukkuClient, CrudEntityConfig } from "core";
+import type { BukkuClient, CrudEntityConfig, QueryParams } from "core";
 import { transformHttpError, transformNetworkError, createLogger } from "core";
 
 const log = createLogger("bukku-mcp");
@@ -83,13 +83,18 @@ export function registerCrudTools(
         listSchema[filter] = z.string().optional().describe(`Filter by ${filter}`);
       }
     }
+    if (config.listTagFilter) {
+      listSchema.tag_ids = z
+        .array(z.number().int())
+        .optional()
+        .describe(
+          "Filter by tag IDs (list-tags): only transactions that carry all of these tags are returned",
+        );
+    }
 
     server.tool(listName, listDescription, listSchema, async (params) => {
       try {
-        const result = await client.get(
-          config.apiBasePath,
-          params as Record<string, string | number | undefined>,
-        );
+        const result = await client.get(config.apiBasePath, params as QueryParams);
         return {
           content: [
             {

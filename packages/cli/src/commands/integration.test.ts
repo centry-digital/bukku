@@ -88,6 +88,15 @@ describe("CLI integration", () => {
     assert.strictEqual(result.exitCode, 0);
   });
 
+  test("transaction list commands offer --tag-ids, other lists don't", async () => {
+    const quotes = await runCli("sales", "quotes", "list", "--help");
+    assert.match(quotes.stdout, /--tag-ids <ids>/);
+    const bills = await runCli("purchases", "bills", "list", "--help");
+    assert.match(bills.stdout, /--tag-ids <ids>/);
+    const contacts = await runCli("contacts", "contacts", "list", "--help");
+    assert.doesNotMatch(contacts.stdout, /--tag-ids/);
+  });
+
   test("bukku config set with invalid key exits non-zero", async () => {
     const result = await runCli("config", "set", "invalid_key", "some_value");
     assert.ok(result.exitCode !== 0, `Expected non-zero exit code, got ${result.exitCode}`);
