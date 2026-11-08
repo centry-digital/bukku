@@ -24,6 +24,8 @@ Every list/get/create/update/delete operation available in the Bukku web UI is a
 
 ## Quick Start
 
+You need Node.js 22.12 or newer (`node --version`).
+
 Try it without installing:
 
 ```bash
