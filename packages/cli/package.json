@@ -41,6 +41,6 @@
     "access": "public"
   },
   "dependencies": {
-    "commander": "^15.0.0"
+    "commander": "^15.1.0"
   }
 }
