@@ -8,10 +8,18 @@ interface Column {
   header: string;
   width: number;
   align: "left" | "right";
+  /** Older field name to read when `key` is missing (for API responses in the previous format). */
+  fallbackKey?: string;
 }
 
-function col(key: string, header: string, width: number, align: "left" | "right" = "left"): Column {
-  return { key, header, width, align };
+function col(
+  key: string,
+  header: string,
+  width: number,
+  align: "left" | "right" = "left",
+  fallbackKey?: string,
+): Column {
+  return { key, header, width, align, fallbackKey };
 }
 
 function id(width = 6): Column {
@@ -84,9 +92,9 @@ const TABLE_COLUMNS: Record<string, Column[]> = {
   contact: [
     id(6),
     col("name", "Name", 30),
-    col("emails", "Emails", 25),
+    col("emails", "Emails", 25, "left", "email"),
     col("type", "Type", 10),
-    col("phones", "Phones", 15),
+    col("phones", "Phones", 15, "left", "phone_no"),
   ],
   "contact-group": [id(6), col("name", "Name", 30), col("contacts_count", "Contacts", 10, "right")],
   // Products
@@ -143,6 +151,15 @@ function toStr(value: unknown): string {
 }
 
 /**
+ * Read a column's value, falling back to its older field name when the new one is missing.
+ */
+function cellValue(row: Record<string, unknown>, column: Column): unknown {
+  const value = row[column.key];
+  if (value == null && column.fallbackKey) return row[column.fallbackKey];
+  return value;
+}
+
+/**
  * Pad/truncate a string to exactly `width` characters.
  */
 function fit(text: string, width: number, align: "left" | "right"): string {
@@ -167,7 +184,7 @@ function formatTable(rows: Record<string, unknown>[], columns: Column[]): string
 
   // Data rows
   for (const row of rows) {
-    lines.push(columns.map((c) => fit(toStr(row[c.key]), c.width, c.align)).join(gap));
+    lines.push(columns.map((c) => fit(toStr(cellValue(row, c)), c.width, c.align)).join(gap));
   }
 
   return lines.join("\n") + "\n";
