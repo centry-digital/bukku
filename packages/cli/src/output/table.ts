@@ -84,9 +84,9 @@ const TABLE_COLUMNS: Record<string, Column[]> = {
   contact: [
     id(6),
     col("name", "Name", 30),
-    col("email", "Email", 25),
+    col("emails", "Emails", 25),
     col("type", "Type", 10),
-    col("phone", "Phone", 15),
+    col("phones", "Phones", 15),
   ],
   "contact-group": [id(6), col("name", "Name", 30), col("contacts_count", "Contacts", 10, "right")],
   // Products
@@ -138,6 +138,7 @@ const TABLE_COLUMNS: Record<string, Column[]> = {
 function toStr(value: unknown): string {
   if (value == null) return "";
   if (typeof value === "boolean") return value ? "yes" : "no";
+  if (Array.isArray(value)) return value.map(toStr).join(", ");
   return String(value);
 }
 
