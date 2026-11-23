@@ -87,4 +87,20 @@ describe("outputTable contacts", () => {
     assert.ok(captured.includes("a@x.my, b@x.my"));
     assert.ok(captured.includes("60312345678"));
   });
+
+  test("falls back to the older email and phone_no fields", () => {
+    let captured = "";
+    process.stdout.write = ((chunk: string) => {
+      captured += chunk;
+      return true;
+    }) as typeof process.stdout.write;
+
+    outputTable(
+      [{ id: 2, name: "Beta", email: "old@x.my", phone_no: "60398765432", type: "x" }],
+      ["contact"],
+    );
+
+    assert.ok(captured.includes("old@x.my"));
+    assert.ok(captured.includes("60398765432"));
+  });
 });
