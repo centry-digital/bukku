@@ -1,6 +1,7 @@
 import { describe, test, afterEach } from "node:test";
 import assert from "node:assert";
 import { outputJson } from "./json.js";
+import { outputTable } from "./table.js";
 import { mapExitCode, ExitCode } from "./error.js";
 
 describe("outputJson", () => {
@@ -61,5 +62,29 @@ describe("mapExitCode", () => {
   test("unknown code maps to exit code 1", () => {
     assert.strictEqual(mapExitCode("SOME_RANDOM_CODE"), ExitCode.GENERAL);
     assert.strictEqual(mapExitCode("SOME_RANDOM_CODE"), 1);
+  });
+});
+
+describe("outputTable contacts", () => {
+  const originalWrite = process.stdout.write;
+
+  afterEach(() => {
+    process.stdout.write = originalWrite;
+  });
+
+  test("shows the emails and phones arrays", () => {
+    let captured = "";
+    process.stdout.write = ((chunk: string) => {
+      captured += chunk;
+      return true;
+    }) as typeof process.stdout.write;
+
+    outputTable(
+      [{ id: 1, name: "Alpha", emails: ["a@x.my", "b@x.my"], phones: ["60312345678"], type: "x" }],
+      ["contact"],
+    );
+
+    assert.ok(captured.includes("a@x.my, b@x.my"));
+    assert.ok(captured.includes("60312345678"));
   });
 });
