@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { BukkuClient } from "core";
 import { registerCrudTools } from "./factory.js";
+import { readOnlyServer } from "./read-only.js";
 
 // All entity configs from core
 import {
@@ -62,9 +63,23 @@ import { registerControlPanelArchiveTools } from "./custom/control-panel-archive
  *
  * @param server - MCP server instance
  * @param client - Authenticated Bukku API client
+ * @param options - `readOnly` registers only the list, get and search tools
  * @returns Number of tools registered
  */
-export function registerAllTools(server: McpServer, client: BukkuClient): number {
+export function registerAllTools(
+  server: McpServer,
+  client: BukkuClient,
+  options: { readOnly?: boolean } = {},
+): number {
+  if (options.readOnly) {
+    const view = readOnlyServer(server);
+    registerEveryTool(view.server, client);
+    return view.registered();
+  }
+  return registerEveryTool(server, client);
+}
+
+function registerEveryTool(server: McpServer, client: BukkuClient): number {
   let totalTools = 0;
 
   // Sales entities (Phase 2)

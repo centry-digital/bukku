@@ -27,4 +27,25 @@ describe("MCP server startup", () => {
     assert.match(result.stderr, /BUKKU_API_TOKEN/);
     assert.match(result.stderr, /BUKKU_COMPANY_SUBDOMAIN/);
   });
+
+  test("exits with code 1 when BUKKU_READ_ONLY is not true or false", async () => {
+    const result = await execFile("node", [MCP_ENTRY], {
+      timeout: 10_000,
+      env: {
+        ...process.env,
+        BUKKU_API_TOKEN: "test-token",
+        BUKKU_COMPANY_SUBDOMAIN: "test",
+        BUKKU_READ_ONLY: "yes",
+      },
+    }).then(
+      () => ({ code: 0, stderr: "" }),
+      (err: { code?: number; stderr?: string }) => ({
+        code: err.code ?? 1,
+        stderr: err.stderr ?? "",
+      }),
+    );
+
+    assert.strictEqual(result.code, 1);
+    assert.match(result.stderr, /BUKKU_READ_ONLY/);
+  });
 });

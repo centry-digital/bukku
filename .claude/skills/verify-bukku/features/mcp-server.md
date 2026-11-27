@@ -7,6 +7,7 @@ An AI client starts `bukku-mcp` over stdio with the user's token and subdomain, 
 - `mcp-no-config` exits 1 and prints the setup checklist naming both env vars.
 - `mcp-list` (**Live**) lists every tool after validating the token.
 - `mcp-read` (**Live**) calls a read-only tool and returns its JSON.
+- `mcp-read-only-mode` registers only the `list-*`, `get-*` and `search-*` tools when `BUKKU_READ_ONLY=true` (offline: a bad value is refused; live: the tool list).
 
 ## How to get to it (user POV)
 
@@ -21,6 +22,8 @@ Preconditions:
 - **No configuration.** Run `$V/scripts/verify.sh mcp mcp/no-config -- list`. Exit `2` from the client (connection closed); stderr contains `Configuration Error`, `BUKKU_API_TOKEN`, `BUKKU_COMPANY_SUBDOMAIN` and `Setup checklist`, and no `SyntaxError`.
 - **List tools (Live).** With live credentials, run `$V/scripts/verify.sh mcp mcp/list -- list`. Exit `0`; `count` matches the number in the server's `Bukku MCP server started (N tools registered)` line on stderr, and `names` includes `list-sales-invoices`.
 - **Read a tool (Live).** Run `$V/scripts/verify.sh mcp mcp/list-invoices -- call list-sales-invoices '{"page_size":5}'`. Exit `0`; the result's first `content` item is JSON text.
+- **Read-only mode, bad value.** Run `BUKKU_READ_ONLY=yes $V/scripts/verify.sh mcp mcp/read-only-bad-value -- list`. Exit `2` from the client; stderr contains `Configuration Error` and `BUKKU_READ_ONLY must be "true" or "false"`.
+- **Read-only mode (Live).** Run `BUKKU_READ_ONLY=true $V/scripts/verify.sh mcp mcp/read-only-list -- list`. Exit `0`; every name starts with `list-`, `get-` or `search-`, `names` includes `list-sales-invoices` and not `create-sales-invoice`, and stderr says `read-only`.
 - **Reference data (Live).** Run `$V/scripts/verify.sh mcp mcp/list-tax-codes -- call list-tax-codes '{}'`. Exit `0`; JSON text. The reference-data tools (`list-tax-codes`, `list-terms` and others) take no arguments.
 
 ## Gotchas

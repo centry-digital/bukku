@@ -107,10 +107,17 @@ Then use `bukku-mcp` as the command in your AI client config instead of `npx`.
 
 ## Configuration
 
-| Variable                  | Required | Description                                                         |
-| ------------------------- | -------- | ------------------------------------------------------------------- |
-| `BUKKU_API_TOKEN`         | Yes      | Your Bukku API token from Control Panel > Integrations > API Access |
-| `BUKKU_COMPANY_SUBDOMAIN` | Yes      | Your company subdomain (e.g. `mycompany` from `mycompany.bukku.my`) |
+| Variable                  | Required | Description                                                           |
+| ------------------------- | -------- | --------------------------------------------------------------------- |
+| `BUKKU_API_TOKEN`         | Yes      | Your Bukku API token from Control Panel > Integrations > API Access   |
+| `BUKKU_COMPANY_SUBDOMAIN` | Yes      | Your company subdomain (e.g. `mycompany` from `mycompany.bukku.my`)   |
+| `BUKKU_READ_ONLY`         | No       | `true` to offer only the tools that read (see below). Default `false` |
+
+### Read-only mode
+
+Set `BUKKU_READ_ONLY=true` to give the AI only the 63 tools that read from Bukku: every `list-*`, `get-*` and `search-*` tool. The tools that create, update, delete, archive, change a status or upload a file are not registered at all, so the AI cannot call them, whatever it is asked. This also makes each request smaller, because the AI client sends fewer tool definitions to the model. The startup log says `read-only` when the mode is on.
+
+Read-only mode is a safeguard in the server, not a Bukku permission: anyone who has the token can still write with it elsewhere.
 
 ## Troubleshooting
 
