@@ -1,6 +1,6 @@
 # Release flow:
-# 1. Update the version in packages/mcp/package.json and/or packages/cli/package.json
-#    (a package whose version is already on npm is skipped)
+# 1. Update the version in packages/mcp/package.json and packages/cli/package.json to the
+#    same version (they are released together; a version already on npm is skipped)
 # 2. git commit + git tag
 # 3. git push && git push --tags
 # 4. Create GitHub release from the tag

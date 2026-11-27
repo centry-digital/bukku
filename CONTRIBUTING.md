@@ -77,4 +77,4 @@ $V/scripts/verify.sh cleanup   # evidence stays in .verify/evidence/<run id>/
 
 ## Releasing
 
-See the comments at the top of [`.github/workflows/publish.yml`](.github/workflows/publish.yml). Publishing to npm runs `npm run verify` again first. After publishing, check the release works with `npx @centry-digital/bukku-mcp@<version>` (it should print the setup checklist, not a `SyntaxError`) and `npx @centry-digital/bukku-cli@<version> --version`.
+The CLI and the MCP server share one version (from 2.2.2): bump both `packages/cli/package.json` and `packages/mcp/package.json` to the same version in the release PR, and tag the release `v<version>`. `scripts/versions.test.ts` fails if the two differ. Then follow the comments at the top of [`.github/workflows/publish.yml`](.github/workflows/publish.yml). Publishing to npm runs `npm run verify` again first. After publishing, check the release works with `npx @centry-digital/bukku-mcp@<version>` (it should print the setup checklist, not a `SyntaxError`) and `npx @centry-digital/bukku-cli@<version> --version`.
