@@ -32,6 +32,8 @@ load_run() {
 # Live credentials are only passed through when VERIFY_LIVE=1.
 drive_env() {
   local -a env=(env -i "PATH=$PATH" "HOME=$SANDBOX/home" "TMPDIR=$SANDBOX/tmp")
+  # BUKKU_READ_ONLY holds no secret, so it is passed through offline too.
+  [ -n "${BUKKU_READ_ONLY:-}" ] && env+=("BUKKU_READ_ONLY=$BUKKU_READ_ONLY")
   if [ "${VERIFY_LIVE:-0}" = "1" ]; then
     env+=("BUKKU_API_TOKEN=${BUKKU_API_TOKEN:-}" "BUKKU_COMPANY_SUBDOMAIN=${BUKKU_COMPANY_SUBDOMAIN:-}")
     # Behind an HTTPS proxy (e.g. a cloud sandbox), Node's fetch only uses it

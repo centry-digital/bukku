@@ -50,14 +50,15 @@ async function main(): Promise<void> {
   });
 
   // Step 5: Register all tools
-  const toolCount = registerAllTools(server, client);
+  const toolCount = registerAllTools(server, client, { readOnly: env.BUKKU_READ_ONLY });
 
   // Step 6: Connect via stdio transport
   const transport = new StdioServerTransport();
   await server.connect(transport);
 
   // Step 7: Log startup to stderr
-  log(`Bukku MCP server started (${toolCount} tools registered)`);
+  const mode = env.BUKKU_READ_ONLY ? ", read-only" : "";
+  log(`Bukku MCP server started (${toolCount} tools registered${mode})`);
 }
 
 // Execute main and handle fatal errors
